@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-import Button from "@material-ui/core/Button";
+import Login from "./auth/Login";
+import SignUp from "./auth/SignUp";
+
 
 const App = () => {
   return (
@@ -8,13 +10,9 @@ const App = () => {
       <>
         <BrowserRouter>
           <Route key="login" exact path="/login" render={() => <Login />} />
-          <Route
-            key="signup"
-            exact
-            path="/register"
-            render={() => <Signup />}
+          <Route key="signup" exact path="/register" render={() => <SignUp />}
           />
-          <Route key="home" exact path="/" render={() => <Home />} />
+          {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
         </BrowserRouter>
       </>
     </div>
