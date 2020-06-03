@@ -31,15 +31,17 @@ const App = () => {
       {/* <Grid container direction="row" justify="center" alignItems="center">
         <MiniDrawer />
       </Grid> */}
-      <div className={classes.root}>
-        <Container>
-          <Grid container spacing={1}>
-            <Tester classes={classes} />
+      <div className={classes.root} >
+        <Container fixed>
+          <Grid container spacing={1} >
+            <Grid item xs={2} wrap="nowrap" position="sticky">
+              <Tester classes={classes} />
+            </Grid>
             <Grid item xs={6}>
               {/* <Paper className={classes.paper}>xs</Paper> */}
               <Test />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={4} >
               <Paper className={classes.paper}>xs</Paper>
             </Grid>
           </Grid>
