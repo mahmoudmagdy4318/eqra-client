@@ -9,6 +9,7 @@ import Test from "./Layout/test";
 import Tester from "./Layout/Tester";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
+import PostLikes from "./Likes/Post_Likes";
 
 const App = () => {
   const useStyles = makeStyles((theme) => ({
@@ -50,6 +51,12 @@ const App = () => {
         <Route key="login" exact path="/login" render={() => <Login />} />
         <Route key="signup" exact path="/register" render={() => <SignUp />} />
         {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
+        <Route
+          key="postlikes"
+          exact
+          path="/post/:id/likes"
+          render={(routeprops) => <PostLikes id={routeprops.match.params.id} />}
+        />
       </BrowserRouter>
     </div>
   );
