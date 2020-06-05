@@ -81,14 +81,14 @@ export default function SimplePopover(props) {
   };
   return (
     <div>
-      <Link
+      <a
         aria-describedby={id}
         variant="contained"
         color="primary"
         onClick={handleClick}
       >
         {props.noOfLikes && <strong>{props.noOfLikes}</strong>}
-      </Link>
+      </a>
       <Popover
         id={id}
         open={open}
