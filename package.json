@@ -2,6 +2,9 @@
   "name": "eqra-client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "12.6.0"
+  },
   "dependencies": {
     "@material-ui/core": "^4.10.0",
     "@material-ui/icons": "^4.9.1",
@@ -20,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install && npm run build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install &&npm install -g serve&& npm run build && serve -s build"
   },
   "eslintConfig": {
     "extends": "react-app"
