@@ -7,14 +7,10 @@ import { BrowserRouter, Route } from "react-router-dom";
 
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
-<<<<<<< HEAD
 import PostLikes from "./Likes/Post_Likes";
-=======
 import Home from "./Layout/Home";
->>>>>>> a8824b491b2b0c1fc59b6c1707b759de938b7bc1
 
 const App = () => {
-  
   return (
     <div>
       <BrowserRouter>
@@ -24,8 +20,14 @@ const App = () => {
         <Route
           key="postlikes"
           exact
-          path="/post/:id/likes"
-          render={(routeprops) => <PostLikes id={routeprops.match.params.id} />}
+          path="/block/:id/likes"
+          render={(routeprops) => (
+            <PostLikes
+              id={routeprops.match.params.id}
+              type="comment"
+              noOfLikes="56"
+            />
+          )}
         />
         <Route key="home" exact path="/" render={() => <Home />} />
       </BrowserRouter>
