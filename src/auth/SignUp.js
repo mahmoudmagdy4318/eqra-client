@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,23 +7,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axiosInstance from '../API/axiosInstance';
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -46,11 +40,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function SignUp(props) {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  let [user, setUser] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password1: "",
+    password2: "",
+  });
+
+  const updateUser = e => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const registerUser = e => {
+    e.preventDefault();
+    if (user.password1 !== user.password2) {
+      setOpen(true);
+    } else {
+      let newUser = {
+        email: user.email,
+        password: user.password1,
+        name: `${user.firstName} ${user.lastName}`,
+        password_confirmation: user.password1
+      }
+      console.log(newUser);
+      axiosInstance.post('api/auth/signup', newUser)
+        .then(data => {
+          console.log(data)
+          //     sessionStorage.setItem("token", data.data.token);
+          //     props.history.push("/");
+        })
+        .catch(err => console.log(err));
+    }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning">
+          Password miss match !
+        </Alert>
+      </Snackbar>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -59,58 +103,74 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={registerUser} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
                 variant="outlined"
-                required
-                fullWidth
-                id="firstName"
                 label="First Name"
+                name="firstName"
+                id="firstName"
+                fullWidth
                 autoFocus
+                required
+                value={user.firstName}
+                onChange={updateUser}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                autoComplete="lname"
                 variant="outlined"
-                required
-                fullWidth
-                id="lastName"
                 label="Last Name"
                 name="lastName"
-                autoComplete="lname"
+                id="lastName"
+                fullWidth
+                required
+                value={user.lastName}
+                onChange={updateUser}
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
                 label="Email Address"
-                name="email"
                 autoComplete="email"
+                variant="outlined"
+                name="email"
+                id="email"
+                fullWidth
+                required
+                value={user.email}
+                onChange={updateUser}
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={6}>
               <TextField
+                autoComplete="current-password"
                 variant="outlined"
-                required
-                fullWidth
-                name="password"
+                name="password1"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
+                id="password1"
+                fullWidth
+                required
+                value={user.password1}
+                onChange={updateUser}
               />
             </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+            <Grid item xs={12} sm={6}>
+              <TextField
+                autoComplete="current-password"
+                label="Confirm Password"
+                variant="outlined"
+                name="password2"
+                type="password"
+                id="password2"
+                fullWidth
+                required
+                value={user.password2}
+                onChange={updateUser}
               />
             </Grid>
           </Grid>
@@ -132,9 +192,6 @@ export default function SignUp() {
           </Grid>
         </form>
       </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

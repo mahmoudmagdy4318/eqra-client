@@ -4,6 +4,12 @@ import _ from "lodash";
 const axiosInstance = axios.create({
   baseURL: "/",
 });
+axiosInstance.interceptors.request.use(
+  cfg => {
+    cfg.headers['Content-Type'] = 'application/json';
+    return cfg;
+  }
+)
 
 axiosInstance.interceptors.response.use(
   ({ data }) => data,
