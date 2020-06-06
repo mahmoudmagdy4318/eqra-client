@@ -1,8 +1,16 @@
 import React from 'react'
-import { Grid, Paper, makeStyles, Container } from "@material-ui/core";
 import Test from "./test";
 import MyNav from "./MyNav";
 import '../styles/home.css'
+import {
+  Grid,
+  Paper,
+  makeStyles,
+  Container,
+  Typography,
+} from "@material-ui/core";
+import Tester from "./Tester";
+import PostLikes from "../Likes/Post_Likes";
 
 const Home = () => {
   const useStyles = makeStyles((theme) => ({
@@ -14,11 +22,12 @@ const Home = () => {
       padding: theme.spacing(2),
       textAlign: "center",
       color: theme.palette.text.secondary,
+      // backgroundColor: "red",
       height: 85 + "vh",
     },
     sticky: {
-      alignSelf: 'flex-start',
-      position: 'sticky',
+      alignSelf: "flex-start",
+      position: "sticky",
       top: 30,
       height: '100vh',
       backgroundColor: '#fff',
@@ -35,10 +44,12 @@ const Home = () => {
     <>
       <div className={classes.root} >
         <Container>
+          <PostLikes id={1} type="comment" noOfLikes="56" />
+
           <Grid container >
             <Grid md={2} className={classes.sticky} >
-              <div style={{'height':'100%'}}>
-              <MyNav/>
+              <div style={{ 'height': '100%' }}>
+                <MyNav />
               </div>
             </Grid>
             <Grid md={6} className="inner-grid">
@@ -51,7 +62,7 @@ const Home = () => {
         </Container>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
