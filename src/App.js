@@ -1,14 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route } from "react-router-dom";
-// import Button from "@material-ui/core/Button";
-// import PrimarySearchAppBar from "./Layout/NavBar";
-// import MiniDrawer from "./Layout/SideBar";
-// import { red } from "@material-ui/core/colors";
-
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
 import Home from "./Layout/Home";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle);
 
 const App = () => {
   return (

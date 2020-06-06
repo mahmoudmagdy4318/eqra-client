@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,18 +12,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import axiosInstance from "../API/axiosInstance";
+import { Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -46,11 +41,61 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+export default function Login(props) {
+
+  let [user, setUser] = useState({
+    email: "",
+    password: "",
+    remember_me:false
+  });
+  const [warning, setWarning] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setWarning(false);
+  };
+  const updateField = e => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const logIn = async (e) => {
+    e.preventDefault();
+    if (user.email === "" || user.password === "")
+      setWarning(true);
+    else
+      try {
+        console.log(JSON.stringify(user),'\n',user);
+        const loggedUser = await axiosInstance.post(`auth/login`, JSON.stringify(user));
+        console.log(loggedUser);
+        // sessionStorage.setItem("token", loggedUser.data.token);
+        // props.history.push("/event");
+      } catch (error) {
+        setError(true);
+        console.log(error);
+      }
+  };
   const classes = useStyles();
 
   return (
     <Container component="main" maxWidth="xs">
+      <Snackbar open={warning} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="warning">
+          Please Fill All Fields.
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={error} autoHideDuration={3000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error">
+          Wrong Credentials.
+        </Alert>
+      </Snackbar>
+
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -59,7 +104,7 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={logIn} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -70,6 +115,8 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={user.email}
+            onChange={updateField}
           />
           <TextField
             variant="outlined"
@@ -81,11 +128,13 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={user.password}
+            onChange={updateField}
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -109,9 +158,6 @@ export default function Login() {
           </Grid>
         </form>
       </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
     </Container>
   );
 }

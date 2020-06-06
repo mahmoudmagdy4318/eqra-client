@@ -1,0 +1,23 @@
+.my-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.my-nav .menu-item {
+  display: flex;
+  flex-direction: row;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 1.3rem;
+  color: #2955d9 !important;
+}
+.my-nav .menu-item span {
+  display: inline-block;
+  width: 130px;
+}
+.my-nav .menu-item:hover {
+  text-decoration: none;
+  background-color: #dceaf2;
+  border-radius: 58px;
+  opacity: 0.9;
+}
