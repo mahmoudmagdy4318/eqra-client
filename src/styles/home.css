@@ -1,0 +1,156 @@
+.first-sec {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+}
+.post-con {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.con {
+  display: block;
+  width: 95%;
+  min-height: 174px;
+
+}
+.avatar {
+  width: 60px;
+  height: 60px;
+  /* border: 1px solid blue; */
+  border-radius: 5px;
+  /* margin: 10px 0 0 10px; */
+}
+.con .write-area {
+  width: 80%;
+  /* height: fit-content; */
+  border: none;
+  outline: none;
+  min-height: 50px;
+
+}
+.con .write-area :focus {
+  border: none;
+  outline: none;
+}
+.post-text {
+  width: auto;
+  height: 100%;
+  border: 0;
+  margin-top: 5px;
+}
+.post-con-last {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-flex-start;
+}
+.post {
+  background-color: #303f9f;
+  color: #fff;
+  border: 1px solid #303f9f;
+  border-radius: 5px;
+}
+
+.inner-grid {
+  border-left: 1px solid #e1e8ed;
+  border-right: 1px solid #e1e8ed;
+  border-top: 1px solid #e1e8ed;
+  margin: auto;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.line {
+  width: 100%;
+  border-bottom: 1px solid  #e1e8ed;
+}
+
+/* This element would be replaced by where you want the templates. */
+.tweetEntry-tweetHolder {
+  border-left: 1px solid #e1e8ed;
+  border-right: 1px solid #e1e8ed;
+  border-top: 1px solid #e1e8ed;
+  width: 588px;
+  margin: auto;
+  border-radius: 5px;
+}
+
+/* The action list is optional. */
+.tweetEntry-action-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  line-height: 18px;
+  margin-left: 58px;
+  margin-top: 10px;
+  color: #292f33;
+}
+.fa-reply:hover {
+  color: #292f33;
+}
+.fa-retweet:hover {
+  color: #5cd65c;
+}
+.fa-heart:hover {
+  color: #ff3333;
+}
+/************************/
+
+.tweetEntry {
+  border-bottom: 1px solid #e1e8ed;
+  cursor: pointer;
+  min-height: 51px;
+  padding: 9px 12px;
+}
+.tweetEntry-content {
+  /* display: block;
+  font-size: 14px; */
+  margin-left: 58px;
+  font-size: 14px;
+
+}
+.tweetEntry-account-group {
+  color: #8899a6;
+  padding: 0px;
+  text-decoration: none;
+  line-height: 20px;
+}
+.tweetEntry-avatar {
+  float: left;
+  height: 48px;
+  width: 48px;
+  margin-left: -58px;
+  border-radius: 5px;
+}
+.tweetEntry-fullname {
+  font-weight: bold;
+  font-size: 14px;
+  color: #292f33;
+  padding: 0px;
+}
+.tweetEntry-username {
+  font-weight: bold;
+  font-size: 14px;
+  color: #b1bbc3;
+  padding: 0px;
+}
+.tweetEntry-timestamp {
+  font-size: 14px;
+  color: #b1bbc3;
+  padding: 0px;
+}
+.tweetEntry-text-container {
+  font-size: 14px;
+  color: #292f33;
+  line-height: 18px;
+}
+
+.optionalMedia {
+  margin-left: 58px;
+  margin-top: 10px;
+}
+.optionalMedia-img {
+  border-radius: 5px;
+  max-width: 506px;
+  max-height: 506px;
+}
