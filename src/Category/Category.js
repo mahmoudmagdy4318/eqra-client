@@ -15,7 +15,6 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 // Axios
 import axiosInstance from "../API/axiosInstance";
-import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,32 +64,19 @@ const UserCategory = () => {
             newChecked.push({id, name});
         else
             newChecked.splice(currentIndex, 1);
-        console.log(newChecked)
         setChecked(newChecked);
     };
     const getUserCategories = async() =>{
-        try{
-            const categories = await Axios.get("http://localhost:8000/api/user/genre", {
-                headers:{
-                "Accept": "application/json",
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGNmZGYwODdlMTkxYWY4ZDZhOWYwMDNjMDEyZWZiZWU1YzJhNjRmY2Q1MzJiOGNjN2E3YjQyZmE5Y2M2OGY1OGRjZWMyOTE0NDhjNDJkYTkiLCJpYXQiOjE1OTE0ODY1OTMsIm5iZiI6MTU5MTQ4NjU5MywiZXhwIjoxNjIzMDIyNTg5LCJzdWIiOiIzIiwic2NvcGVzIjpbXX0.qX2zIaVYsuB9HSjvWcQjVG1sYurUbwTzvgecjdFO1d2HZs2DpB-qLb5B-oxeHbfUkpnKI3SR9zc_zzIlMv7koKQGx4jqPhYq8BgsWT77VSZFqdfD0BMcb3PCwSU6lctok4SuIU818La0b8axtalDSy5zUk_qyFtLfR-adcABxNejXMpHGq0ncEWuooXY9rmVXMhUFSpoEd8oSgZu_uf6gKiHDCAw16shAvQkMW-KZJzA44ArMKGXHiBrKgZ72b2vpUdZPsq69WuVUe2c9bFMYqbPHzQI9fhmGfl_BXZeVULK_S-A2XfqrIVn4V68rw1QxDjFE6JtGnh36h6-Ai3iuS-D7AMkJfEtilGC07AbCuVg0OKF8Iih0-dZGwlZJkrXg3tqBVkvpj0cHJOB8DQn9SoC3y-NMF1kDzTefzWNRGfiDAOAj1LgdHDGmAO2tpH9UoVW6wWxFi8NNOvxjphk6ROpsPtrxL0b0jC-UECvgwDwpYzCZHkWSdQtuGpmqUnEdUbxDoAxyfBuo6A8SEOjQsVgzZQ5VA04BIm-g6i403aq0MgsD2wWaD2Jp56HRCdCHfJMXmTOvxLVbwvEI2UjAWzAPIfQqGrCR1fzUJBnqIlrLFGPw156pOWx1Qj8jSdm57X2SQBdF6N1uasd_co37FttdPovDtZN0BqiECT-wWo"
-            }});
-            setChecked(categories.data);
-        }catch(err){
-            console.log(err)
-        }
+        const categories = await axiosInstance.get("api/user/genre");
+        setChecked(categories);
     }
     const getAllCategories = async() =>{
-        try{
-            const AllCategories = await Axios.get("http://localhost:8000/api/genre", {
-                headers:{
-                "Accept": "application/json",
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiOGNmZGYwODdlMTkxYWY4ZDZhOWYwMDNjMDEyZWZiZWU1YzJhNjRmY2Q1MzJiOGNjN2E3YjQyZmE5Y2M2OGY1OGRjZWMyOTE0NDhjNDJkYTkiLCJpYXQiOjE1OTE0ODY1OTMsIm5iZiI6MTU5MTQ4NjU5MywiZXhwIjoxNjIzMDIyNTg5LCJzdWIiOiIzIiwic2NvcGVzIjpbXX0.qX2zIaVYsuB9HSjvWcQjVG1sYurUbwTzvgecjdFO1d2HZs2DpB-qLb5B-oxeHbfUkpnKI3SR9zc_zzIlMv7koKQGx4jqPhYq8BgsWT77VSZFqdfD0BMcb3PCwSU6lctok4SuIU818La0b8axtalDSy5zUk_qyFtLfR-adcABxNejXMpHGq0ncEWuooXY9rmVXMhUFSpoEd8oSgZu_uf6gKiHDCAw16shAvQkMW-KZJzA44ArMKGXHiBrKgZ72b2vpUdZPsq69WuVUe2c9bFMYqbPHzQI9fhmGfl_BXZeVULK_S-A2XfqrIVn4V68rw1QxDjFE6JtGnh36h6-Ai3iuS-D7AMkJfEtilGC07AbCuVg0OKF8Iih0-dZGwlZJkrXg3tqBVkvpj0cHJOB8DQn9SoC3y-NMF1kDzTefzWNRGfiDAOAj1LgdHDGmAO2tpH9UoVW6wWxFi8NNOvxjphk6ROpsPtrxL0b0jC-UECvgwDwpYzCZHkWSdQtuGpmqUnEdUbxDoAxyfBuo6A8SEOjQsVgzZQ5VA04BIm-g6i403aq0MgsD2wWaD2Jp56HRCdCHfJMXmTOvxLVbwvEI2UjAWzAPIfQqGrCR1fzUJBnqIlrLFGPw156pOWx1Qj8jSdm57X2SQBdF6N1uasd_co37FttdPovDtZN0BqiECT-wWo"
-            }});
-            setAllCategories(AllCategories.data);
-        }catch(err){
-            console.log(err)
-        }
+        const AllCategories = await axiosInstance.get("api/genre");
+        setAllCategories(AllCategories);
+    }
+    const saveUserCategories = async() =>{
+        const genres = checked.map(elem => elem.id);
+        await axiosInstance.post("api/user/genre", {genres});
     }
     React.useEffect(() =>{
         getUserCategories();
@@ -162,6 +148,7 @@ const UserCategory = () => {
                 size="large"
                 className={classes.button}
                 startIcon={<SaveIcon />}
+                onClick={saveUserCategories}
                 >
                 Save Current Categories
             </Button>
@@ -171,4 +158,3 @@ const UserCategory = () => {
   );
 }
 export default UserCategory;
-
