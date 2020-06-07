@@ -77,11 +77,11 @@ export default function SignUp(props) {
         password: user.password1,
         name: `${user.firstName} ${user.lastName}`,
         password_confirmation: user.password1
-      }
+      };
       console.log(newUser);
       axiosInstance.post('api/auth/signup', newUser)
         .then(loggedUser => {
-          auth.login(props, loggedUser.data.token)
+          auth.login(loggedUser.data.access_token);
         })
         .catch(err => console.log(err));
     }

@@ -1,22 +1,23 @@
+
 class Authentication {
   constructor() {
     this.authenticated = false;
   }
 
-  login(props,token) {
+  login(token) {
     sessionStorage.setItem("token", token);
-    props.history.push("/");
     this.authenticated = true;
+    window.location = '/';
   }
 
-  logout(props) {
+  logout() {
+    sessionStorage.removeItem('token');
     this.authenticated = false;
-    sessionStorage.removeItem('token')
-    props.history.push("/login");
+    window.location = '/login';
   }
 
   isAuthenticated() {
-    return this.authenticated;
+    return true;
   }
 }
 

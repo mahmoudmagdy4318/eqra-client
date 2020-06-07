@@ -72,7 +72,7 @@ export default function Login(props) {
     else
       try {
         const loggedUser = await axiosInstance.post(`api/auth/login`, JSON.stringify(user));
-        auth.login(props, loggedUser.data.token)
+        auth.login(loggedUser.access_token)
       } catch (error) {
         setError(true);
       }
