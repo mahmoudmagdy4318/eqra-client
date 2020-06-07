@@ -15,25 +15,6 @@ const App = () => {
   return (
     <div>
       <BrowserRouter>
-<<<<<<< HEAD
-        <Route key="login" exact path="/login" render={() => <Login />} />
-        <Route key="signup" exact path="/register" render={() => <SignUp />} />
-        <Route key="category" exact path="/category" render={() => <UserCategory />} />
-        {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
-        <Route
-          key="postlikes"
-          exact
-          path="/block/:id/likes"
-          render={(routeprops) => (
-            <PostLikes
-              id={routeprops.match.params.id}
-              type="comment"
-              noOfLikes="56"
-            />
-          )}
-        />
-        <Route key="home" exact path="/" render={() => <Home />} />
-=======
         <Switch>
           <Route key="login" exact path="/login" render={() => <Login />} />
           <Route key="signup" exact path="/register" render={() => <SignUp />} />
@@ -50,10 +31,11 @@ const App = () => {
             )}
           />
           <ProtectedRoute key="home" exact path="/" Component={Home} />
+          <Route key="category" exact path="/category" render={() => <UserCategory />} />
           <Route path="*" render={() => "404 Not Found"} /> 
+
         </Switch>
 
->>>>>>> 5e122753b6603aaddc15dab745109853c25fdb5c
       </BrowserRouter>
     </div>
   );
