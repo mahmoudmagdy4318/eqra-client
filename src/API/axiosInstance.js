@@ -11,19 +11,19 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-axiosInstance.interceptors.response.use(
-  ({ data }) => data,
-  async (error) => {
-    if (_.get(error, "response.status") === 401) {
-      alert(
-        "you are not authorized to do that action please identify your identity!"
-      );
-      window.location.href = "/login";
+// axiosInstance.interceptors.response.use(
+//   ({ data }) => data,
+//   async (error) => {
+//     if (_.get(error, "response.status") === 401) {
+//       alert(
+//         "you are not authorized to do that action please identify your identity!"
+//       );
+//       window.location.href = "/login";
 
-      return;
-    }
-    return Promise.reject(error);
-  }
-);
+//       return;
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosInstance;
