@@ -1,0 +1,17 @@
+.borderStyle{
+    border: 2px solid lightgray;
+    border-radius: 5%;
+    height: 75%;
+}
+.MuiChip-root{
+    width: 70%;
+    font-size: 20px !important;
+}
+.selectedCategories{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.innerDiv{
+    width: 100%;
+}

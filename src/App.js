@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
+import UserCategory from './Category/Category';
 import Home from "./Layout/Home";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -30,7 +31,9 @@ const App = () => {
             )}
           />
           <ProtectedRoute key="home" exact path="/" Component={Home} />
+          <Route key="category" exact path="/category" render={() => <UserCategory />} />
           <Route path="*" render={() => "404 Not Found"} /> 
+
         </Switch>
 
       </BrowserRouter>
