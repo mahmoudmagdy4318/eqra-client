@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import axiosInstance from "../API/axiosInstance";
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import auth from './auth';
 
 
 function Alert(props) {
@@ -46,7 +47,7 @@ export default function Login(props) {
   let [user, setUser] = useState({
     email: "",
     password: "",
-    remember_me:false
+    remember_me: false
   });
   const [warning, setWarning] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -70,14 +71,10 @@ export default function Login(props) {
       setWarning(true);
     else
       try {
-        console.log(JSON.stringify(user),'\n',user);
-        const loggedUser = await axiosInstance.post(`auth/login`, JSON.stringify(user));
-        console.log(loggedUser);
-        // sessionStorage.setItem("token", loggedUser.data.token);
-        // props.history.push("/event");
+        const loggedUser = await axiosInstance.post(`api/auth/login`, JSON.stringify(user));
+        auth.login(props, loggedUser.data.token)
       } catch (error) {
         setError(true);
-        console.log(error);
       }
   };
   const classes = useStyles();
@@ -151,7 +148,7 @@ export default function Login(props) {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
