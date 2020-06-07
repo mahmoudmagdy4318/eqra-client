@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
+import UserCategory from './Category/Category';
 import Home from "./Layout/Home";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +16,7 @@ const App = () => {
       <BrowserRouter>
         <Route key="login" exact path="/login" render={() => <Login />} />
         <Route key="signup" exact path="/register" render={() => <SignUp />} />
+        <Route key="category" exact path="/category" render={() => <UserCategory />} />
         {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
         <Route
           key="postlikes"
