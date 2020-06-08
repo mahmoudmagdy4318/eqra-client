@@ -62,7 +62,7 @@ const Post = () => {
 
           <div
             class="tweetEntry-action-list"
-            style={{ "line-height": "24px", color: "#b1bbc3" }}
+            style={{ "lineHeight": "24px", color: "#b1bbc3" }}
           >
             <FontAwesomeIcon
               icon="reply"

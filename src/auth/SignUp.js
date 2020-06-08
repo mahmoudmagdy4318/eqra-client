@@ -15,6 +15,7 @@ import axiosInstance from '../API/axiosInstance';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
+import auth from './auth';
 
 
 function Alert(props) {
@@ -77,14 +78,11 @@ export default function SignUp(props) {
         password: user.password1,
         name: `${user.firstName} ${user.lastName}`,
         password_confirmation: user.password1
-      }
+      };
       console.log(newUser);
-      // axiosInstance.post('api/auth/signup', newUser)
-      axios.post('http://localhost:8000/api/auth/signup',newUser)
-        .then(data => {
-          console.log(data)
-          //     sessionStorage.setItem("token", data.data.token);
-          //     props.history.push("/");
+      axiosInstance.post('api/auth/signup', newUser)
+        .then(loggedUser => {
+          auth.login(loggedUser.data.access_token);
         })
         .catch(err => console.log(err));
     }
@@ -187,7 +185,7 @@ export default function SignUp(props) {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
