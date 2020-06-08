@@ -12,6 +12,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Post from "./Post";
+import ChatBox from '../components/ChatBox'
 const textarea = document.getElementById("textar ea");
 const limit = 80;
 /// ...
@@ -159,6 +160,7 @@ const Test = () => {
       </div>
       <hr className="line"></hr>
       <Post />
+      <ChatBox></ChatBox>
     </>
   );
 };

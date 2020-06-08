@@ -14,6 +14,7 @@ import Container from '@material-ui/core/Container';
 import axiosInstance from '../API/axiosInstance';
 import { Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
+import axios from 'axios';
 
 
 function Alert(props) {
@@ -78,7 +79,8 @@ export default function SignUp(props) {
         password_confirmation: user.password1
       }
       console.log(newUser);
-      axiosInstance.post('api/auth/signup', newUser)
+      // axiosInstance.post('api/auth/signup', newUser)
+      axios.post('http://localhost:8000/api/auth/signup',newUser)
         .then(data => {
           console.log(data)
           //     sessionStorage.setItem("token", data.data.token);
