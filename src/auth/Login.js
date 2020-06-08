@@ -71,7 +71,7 @@ export default function Login(props) {
     else
       try {
         console.log(JSON.stringify(user),'\n',user);
-        const loggedUser = await axiosInstance.post(`auth/login`, JSON.stringify(user));
+        const loggedUser = await axiosInstance.post(`api/auth/login`, JSON.stringify(user));
         console.log(loggedUser);
         // sessionStorage.setItem("token", loggedUser.data.token);
         // props.history.push("/event");
