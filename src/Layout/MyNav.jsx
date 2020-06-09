@@ -1,14 +1,18 @@
 import React from "react";
 import "../styles/nav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, useHistory } from "react-router-dom";
 
 const MyNav = () => {
+  const history = useHistory();
   return (
     <>
       <nav className="nav my-nav">
         <a className="menu-item m-md-3 pb-2" href="#">
           <FontAwesomeIcon item icon="home" size="1x" className="mt-3 mx-1" />
-          <span className="mt-2 pt-1 ml-2">Home</span>
+          <span className="mt-2 pt-1 ml-2" onClick={() => history.push("/")}>
+            Home
+          </span>
         </a>
 
         <a className="menu-item m-md-3 pb-2" href="#">

@@ -3,11 +3,36 @@ import { BrowserRouter, Route } from "react-router-dom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
-import Home from "./Layout/Home";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import Test from "./Layout/test";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import SinglePost from "./Posts/SinglePost";
+import {
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle);
+library.add(
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle
+);
 
 const App = () => {
   return (
@@ -15,7 +40,6 @@ const App = () => {
       <BrowserRouter>
         <Route key="login" exact path="/login" render={() => <Login />} />
         <Route key="signup" exact path="/register" render={() => <SignUp />} />
-        {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
         <Route
           key="postlikes"
           exact
@@ -28,7 +52,15 @@ const App = () => {
             />
           )}
         />
-        <Route key="home" exact path="/" render={() => <Home />} />
+        <Route key="home" exact path="/" render={() => <Test />} />
+        <Route
+          key="post"
+          exact
+          path="/post/:id"
+          render={(routeprops) => (
+            <SinglePost id={routeprops.match.params.id} />
+          )}
+        />
       </BrowserRouter>
     </div>
   );
