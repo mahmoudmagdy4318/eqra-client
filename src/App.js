@@ -1,8 +1,20 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
@@ -35,28 +47,52 @@ library.add(
   faBell,
   faUserCircle
 );
-import UserCategory from './Category/Category';
+import UserCategory from "./Category/Category";
 import Home from "./Layout/Home";
-<<<<<<< HEAD
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
 
-
-=======
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, 
-  faEdit, faTrash, faHome, faBell, faUserCircle, faPlus,faComment,faImage } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle,
+  faPlus,
+  faComment,
+  faImage,
+} from "@fortawesome/free-solid-svg-icons";
 import ProtectedRoute from "./ProtectedRoute";
->>>>>>> 7f940c82f0423fd98f40a320f2344817e0e8f43c
 
-library.add(faEnvelope, faKey, faUpload, faReply, faRetweet,
-  faHeart, faEdit, faTrash, faHome, faBell, faUserCircle, faPlus, faComment, faImage);
+library.add(
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle,
+  faPlus,
+  faComment,
+  faImage
+);
 
 const App = () => {
   return (
     <div>
-      <ToastContainer/>
+      <ToastContainer />
       <BrowserRouter>
         {/* <Route key="login" exact path="/login" render={() => <Login />} />
         <Route key="signup" exact path="/register" render={() => <SignUp />} />
@@ -83,12 +119,18 @@ const App = () => {
         /> */}
         <Switch>
           <Route key="login" exact path="/login" render={() => <Login />} />
-          <Route key="signup" exact path="/register" render={() => <SignUp />} />
+          <Route
+            key="signup"
+            exact
+            path="/register"
+            render={() => <SignUp />}
+          />
           <Route key="logout" exact path="/logout" component={Logout} />
           {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
           <ProtectedRoute
             key="postlikes"
-            exact path="/block/:id/likes"
+            exact
+            path="/block/:id/likes"
             render={(routeprops) => (
               <PostLikes
                 id={routeprops.match.params.id}
@@ -98,11 +140,14 @@ const App = () => {
             )}
           />
           <ProtectedRoute key="home" exact path="/" component={Home} />
-          <Route key="category" exact path="/category" render={() => <UserCategory />} />
-          <Route path="*" render={() => "404 Not Found"} /> 
-
+          <Route
+            key="category"
+            exact
+            path="/category"
+            render={() => <UserCategory />}
+          />
+          <Route path="*" render={() => "404 Not Found"} />
         </Switch>
-
       </BrowserRouter>
     </div>
   );
