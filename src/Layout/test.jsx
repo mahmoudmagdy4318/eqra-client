@@ -1,15 +1,5 @@
-<<<<<<< HEAD
-import React, {
-  useEffect,
-  useState,
-  Fragment,
-  useRef,
-  useCallback,
-} from "react";
-=======
-import React,{ useEffect, useState }  from "react";
-import Pusher from 'pusher-js'
->>>>>>> 8c5297c0721d30b678885fcb5239b81a7ef35333
+import React, { useEffect, useState } from "react";
+import Pusher from "pusher-js";
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -22,15 +12,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Post from "./Post";
-<<<<<<< HEAD
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import Home from "./Home";
 
-=======
-import ChatBox from '../components/ChatBox'
->>>>>>> 8c5297c0721d30b678885fcb5239b81a7ef35333
+import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
 
 const limit = 80;
