@@ -1,7 +1,12 @@
 import React from "react";
 import Test from "./test";
 import MyNav from "./MyNav";
+<<<<<<< HEAD
 import "../styles/home.css";
+=======
+import Profile from './Profile'
+import '../styles/home.css'
+>>>>>>> 8c5297c0721d30b678885fcb5239b81a7ef35333
 import {
   Grid,
   Paper,

@@ -40,6 +40,7 @@ const MyNav = () => {
 
           <span className="mt-2 pt-1 ml-2">Profile</span>
         </a>
+     
       </nav>
     </>
   );

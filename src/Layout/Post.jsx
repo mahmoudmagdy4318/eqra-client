@@ -56,7 +56,7 @@ const Post = (props) => {
 
   return (
     <>
-      <div class="tweetEntry-tweetHolder">
+      <div class="tweetEntry-tweetHolder mb-2">
         <div class="tweetEntry">
           <div class="tweetEntry-content">
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline">
@@ -115,10 +115,10 @@ const Post = (props) => {
 
           <div
             class="tweetEntry-action-list"
-            style={{ "line-height": "24px", color: "#b1bbc3" }}
+            style={{ lineHeight: "24px", color: "#b1bbc3" }}
           >
             <FontAwesomeIcon
-              icon="reply"
+              icon="comment"
               size="1x"
               className="ml-5 mt-3"
               onClick={() => showComment(!show)}
