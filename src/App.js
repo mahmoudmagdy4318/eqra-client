@@ -30,7 +30,7 @@ const App = () => {
               />
             )}
           />
-          <ProtectedRoute key="home" exact path="/" Component={Home} />
+          <ProtectedRoute key="home" path="/" Component={Home} />
           <Route key="category" exact path="/category" render={() => <UserCategory />} />
           <Route path="*" render={() => "404 Not Found"} /> 
 

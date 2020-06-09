@@ -2,15 +2,11 @@ import React from 'react'
 import Test from "./test";
 import MyNav from "./MyNav";
 import '../styles/home.css'
-import {
-  Grid,
-  Paper,
-  makeStyles,
-  Container,
-  Typography,
-} from "@material-ui/core";
-import Tester from "./Tester";
+import { Grid, Paper, makeStyles, Container, } from "@material-ui/core";
+// import Tester from "./Tester";
 import PostLikes from "../Likes/Post_Likes";
+import { Route, withRouter } from "react-router-dom";
+import Writer from './Profile/Writer';
 
 const Home = () => {
   const useStyles = makeStyles((theme) => ({
@@ -53,7 +49,8 @@ const Home = () => {
               </div>
             </Grid>
             <Grid md={6} className="inner-grid">
-              <Test />
+              <Route key="profile" path="/profile" component={Writer} />
+              <Route key="home" exact path="/" component={Test} />
             </Grid>
             <Grid md={3} className={classes.sticky}>
               <Paper className={classes.paper}>xs</Paper>
@@ -65,4 +62,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default withRouter(Home);
