@@ -12,8 +12,6 @@ import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
-// import Test from "./Layout/test";
-// import SinglePost from "./Posts/SinglePost";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -33,6 +31,23 @@ import {
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
 // import ProtectedRoute from "./ProtectedRoute";
+
+library.add(
+  faEnvelope,
+  faKey,
+  faUpload,
+  faReply,
+  faRetweet,
+  faHeart,
+  faEdit,
+  faTrash,
+  faHome,
+  faBell,
+  faUserCircle,
+  faPlus,
+  faComment,
+  faImage
+);
 
 const App = () => {
   return (
