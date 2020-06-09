@@ -19,7 +19,9 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
+    "joi-browser": "^13.4.0",
     "jquery": "^3.5.1",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.15",
     "pusher": "^3.0.1",
     "pusher-js": "^6.0.3",
@@ -27,7 +29,9 @@
     "react-dom": "^16.13.1",
     "react-router": "^3.2.6",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "react-toastify": "^6.0.5",
+    "toastify": "^2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",

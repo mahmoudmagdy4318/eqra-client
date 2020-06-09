@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../API/axiosInstance";
 import SimplePopover from "./Popup";
+import auth from '../services/authService'
 
 function PostLikes(props) {
   const { id, type, noOfLikes } = props;

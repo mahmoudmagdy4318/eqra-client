@@ -1,23 +1,30 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
 import UserCategory from './Category/Category';
 import Home from "./Layout/Home";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle } from '@fortawesome/free-solid-svg-icons';
-import ProtectedRoute from "./ProtectedRoute";
+import ProtectedRoute from "./components/common/protecteRoute";
+import "react-toastify/dist/ReactToastify.css";
+import Logout from "./auth/Logout";
+
+
 
 library.add(faEnvelope, faKey, faUpload, faReply, faRetweet, faHeart, faEdit, faTrash, faHome, faBell, faUserCircle);
 
 const App = () => {
   return (
     <div>
+      <ToastContainer/>
       <BrowserRouter>
         <Switch>
           <Route key="login" exact path="/login" render={() => <Login />} />
           <Route key="signup" exact path="/register" render={() => <SignUp />} />
+          <Route key="logout" exact path="/logout" component={Logout} />
           {/* <Route key="home" exact path="/" render={() => <Home />} /> */}
           <ProtectedRoute
             key="postlikes"
@@ -30,7 +37,7 @@ const App = () => {
               />
             )}
           />
-          <ProtectedRoute key="home" exact path="/" Component={Home} />
+          <ProtectedRoute key="home" exact path="/" component={Home} />
           <Route key="category" exact path="/category" render={() => <UserCategory />} />
           <Route path="*" render={() => "404 Not Found"} /> 
 
