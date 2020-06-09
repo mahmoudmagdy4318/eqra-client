@@ -211,7 +211,6 @@ const Test = () => {
         </Grid>
       </div>
       <hr className="line"></hr>
-
       {/* ************************************************ */}
       <InfiniteScroll
         dataLength={posts.length} //This field to render the next data
@@ -237,9 +236,10 @@ const Test = () => {
         })}
       </InfiniteScroll>
       {/* ******************************************************** */}
+      {/* <Post /> */}
+      <ChatBox></ChatBox>
     </div>
-    //   <Post />
-    //   <ChatBox></ChatBox>
+    //
     // </>
   );
 };
