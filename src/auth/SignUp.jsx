@@ -81,13 +81,14 @@ export default function SignUp(props) {
       email: user.email,
       password: user.password1,
       password_confirmation: user.password2,
-      full_name: `${user.firstName} ${user.lastName}`,
+      full_name: `${user.first_name} ${user.last_name}`,
       last_name: user.last_name,
       first_name: user.first_name,
       username: user.username,
     };
+    console.log(newUser);
     const {data} = await register(newUser);
-    auth.loginWithJwt(data.access_token);
+    auth.loginWithJwt("Bearer "+data.access_token);
     http.setJwt(data.access_token)
     window.location = "/";
   };

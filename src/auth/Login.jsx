@@ -71,7 +71,7 @@ export default function Login(props) {
     else
       try {
         const {data}=await auth.login(user.email,user.password);
-        http.setJwt(data.access_token);
+        http.setJwt("Bearer "+ data.access_token);
         window.location='/';
       } catch (error) {
         setError(true);

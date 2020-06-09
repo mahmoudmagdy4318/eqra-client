@@ -16,8 +16,9 @@ import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import Home from "./Home";
-
+import axios from 'axios';
 import ChatBox from "../components/ChatBox";
+import http from "../services/httpService";
 const textarea = document.getElementById("textar ea");
 
 const limit = 80;
@@ -103,7 +104,8 @@ const Test = () => {
 
   const getPosts = async () => {
     console.log("call");
-    const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
+    const postsData = await http.get(`api/post?page=${currPage}`);
+    console.log(postsData);
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
