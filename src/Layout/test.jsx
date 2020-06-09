@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Pusher from "pusher-js";
-import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
+// import Pusher from "pusher-js";
+// import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,7 +17,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import Home from "./Home";
 
-import ChatBox from "../components/ChatBox";
+// import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
 
 const limit = 80;
