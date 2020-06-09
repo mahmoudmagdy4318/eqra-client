@@ -1,5 +1,15 @@
+<<<<<<< HEAD
+import React, {
+  useEffect,
+  useState,
+  Fragment,
+  useRef,
+  useCallback,
+} from "react";
+=======
 import React,{ useEffect, useState }  from "react";
 import Pusher from 'pusher-js'
+>>>>>>> 8c5297c0721d30b678885fcb5239b81a7ef35333
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -12,8 +22,17 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Post from "./Post";
+<<<<<<< HEAD
+import axiosInstance from "../API/axiosInstance";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useHistory } from "react-router-dom";
+import Home from "./Home";
+
+=======
 import ChatBox from '../components/ChatBox'
+>>>>>>> 8c5297c0721d30b678885fcb5239b81a7ef35333
 const textarea = document.getElementById("textar ea");
+
 const limit = 80;
 /// ...
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +58,9 @@ const useStyles = makeStyles((theme) => ({
   },
   noLabel: {
     marginTop: theme.spacing(3),
+  },
+  maincontainer: {
+    overFlow: "scroll",
   },
 }));
 
@@ -74,10 +96,15 @@ function getStyles(name, personName, theme) {
         : theme.typography.fontWeightMedium,
   };
 }
+
 const Test = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
+  const [posts, setPosts] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const history = useHistory();
 
   const handleChange = (event) => {
     setPersonName(event.target.value);
@@ -87,8 +114,46 @@ const Test = () => {
     textarea.style.height = Math.min(textarea.scrollHeight, limit) + "px";
   }
 
+  const getPosts = async () => {
+    console.log("call");
+    const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
+    setPosts([...posts, ...postsData.data]);
+    setLastPage(postsData.meta.last_page);
+  };
+  useEffect(() => {
+    getPosts();
+    console.log(currPage);
+  }, [currPage]);
+
+  const handlePostClick = (id) => {
+    history.push(`/post/${id}`);
+  };
+
+  const handleDeletePost = (id) => async () => {
+    try {
+      await axiosInstance.delete(`api/post/${id}`);
+      setPosts(posts.filter((p) => p.id != id));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLike = async (id) => {
+    try {
+      const like = await axiosInstance.post("api/post/like", {
+        post_id: id,
+        user_id: 22,
+      });
+      setPosts(
+        posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
+      );
+      console.log(like);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <>
+    <div className={classes.maincontainer}>
       <div className="con">
         <div className="post-con mt-md-2 mb-md-1">
           <img
@@ -118,7 +183,7 @@ const Test = () => {
               component="span"
             >
               <FontAwesomeIcon
-                icon="upload"
+                icon="image"
                 size="1x"
                 style={{ color: "#EE4956" }}
                 className="ml-5 mt-3"
@@ -159,10 +224,37 @@ const Test = () => {
         </Grid>
       </div>
       <hr className="line"></hr>
-      <Post />
-      <ChatBox></ChatBox>
-    </>
+
+      {/* ************************************************ */}
+      <InfiniteScroll
+        dataLength={posts.length} //This field to render the next data
+        next={() => setCurrPage(currPage + 1)}
+        hasMore={currPage < lastPage}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: "center" }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+        {posts.map((p) => {
+          return (
+            <Post
+              key={p.id}
+              data={p}
+              click={handlePostClick}
+              handleDeletePost={handleDeletePost}
+              onLike={() => handleLike(p.id)}
+            />
+          );
+        })}
+      </InfiniteScroll>
+      {/* ******************************************************** */}
+    </div>
+    //   <Post />
+    //   <ChatBox></ChatBox>
+    // </>
   );
 };
 
-export default Test;
+export default Home(Test);

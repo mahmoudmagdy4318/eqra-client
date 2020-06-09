@@ -7,6 +7,7 @@ function PostLikes(props) {
   const { id, type, noOfLikes } = props;
   const [likes, setLikes] = useState([]);
   const [num, setNum] = useState(1);
+  const [popupVisible, setPopupVisible] = useState(false);
   const [finalPage, setFinalPage] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const handleScroll = (e) => {
@@ -16,6 +17,7 @@ function PostLikes(props) {
   };
 
   const getData = async () => {
+    if (!popupVisible) return;
     try {
       const likesData = await axiosInstance.get(
         `api/${type}/${id}/likes?page=${num}`
@@ -30,13 +32,14 @@ function PostLikes(props) {
   };
   useEffect(() => {
     getData();
-  }, [num]);
+  }, [num, popupVisible]);
   return (
     <>
       <SimplePopover
         content={loaded ? likes : false}
         scroll={handleScroll}
         noOfLikes={noOfLikes}
+        setPopupVisible={setPopupVisible}
       />
     </>
   );

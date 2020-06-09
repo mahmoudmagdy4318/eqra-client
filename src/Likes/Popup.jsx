@@ -59,21 +59,22 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SimplePopover(props) {
   const classes = useStyles();
-  const [likes, setLikes] = useState([]);
+  // const [likes, setLikes] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  useEffect(() => {
-    console.log(likes);
-    setLikes(props.content);
-  }, [props]);
+  // useEffect(() => {
+  //   console.log(likes);
+  //   setLikes(props.content);
+  // }, [props]);
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    props.setPopupVisible(!open);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const history = useHistory();
   const handleUserClick = (id) => {
@@ -98,6 +99,7 @@ export default function SimplePopover(props) {
           vertical: "bottom",
           horizontal: "center",
         }}
+        anchorEl
         transformOrigin={{
           vertical: "top",
           horizontal: "center",
@@ -114,7 +116,7 @@ export default function SimplePopover(props) {
             <small>{props.noOfLikes}</small>
           </ListSubheader>
           <Divider />
-          {likes ? (
+          {props.content ? (
             <List
               className={classes.typography}
               onScroll={props.scroll}
@@ -125,7 +127,7 @@ export default function SimplePopover(props) {
                 document.body.style.cursor = "default";
               }}
             >
-              {likes.map((l) => (
+              {props.content.map((l) => (
                 <Fragment key={l.name}>
                   <ListItem
                     onClick={() => handleUserClick(l.id)}
