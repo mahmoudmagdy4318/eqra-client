@@ -14,7 +14,7 @@ const Comment = () => {
       <a class="tweetEntry-account-group" href="[accountURL]">
         <img
           class="tweetEntry-avatar"
-          src="http://placekitten.com/200/200"
+          src={require("../assets/avatar.jpg")}
           alt=""
           style={{
             width: "30px",

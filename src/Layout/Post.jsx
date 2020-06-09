@@ -18,38 +18,45 @@ const Post = () => {
 
   return (
     <>
-      <div class="tweetEntry-tweetHolder">
+      <div class="tweetEntry-tweetHolder mb-2">
         <div class="tweetEntry">
           <div class="tweetEntry-content">
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline">
+              <a class="tweetEntry-account-group" href="[accountURL]">
+                <img
+                  class="tweetEntry-avatar"
+                  src={require("../assets/avatar.jpg")}
+                  alt=""
+                />
 
-           
-            <a class="tweetEntry-account-group" href="[accountURL]">
-              <img
-                class="tweetEntry-avatar"
-                src="http://placekitten.com/200/200"
-                alt=""
-              />
+                <strong class="tweetEntry-fullname">[fullname]</strong>
 
-              <strong class="tweetEntry-fullname">[fullname]</strong>
+                <span class="tweetEntry-username">
+                  @<b>[username]</b>
+                </span>
 
-              <span class="tweetEntry-username">
-                @<b>[username]</b>
-              </span>
-
-              <span class="tweetEntry-timestamp">- [timestamp]</span>
-            </a>
-            <div className="ml-md-5">
-            <FontAwesomeIcon item icon="edit" size="1x" className="mt-3 mx-1" />
-            <FontAwesomeIcon item icon="trash" size="1x" className="mt-3 mx-1" />
-            </div>
+                <span class="tweetEntry-timestamp">- [timestamp]</span>
+              </a>
+              <div className="ml-md-5">
+                <FontAwesomeIcon
+                  item
+                  icon="edit"
+                  size="1x"
+                  className="mt-3 mx-1"
+                />
+                <FontAwesomeIcon
+                  item
+                  icon="trash"
+                  size="1x"
+                  className="mt-3 mx-1"
+                />
+              </div>
             </div>
             <div class="tweetEntry-text-container">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed quam
               ipsum, finibus ac est sed, vestibulum condimentum neque. Sed eget
               iaculis
             </div>
-           
           </div>
 
           <div class="optionalMedia">
@@ -62,10 +69,10 @@ const Post = () => {
 
           <div
             class="tweetEntry-action-list"
-            style={{ "line-height": "24px", color: "#b1bbc3" }}
+            style={{ lineHeight: "24px", color: "#b1bbc3" }}
           >
             <FontAwesomeIcon
-              icon="reply"
+              icon="comment"
               size="1x"
               className="ml-5 mt-3"
               onClick={() => showComment(!show)}
@@ -83,7 +90,7 @@ const Post = () => {
                   name="comment"
                   placeholder="Add comment"
                   ml={5}
-                 className="mb-2"
+                  className="mb-2"
                 />
               </form>
               <Comment />

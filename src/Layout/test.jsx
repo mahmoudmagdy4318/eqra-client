@@ -1,4 +1,5 @@
-import React from "react";
+import React,{ useEffect, useState }  from "react";
+import Pusher from 'pusher-js'
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -11,6 +12,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import Post from "./Post";
+import ChatBox from '../components/ChatBox'
 const textarea = document.getElementById("textar ea");
 const limit = 80;
 /// ...
@@ -116,7 +118,7 @@ const Test = () => {
               component="span"
             >
               <FontAwesomeIcon
-                icon="upload"
+                icon="image"
                 size="1x"
                 style={{ color: "#EE4956" }}
                 className="ml-5 mt-3"
@@ -158,6 +160,7 @@ const Test = () => {
       </div>
       <hr className="line"></hr>
       <Post />
+      <ChatBox></ChatBox>
     </>
   );
 };

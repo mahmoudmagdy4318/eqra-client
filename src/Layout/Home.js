@@ -1,6 +1,7 @@
 import React from 'react'
 import Test from "./test";
 import MyNav from "./MyNav";
+import Profile from './Profile'
 import '../styles/home.css'
 import {
   Grid,
@@ -53,7 +54,8 @@ const Home = () => {
               </div>
             </Grid>
             <Grid md={6} className="inner-grid">
-              <Test />
+              {/* <Test /> */}
+             <Profile />
             </Grid>
             <Grid md={3} className={classes.sticky}>
               <Paper className={classes.paper}>xs</Paper>
