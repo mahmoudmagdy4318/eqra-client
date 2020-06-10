@@ -26,6 +26,11 @@ const MyNav = () => {
           <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2">Profile</span>
         </Link>
+
+        <Link className="menu-item m-md-3 pb-2" to="/logout">
+          <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
+          <span className="mt-2 pt-1 ml-2">Log Out</span>
+        </Link>
       </nav>
     </>
   );

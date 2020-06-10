@@ -6,7 +6,7 @@ import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
 import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
-import UserContext  from "./context/userContext";
+import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
@@ -30,6 +30,7 @@ import {
   faComment,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
+import Profile from "./Layout/Profile";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -50,15 +51,15 @@ library.add(
 );
 
 const App = () => {
-  
-  const getUser=()=>{
-      http.get('http://localhost:8000/api/auth/user').then((data,error)=>{
-        console.log(data);
-      })    
+
+  const getUser = () => {
+    http.get('http://localhost:8000/api/auth/user').then((data, error) => {
+      console.log(data);
+    })
   }
 
   useEffect(() => {
-    const currentUser= getUser();
+    const currentUser = getUser();
     console.log(currentUser);
   }, []);
 
@@ -70,28 +71,16 @@ const App = () => {
         <BrowserRouter>
           <Switch>
             <Route key="login" exact path="/login" render={() => <Login />} />
-            <Route
-              key="signup"
-              exact
-              path="/register"
-              render={() => <SignUp />}
-            />
+            <Route key="signup" exact path="/register" render={() => <SignUp />} />
             <Route key="logout" exact path="/logout" component={Logout} />
             <Route key="home" exact path="/" render={() => <Test />} />
-            <Route
-              key="category"
-              exact
-              path="/category"
-              render={() => <UserCategory />}
-            />
-            <Route
-              key="post"
-              exact
-              path="/post/:id"
+            <Route key="category" exact path="/category" render={() => <UserCategory />} />
+            <Route key="post" exact path="/post/:id"
               render={(routeprops) => (
                 <SinglePost id={routeprops.match.params.id} />
               )}
             />
+            <Route key="profile" exact path="/profile" component={Profile} />
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>

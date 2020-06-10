@@ -1,4 +1,4 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -10,7 +10,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Snackbar } from "@material-ui/core";
+import { Snackbar, FormControlLabel, Checkbox } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { validate, validateProperty } from "../services/validateRegister";
 import { register } from "../services/userService";
@@ -61,6 +61,8 @@ export default function SignUp(props) {
     username: "",
   });
 
+  let [isWriter, setIsWriter] = useState(false);
+
   const [errors, setErrors] = useState({});
 
   const updateUser = (e) => {
@@ -77,6 +79,8 @@ export default function SignUp(props) {
 
   const registerUser = async (e) => {
     e.preventDefault();
+    console.log(isWriter);
+    
     let newUser = {
       email: user.email,
       password: user.password1,
@@ -84,16 +88,18 @@ export default function SignUp(props) {
       full_name: `${user.first_name} ${user.last_name}`,
       last_name: user.last_name,
       first_name: user.first_name,
+      role: isWriter ? 'writer' : 'user',
       username: user.username,
     };
-    console.log(newUser);
-    const {data} = await register(newUser);
-    auth.loginWithJwt("Bearer "+data.access_token);
+    // console.log(newUser);
+    const { data } = await register(newUser);
+    // console.log(data);
+    auth.loginWithJwt("Bearer " + data.access_token, data.role);
     http.setJwt(data.access_token)
     window.location = "/";
   };
 
-  if(auth.getJwt())return <Redirect to="/"/>
+  if (auth.getJwt()) return <Redirect to="/" />
 
   return (
     <Container component="main" maxWidth="xs">
@@ -228,6 +234,12 @@ export default function SignUp(props) {
                 required
                 value={user.password2}
                 onChange={updateUser}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value="remember" onChange={() => { setIsWriter(!isWriter) }} color="primary" />}
+                label="I'm a Writer"
               />
             </Grid>
           </Grid>

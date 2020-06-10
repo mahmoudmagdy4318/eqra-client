@@ -13,12 +13,14 @@ export async function login(email, password) {
   localStorage.setItem(tokenKey, "Bearer " + data.access_token);
 }
 
-export function loginWithJwt(jwt) {
+export function loginWithJwt(jwt,role) {
   localStorage.setItem(tokenKey, jwt);
+  localStorage.setItem('role', role);
 }
 
 export async function logout() {
   localStorage.removeItem(tokenKey);
+  localStorage.removeItem('role');
   await http.get(apiEndPoint+'/logout');
 }
 
