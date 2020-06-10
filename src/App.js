@@ -51,31 +51,31 @@ library.add(
 );
 
 const App = () => {
-
-  const getUser = () => {
-    http.get('http://localhost:8000/api/auth/user').then((data, error) => {
-      console.log(data);
-    })
-  }
-
-  useEffect(() => {
-    const currentUser = getUser();
-    console.log(currentUser);
-  }, []);
-
-
   return (
     <div>
       {/* <ToastContainer /> */}
-      <UserContext.Provider>
+      <UserContext>
         <BrowserRouter>
           <Switch>
             <Route key="login" exact path="/login" render={() => <Login />} />
-            <Route key="signup" exact path="/register" render={() => <SignUp />} />
+            <Route
+              key="signup"
+              exact
+              path="/register"
+              render={() => <SignUp />}
+            />
             <Route key="logout" exact path="/logout" component={Logout} />
             <Route key="home" exact path="/" render={() => <Test />} />
-            <Route key="category" exact path="/category" render={() => <UserCategory />} />
-            <Route key="post" exact path="/post/:id"
+            <Route
+              key="category"
+              exact
+              path="/category"
+              render={() => <UserCategory />}
+            />
+            <Route
+              key="post"
+              exact
+              path="/post/:id"
               render={(routeprops) => (
                 <SinglePost id={routeprops.match.params.id} />
               )}
@@ -84,7 +84,7 @@ const App = () => {
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>
-      </UserContext.Provider>
+      </UserContext>
     </div>
   );
 };

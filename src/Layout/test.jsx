@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Pusher from "pusher-js";
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +16,7 @@ import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import Home from "./Home";
+import { UserContext } from "../context/userContext";
 
 import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
@@ -85,6 +86,11 @@ function getStyles(name, personName, theme) {
 }
 
 const Test = () => {
+  const currentUser = useContext(UserContext);
+  console.log("====================================");
+  console.log(currentUser);
+  console.log("====================================");
+
   const classes = useStyles();
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
@@ -102,14 +108,12 @@ const Test = () => {
   }
 
   const getPosts = async () => {
-    console.log("call");
     const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
   useEffect(() => {
     getPosts();
-    console.log(currPage);
   }, [currPage]);
 
   const handlePostClick = (id) => {
