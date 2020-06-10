@@ -21,12 +21,16 @@ export function loginWithJwt(jwt) {
 
 export async function logout() {
   localStorage.removeItem(tokenKey);
-  await http.get(apiEndPoint+'logout');
+  await http.get(apiEndPoint+'/logout');
 }
 
-// export function getCurrentUser() {
-//     return localStorage.getItem(tokenKey); 
-// }
+export async function getCurrentUser() {
+    try {
+      return await http.get(apiEndPoint+'/user');
+    } catch (error) {
+      return error;
+    }
+}
 
 
 export function getJwt() {
@@ -38,7 +42,7 @@ export function getJwt() {
 export default {
   login,
   logout,
-  // getCurrentUser,
+  getCurrentUser,
   loginWithJwt,
   getJwt
 };
