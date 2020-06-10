@@ -1,8 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Post from "./Post";
 import "../styles/profile.css";
+import axiosInstance from "../API/axiosInstance";
+
 const Profile = () => {
+  const getUserData = async () => {
+    console.log("call");
+    const userData = await axiosInstance.get(`api/auth/user`);
+    console.log(userData);
+    // setPosts([...posts, ...postsData.data]);
+    // setLastPage(postsData.meta.last_page);
+  };
+  useEffect(
+    getUserData()
+  );
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -15,6 +27,15 @@ const Profile = () => {
             <h3 class="h3">Henry Foster</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
+            <button class="btn btn-rounded btn-info">
+              <FontAwesomeIcon
+                item
+                icon="edit"
+                size="1x"
+                className="mt-3 mx-1"
+              />
+              <span>Edit profile</span>
+            </button>
             <button class="btn btn-rounded btn-info">
               <FontAwesomeIcon
                 item
@@ -108,8 +129,8 @@ const Profile = () => {
                 </button>
               </div>
             </form>
-            <Post />
-            <Post />
+            {/* <Post /> */}
+            {/* <Post /> */}
           </div>
         </div>
       </div>

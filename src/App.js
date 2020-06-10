@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
 import http from "./services/httpService";
+import Profile from './Layout/Profile';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faEnvelope,
@@ -78,6 +79,7 @@ const App = () => {
             />
             <Route key="logout" exact path="/logout" component={Logout} />
             <Route key="home" exact path="/" render={() => <Test />} />
+            <Route key="profile" exact path="/profile" render={() => <Profile />} />
             <Route
               key="category"
               exact
