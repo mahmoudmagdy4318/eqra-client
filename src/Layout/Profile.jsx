@@ -1,6 +1,6 @@
 import React from 'react'
-import User from './Profile/User.Jsx'
 import Writer from './Profile/Writer'
+import User from './Profile/User'
 
 const Profile = () => {
   return localStorage.getItem('role') === 'user' ? <User /> : <Writer />
