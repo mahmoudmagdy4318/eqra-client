@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
@@ -12,8 +12,8 @@ import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
-import http from "./services/httpService";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import auth from "./services/authService";
 import {
   faEnvelope,
   faKey,
@@ -51,22 +51,11 @@ library.add(
 
 const App = () => {
   
-  const getUser=()=>{
-      http.get('http://localhost:8000/api/auth/user').then((data,error)=>{
-        console.log(data);
-      })    
-  }
 
-  useEffect(() => {
-    const currentUser= getUser();
-    console.log(currentUser);
-  }, []);
-
-
+ 
   return (
     <div>
       {/* <ToastContainer /> */}
-      <UserContext.Provider>
         <BrowserRouter>
           <Switch>
             <Route key="login" exact path="/login" render={() => <Login />} />
@@ -95,7 +84,6 @@ const App = () => {
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>
-      </UserContext.Provider>
     </div>
   );
 };

@@ -22,12 +22,8 @@ export async function logout() {
   await http.get(apiEndPoint+'/logout');
 }
 
-export async function getCurrentUser() {
-    try {
-      return await http.get(apiEndPoint+'/user');
-    } catch (error) {
-      return error;
-    }
+export function getCurrentUser() {
+    return http.get(apiEndPoint+'/user');
 }
 
 export function getJwt() {

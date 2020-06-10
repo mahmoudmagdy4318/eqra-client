@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React,{ useEffect, useState,useContext } from "react";
 import Pusher from "pusher-js";
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,8 @@ import Post from "./Post";
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
+import UserContext from '../context/userContext';
+import auth from '../services/authService'
 import Home from "./Home";
 
 import ChatBox from "../components/ChatBox";
@@ -91,6 +93,8 @@ const Test = () => {
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [currentUser, setCurrentUser] = useState("");
+  const userContext=useContext(UserContext);
   const history = useHistory();
 
   const handleChange = (event) => {
@@ -107,8 +111,15 @@ const Test = () => {
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
+
+  const getCurrentUser=async()=>{
+    const {data}=await auth.getCurrentUser();
+    userContext.setUser(data);
+  }
+ 
   useEffect(() => {
     getPosts();
+    getCurrentUser();
     console.log(currPage);
   }, [currPage]);
 
