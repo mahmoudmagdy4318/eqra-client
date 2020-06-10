@@ -6,7 +6,7 @@ import SignUp from "./auth/SignUp";
 import PostLikes from "./Likes/Post_Likes";
 import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
-import UserContext  from "./context/userContext";
+import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
@@ -30,6 +30,7 @@ import {
   faComment,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
+import Profile from "./Layout/Profile";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -50,12 +51,19 @@ library.add(
 );
 
 const App = () => {
+<<<<<<< HEAD
   
 
  
   return (
     <div>
       {/* <ToastContainer /> */}
+=======
+  return (
+    <div>
+      {/* <ToastContainer /> */}
+      <UserContext>
+>>>>>>> f4d3b0a468a6051881f1f83b23be683fe9283c32
         <BrowserRouter>
           <Switch>
             <Route key="login" exact path="/login" render={() => <Login />} />
@@ -81,9 +89,14 @@ const App = () => {
                 <SinglePost id={routeprops.match.params.id} />
               )}
             />
+            <Route key="profile" exact path="/profile" component={Profile} />
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>
+<<<<<<< HEAD
+=======
+      </UserContext>
+>>>>>>> f4d3b0a468a6051881f1f83b23be683fe9283c32
     </div>
   );
 };

@@ -102,7 +102,7 @@ const ChatBox = () => {
                   type="text"
                   class="form-control input-sm chat_set_height"
                   placeholder="Type your message here..."
-                  tabindex="0"
+                  tabIndex="0"
                   value={currentMessage}
                   onChange={handleChange}
                 />
