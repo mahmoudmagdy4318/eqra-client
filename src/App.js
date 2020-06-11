@@ -77,7 +77,7 @@ const App = () => {
               key="createEvent"
               exact
               path="/event"
-              render={() => <CreateEvent />}
+              component={CreateEvent}
             />
             <Route
               key="post"

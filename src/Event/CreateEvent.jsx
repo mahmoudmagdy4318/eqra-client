@@ -8,6 +8,8 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import DescriptionIcon from '@material-ui/icons/Description';
 import Button from '@material-ui/core/Button';
+// Axios
+import axiosInstance from "../API/axiosInstance";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,9 +19,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CenteredGrid() {
+const CreateEvent = (props) =>{
+  const [event, setEvent] = React.useState({name:"", description:"", location:"", start_date:"2020-05-24T10:30", end_date:"2021-05-24T10:30"});
   const classes = useStyles();
-
+  const onChange = e => {
+    setEvent({...event, [e.target.name]: e.target.value});
+  }
+  const onSubmit = async(e)  => {
+    try{
+      const newEvent = await axiosInstance.post("api/event", event);
+      props.history.push(`/event/${newEvent.id}`);
+    }catch(err){
+      console.log(err);
+    }
+  }
   return (
     <div className={classes.root}>
       <Grid
@@ -50,6 +63,7 @@ export default function CenteredGrid() {
                         </InputAdornment>
                     ),
                     }}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -67,6 +81,7 @@ export default function CenteredGrid() {
                         </InputAdornment>
                     ),
                     }}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -84,6 +99,7 @@ export default function CenteredGrid() {
                         </InputAdornment>
                     ),
                     }}
+                  onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -98,6 +114,7 @@ export default function CenteredGrid() {
                     InputLabelProps={{
                     shrink: true,
                     }}
+                    onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -112,10 +129,11 @@ export default function CenteredGrid() {
                     InputLabelProps={{
                     shrink: true,
                     }}
+                    onChange={onChange}
                 />
               </Grid>
               <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth size={"large"}>
+              <Button onClick={onSubmit} variant="contained" color="primary" fullWidth size={"large"}>
         Start Event
       </Button>
               </Grid>
@@ -126,3 +144,4 @@ export default function CenteredGrid() {
     </div>
   );
 }
+export default CreateEvent;
