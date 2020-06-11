@@ -8,6 +8,7 @@ import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
+import CreateEvent from './Event/CreateEvent';
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,6 +72,12 @@ const App = () => {
               exact
               path="/category"
               render={() => <UserCategory />}
+            />
+            <Route
+              key="createEvent"
+              exact
+              path="/event"
+              render={() => <CreateEvent />}
             />
             <Route
               key="post"
