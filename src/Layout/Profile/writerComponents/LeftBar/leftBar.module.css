@@ -1,0 +1,21 @@
+.featured, .events  {
+  list-style: none;
+  padding: 5px;
+  padding-left: 15px;
+  max-height: 165px;
+  overflow-y: auto;
+}
+
+.featured_item , .events_event {
+  margin-bottom: 5px;
+  text-transform: capitalize;
+  background: white;
+  padding: 10px;
+  border: 1px solid #dcdcdc;
+  border-radius: 7px;
+  max-width: 80%;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}

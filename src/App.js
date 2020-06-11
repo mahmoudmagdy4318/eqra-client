@@ -1,4 +1,3 @@
-import Home from "./Layout/Home";
 import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -9,6 +8,8 @@ import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
+import CreateEvent from './Event/CreateEvent';
+import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
@@ -75,6 +76,12 @@ const App = () => {
               exact
               path="/category"
               render={() => <UserCategory />}
+            />
+            <Route
+              key="createEvent"
+              exact
+              path="/event"
+              render={() => <CreateEvent />}
             />
             <Route
               key="post"
