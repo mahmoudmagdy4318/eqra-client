@@ -1,9 +1,14 @@
+
 import React from 'react'
-import User from './Profile/User.Jsx'
-import Writer from './Profile/Writer'
+import User from './profile/User'
+import Writer from './profile/Writer'
+import Home from './Home'
+
 
 const Profile = () => {
   return localStorage.getItem('role') === 'user' ? <User /> : <Writer />
+
 }
 
-export default Profile
+
+export default Home(Profile);

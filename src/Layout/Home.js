@@ -1,5 +1,4 @@
 import React from "react";
-import Test from "./test";
 import MyNav from "./MyNav";
 import Profile from "./Profile";
 import FollowList from '../follow-list/FollowList'
@@ -55,12 +54,6 @@ const Home = (Component) => {
               </Grid>
               <Grid md={6} className="inner-grid">
                 <Component {...props} />
-                {/* 
-                <Grid md={6} className="inner-grid">
-                  <Route key="profile" path="/profile" component={Writer} />
-                  <Route key="home" exact path="/" component={Test} />
-                </Grid>
-                */}
               </Grid>
               {/* <Grid md={3} className={classes.sticky}> */}
                 <FollowList></FollowList>                
