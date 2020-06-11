@@ -51,19 +51,10 @@ library.add(
 );
 
 const App = () => {
-<<<<<<< HEAD
-  
-
- 
-  return (
-    <div>
-      {/* <ToastContainer /> */}
-=======
   return (
     <div>
       {/* <ToastContainer /> */}
       <UserContext>
->>>>>>> f4d3b0a468a6051881f1f83b23be683fe9283c32
         <BrowserRouter>
           <Switch>
             <Route key="login" exact path="/login" render={() => <Login />} />
@@ -93,10 +84,7 @@ const App = () => {
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>
-<<<<<<< HEAD
-=======
       </UserContext>
->>>>>>> f4d3b0a468a6051881f1f83b23be683fe9283c32
     </div>
   );
 };

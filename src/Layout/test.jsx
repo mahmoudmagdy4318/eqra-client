@@ -15,10 +15,9 @@ import Post from "./Post";
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
-import UserContext from '../context/userContext';
+import {UserContext} from '../context/userContext';
 import auth from '../services/authService'
 import Home from "./Home";
-import { UserContext } from "../context/userContext";
 
 import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
@@ -99,7 +98,6 @@ const Test = () => {
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [currentUser, setCurrentUser] = useState("");
   const userContext=useContext(UserContext);
   const history = useHistory();
 

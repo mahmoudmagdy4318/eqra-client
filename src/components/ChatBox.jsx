@@ -1,16 +1,45 @@
-import React,{useState} from 'react'; 
-
+import React,{useState,useContext} from 'react'; 
+import Pusher from "pusher-js";
+import axiosInstance from '../API/axiosInstance'
+import {UserContext} from '../context/userContext';
+import axios from 'axios'
 const ChatBox = () => { 
   
   const [classes,setClasses] = useState("chatbox chatbox22"); 
   const [open, setOpen] =useState(true); 
   const [currentMessage, setCurrentMessage] =useState(''); 
-  const [sentMessages, setSentMessages] =useState([]); 
+  const [Messages, setMessages] =useState([]);
+  const currentUser = useContext(UserContext); 
   const handleChatBoxStatus=()=>{ 
     setOpen(!open); const status=
     open ? "chatbox chatbox22 chatbox--tray":"chatbox chatbox22";
     setClasses(status); 
-  } 
+  }
+  
+  Pusher.logToConsole = true;
+
+  const pusher = new Pusher('0e0882c25b1299c47bdb', {
+    cluster: 'mt1',
+    authEndpoint:'/broadcasting/auth',
+    auth:{
+      headers:{
+          'Accept':'application/json',
+          'Authorization': localStorage.getItem("Authorization")
+      }
+    },
+  });
+
+  const channel = pusher.subscribe('private-chat.'+currentUser.id);
+  channel.bind('message-sent', function(data) {
+    alert(JSON.stringify(data));
+  });
+
+  const sendMessage=()=>{
+    axiosInstance.post("/api/chat",{message:"hello world"});
+  }
+
+  
+
 
   const handleChange=(e)=>{
     setCurrentMessage(e.target.value);
@@ -107,7 +136,7 @@ const ChatBox = () => {
                   onChange={handleChange}
                 />
                 <span class="input-group-btn">
-                  <button class="btn bt_bg btn-sm" id="btn-chat">
+                  <button onClick={sendMessage} class="btn bt_bg btn-sm" id="btn-chat">
                     Send
                   </button>
                 </span>

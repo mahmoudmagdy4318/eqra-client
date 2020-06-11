@@ -2,6 +2,7 @@ import React from "react";
 import Test from "./test";
 import MyNav from "./MyNav";
 import Profile from "./Profile";
+import FollowList from '../follow-list/FollowList'
 import "../styles/home.css";
 import {
   Grid,
@@ -61,9 +62,9 @@ const Home = (Component) => {
                 </Grid>
                 */}
               </Grid>
-              <Grid md={3} className={classes.sticky}>
-                <Paper className={classes.paper}>xs</Paper>
-              </Grid>
+              {/* <Grid md={3} className={classes.sticky}> */}
+                <FollowList></FollowList>                
+              {/* </Grid> */}
             </Grid>
           </Container>
         </div>
