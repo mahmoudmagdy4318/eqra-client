@@ -210,11 +210,12 @@ const Test = () => {
   );
 
   const handleSubmitAddingComment = (newComment) => {
-    try {
-      return axiosInstance.post("api/comment", newComment);
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    console.log(newComment);
+    return axiosInstance.post("api/comment", newComment);
+    // } catch (err) {
+    // console.log(err);
+    // }
   };
   return (
     <div className={classes.maincontainer}>
