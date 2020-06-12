@@ -12,3 +12,5 @@ export async function sendMessage(reciever_id, message) {
     message,
   });
 }
+
+// axiosInstance.post("/api/chat",{message:"hello world"});

@@ -10,13 +10,19 @@ const EditUserProfile = () => {
   const [firstName, updateFirstName] = useState(currentUser.first_name);
   const [lastName, updateLasttName] = useState(currentUser.last_name);
   const [username, updateUserName] = useState(currentUser.username);
-  const [pictur, updatePictur] = useState(currentUser.pictur);
-  const [fileData, updateFileData] = useState("");
+  // const [pictur, updatePictur] = useState(currentUser.pictur);
+  const [fileData, updateFileData] = useState(currentUser.pictur);
+  const [displayedPic, dispaly] = useState("http://localhost:8000");
 
   // console.log(currentUser);
   useEffect(() => {
     updateProfileData(currentUser);
   });
+  // useEffect(() => { 
+  //   if(fileData != null &&  fileData instanceof File == false){
+  //     updateFileData("http://localhost:8000")
+  //   }
+  // });
   const onChange = (e) => {
     console.log(e.target.files);
     let files = e.target.files || e.dataTransfer.files;
@@ -24,74 +30,69 @@ const EditUserProfile = () => {
     createImage(files[0]);
   };
   const createImage = (file) => {
-    // let reader = new FileReader();
-    // reader.onload = (e) => {
-    //   updateFileData(e.target.result);
-    // };
-    // reader.readAsDataURL(file);
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      updateFileData(e.target.result);
+    };
+    reader.readAsDataURL(file);
     updateFileData(file);
   };
   const fileUpload = async (image) => {
     const formData = new FormData();
     // formData.append("pictur", image);
-    console.log(firstName)
+    console.log(firstName);
+    formData.append("id", currentUser.id);
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
     formData.append("full_name", `${firstName} ${lastName}`);
     formData.append("username", username);
-    formData.append('pictur', fileData);
-    // http://localhost:8000/api/auth/users/1/edit
-    // const data=
-    //    {
-    //   ["first_name"]: "soso",
-    //    [ "last_name"]: "zezo",
-    //       ["full_name"]: "esaa zezo",
-    //         ["username"]: "sds",
-    //   ["pictur"]: image
+    // if (fileData instanceof File){
+    formData.append("pictur", fileData);
     // }
-    // const formData = { pictur: fileData }   
-    //  console.log(formData);
-    
-  for (var key of formData.entries()) {
-      console.log(key[0] + ', ' + key[1]);
+    formData.append("_method", "PUT");
+
+    for (var key of formData.entries()) {
+      console.log(key[0] + ", " + key[1]);
     }
     try {
-      const url = await axiosInstance.put(
-        `api/auth/users/${profileData.id}/edit`,
-        formData
-      );
+      const url = await axiosInstance.post(`api/auth/users/edit`, formData);
       console.log(url);
-    }catch (error) {
+    } catch (error) {
       console.error(error);
     }
   };
   const onFormSubmit = (e) => {
     e.preventDefault();
     // this.fileUpload(this.state.image);
-    console.log(fileData)
+    console.log(fileData);
     fileUpload(fileData);
   };
   return (
     <div class="container bootstrap snippets">
       <div class="row">
         <div class="col-xs-12 col-sm-9">
-          <form class="form-horizontal" onSubmit={onFormSubmit} enctype="multipart/form-data">
+          <form
+            class="form-horizontal"
+            onSubmit={onFormSubmit}
+            encType="multipart/form-data"
+          >
             <div class="panel panel-default">
               <div class="panel-body text-center">
-                {profileData.pictur == null && (
+                {fileData === null && (
                   <img
-                    class="img-circle profile-avatar"
+                    clases="img-circle profile-avatar"
                     src="https://bootdey.com/img/Content/avatar/avatar6.png"
                     alt="User avatar"
                   />
                 )}
-                {profileData.pictur != null && (
+                {fileData != null &&
+
                   <img
                     class="img-circle profile-avatar"
-                    src={pictur}
+                    src={fileData}
                     alt="User avatar"
                   />
-                )}
+                }
 
                 <div class="p-image">
                   <FontAwesomeIcon

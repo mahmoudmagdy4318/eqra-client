@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Home from "../Home";
 import Post from "../Post";
@@ -6,18 +6,75 @@ import axiosInstance from "../../API/axiosInstance";
 import "../../styles/profile.css";
 import { UserContext } from "../../context/userContext";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useHistory ,Link} from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
+import {
+  FormControl,
+  MenuItem,
+  makeStyles,
+  ListItemText,
+  Input,
+  InputLabel,
+} from "@material-ui/core";
+import Select from "@material-ui/core/Select";
+import Checkbox from "@material-ui/core/Checkbox";
 
 // import "..
-const User = () => {
+const limit = 80;
+/// ...
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  input: {
+    display: "none",
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 250,
+    maxWidth: 400,
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+  maincontainer: {
+    overFlow: "scroll",
+  },
+}));
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+const User = (props) => {
   const currentUser = useContext(UserContext);
-  console.log(currentUser);
+  const classes = useStyles();
+  const { id } = props;
   const [personName, setPersonName] = React.useState([]);
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [newPostData, setNewPostData] = useState({});
+  const [newPostFile, setNewPostFile] = useState(null);
   const history = useHistory();
-
+  useEffect(() => {
+    console.log(id);
+  });
   // const getUserData = async () => {
   //   console.log("call");
   //   const userData = await axiosInstance.get(`api/auth/user`);
@@ -25,11 +82,56 @@ const User = () => {
   //   // setPosts([...posts, ...postsData.data]);
   //   // setLastPage(postsData.meta.last_page);
   // };
+  const handleInput = (e) => {
+    setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
+  };
   const handleChange = (event) => {
     setPersonName(event.target.value);
   };
+  const handleFileInput = (e) => {
+    createImage(e.target.files[0]);
+  };
 
+  function createImage(file) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      setNewPostFile(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+  const categoryMenu = useMemo(
+    () =>
+      categories.slice(0, 20).map((cat) => (
+        <MenuItem key={cat.name} value={cat.name}>
+          <Checkbox checked={checkedCategories.indexOf(cat.name) > -1} />
+          <ListItemText primary={cat.name} />
+        </MenuItem>
+      )),
+    [categories.length, checkedCategories.length]
+  );
+  const submitPost = () => {
+    const obj = {};
+    checkedCategories.forEach((element) => {
+      obj[element] = element;
+    });
+    const cats = categories.reduce((acc, curr) => {
+      if (obj[curr.name]) acc.push(curr.id);
+      return acc;
+    }, []);
 
+    axiosInstance
+      .post("api/post", {
+        ...newPostData,
+        genres: cats,
+        postFiles: newPostFile,
+      })
+      .then((res) => {
+        console.log({ res });
+
+        setPosts([res.data, ...posts]);
+      })
+      .catch((err) => console.log({ err }));
+  };
   const getPosts = async () => {
     const postsData = await axiosInstance.get(`api/userposts?page=${currPage}`);
     console.log(postsData);
@@ -67,6 +169,9 @@ const User = () => {
       console.log(error);
     }
   };
+  const editProfile = () => {
+    history.push(`/editprofile`);
+  };
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -87,7 +192,13 @@ const User = () => {
             <h3 class="h3">{currentUser.full_name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
-            <Link class="btn btn-rounded btn-info" to="editprofile">
+            {id == currentUser.id && (
+              <button
+                class="btn btn-rounded btn-info"
+                onClick={() => {
+                  editProfile();
+                }}
+              >
                 <FontAwesomeIcon
                   item
                   icon="edit"
@@ -95,15 +206,19 @@ const User = () => {
                   className="mt-3 mx-1"
                 />
                 <span>Edit profile</span>
-            </Link>
-              {/* <FontAwesomeIcon
-                item
-                icon="plus"
-                size="1x"
-                className="mt-3 mx-1"
-              />
-              <span>Follow</span>
-            </button> */}
+              </button>
+            )}
+            {id != currentUser.id && (
+              <button>
+                <FontAwesomeIcon
+                  item
+                  icon="plus"
+                  size="1x"
+                  className="mt-3 mx-1"
+                />
+                <span>Follow</span>
+              </button>
+            )}
             <button class="btn btn-rounded btn-info">
               <FontAwesomeIcon
                 item
@@ -116,9 +231,6 @@ const User = () => {
           </div>
           <div class="profile-cover__info">
             <ul class="nav">
-              <li>
-                <strong>26</strong>Projects
-              </li>
               <li>
                 <strong>33</strong>Followers
               </li>
@@ -138,55 +250,61 @@ const User = () => {
                 name="user_activity"
                 placeholder="Share what you've been up to..."
                 class="form-control"
+                name="body_content"
+                onChange={handleInput}
               ></textarea>
               <div class="actions">
-                <div class="btn-group">
-                  <button
+                {/* <div class="btn-group"> */}
+                  {/* <button
                     type="button"
                     class="btn-link"
                     title=""
                     data-toggle="tooltip"
                     data-original-title="Post an Image"
-                  >
-                    <FontAwesomeIcon
-                      item
-                      icon="image"
-                      size="1x"
-                      className="mt-3 mx-1"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Video"
-                  >
-                    <i class="fa fa-video-camera"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Idea"
-                  >
-                    <i class="fa fa-lightbulb-o"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Question"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </button>
+                  > */}
+                  {/* <input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    name="postFiles"
+                    onChange={handleFileInput}
+                  /> */}
+                  <FontAwesomeIcon
+                    item
+                    icon="image"
+                    size="1x"
+                    className="mt-3 mx-1"
+                  />
+                  {/* </button> */}
+                  <div>
+                  <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-mutiple-checkbox-label">
+                      Select a category or more
+                    </InputLabel>
+                    <Select
+                      labelId="demo-mutiple-checkbox-label"
+                      id="demo-mutiple-checkbox"
+                      multiple
+                      value={checkedCategories}
+                      onChange={handleChange}
+                      input={<Input />}
+                      renderValue={(selected) => selected.join(", ")}
+                      MenuProps={MenuProps}
+                    >
+                      {categoryMenu}
+                    </Select>
+                  </FormControl>
                 </div>
-                <button type="submit" class="btn btn-sm btn-rounded btn-info">
+                {/* </div> */}
+                <div>
+                <button
+                  type="submit"
+                  class="btn btn-sm btn-rounded btn-info"
+                  onClick={submitPost}
+                >
                   Post
                 </button>
-              </div>
+                </div></div>
             </form>
             <InfiniteScroll
               dataLength={posts.length} //This field to render the next data
@@ -209,7 +327,8 @@ const User = () => {
                     onLike={() => handleLike(p.id)}
                   />
                 );
-              })}df
+              })}
+            
             </InfiniteScroll>
           </div>
         </div>
