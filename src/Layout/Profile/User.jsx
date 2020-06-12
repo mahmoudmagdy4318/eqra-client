@@ -218,4 +218,3 @@ const User = () => {
   );
 };
 export default Home(User);
-// export default Home(User);
