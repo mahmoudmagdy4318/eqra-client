@@ -11,6 +11,8 @@ export async function login(email, password) {
     password,
   });
   localStorage.setItem(tokenKey, "Bearer " + data.access_token);
+  localStorage.setItem('role', data.role);
+
 }
 
 export function loginWithJwt(jwt,role) {

@@ -8,11 +8,13 @@ import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
+import CreateEvent from "./Event/CreateEvent";
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
 import http from "./services/httpService";
+// import Profile from './Layout/Profile';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faEnvelope,
@@ -29,8 +31,10 @@ import {
   faPlus,
   faComment,
   faImage,
+  faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
+import EditUserProfile from "./Layout/profile/EditUserProfile";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -47,7 +51,8 @@ library.add(
   faUserCircle,
   faPlus,
   faComment,
-  faImage
+  faImage,
+  faCamera
 );
 
 const App = () => {
@@ -73,6 +78,12 @@ const App = () => {
               render={() => <UserCategory />}
             />
             <Route
+              key="createEvent"
+              exact
+              path="/event"
+              render={() => <CreateEvent />}
+            />
+            <Route
               key="post"
               exact
               path="/post/:id"
@@ -86,6 +97,13 @@ const App = () => {
               path="/profile"
               render={() => <Profile />}
             />
+            <Route
+              key="editUserProfile"
+              exact
+              path="/editprofile"
+              component={EditUserProfile}
+            />
+
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>

@@ -50,12 +50,6 @@ const Home = (Component) => {
               </Grid>
               <Grid md={6} className="inner-grid">
                 <Component {...props} />
-                {/* 
-                <Grid md={6} className="inner-grid">
-                  <Route key="profile" path="/profile" component={Writer} />
-                  <Route key="home" exact path="/" component={Test} />
-                </Grid>
-                */}
               </Grid>
               <Grid md={3} className={classes.sticky}>
                 <Paper className={classes.paper}>xs</Paper>

@@ -1,11 +1,10 @@
 import React from "react";
-// import User from "./ProfileComponents/User.Jsx";
-// import Writer from "./ProfileComponents/Writer";
+import User from "./profile/User";
+import Writer from "./profile/Writer";
 import Home from "./Home";
 
-function Profile(props) {
-  // const classes = {};
-  // return localStorage.getItem("role") === "user" ? <User /> : <Writer />;
-  return <div></div>;
-}
+const Profile = () => {
+  return localStorage.getItem("role") === "user" ? <User /> : <Writer />;
+};
+
 export default Home(Profile);

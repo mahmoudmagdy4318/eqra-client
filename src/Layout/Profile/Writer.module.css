@@ -1,0 +1,17 @@
+.grid {
+  display: flex;
+  margin-top: 35px;
+  justify-content: space-evenly;
+}
+
+.grid > div {
+  min-height: 100px;
+  flex-basis: 28%;
+  align-self: flex-start;
+  position: sticky;
+  top: 30px;
+}
+
+.grid div.second {
+  flex-basis: 40%;
+}
