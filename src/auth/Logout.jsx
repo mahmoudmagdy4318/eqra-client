@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import auth from "../services/authService";
 
 const Logout = () => {

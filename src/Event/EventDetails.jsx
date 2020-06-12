@@ -6,38 +6,39 @@ import { useHistory } from "react-router-dom";
 import Home from "../Layout/Home";
 import { UserContext } from "../context/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-import ChatBox from "../components/ChatBox";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 
+import "./EventDetails.css";
+// Component
+import UserEventState from "./UserEventState";
+const EventDetails = (props) => {
+  const eventId = props.match.params.id;
+  const currentUser = useContext(UserContext);
+  const [post, setPost] = React.useState({ body_content: "", eventId });
+  const [posts, setPosts] = useState([]);
+  const [event, setEvent] = useState({});
+  const [currPage, setCurrPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const history = useHistory();
 
-import './EventDetails.css';
-import UserEventState from './UserEventState';
-const EventDetails = (props) =>{
-    const eventId = props.match.params.id;
-    const currentUser = useContext(UserContext);
-    const [post, setPost] = React.useState({body_content:"", eventId});
-    const [posts, setPosts] = useState([]);
-    const [event, setEvent] = useState({});
-    const [currPage, setCurrPage] = useState(1);
-    const [lastPage, setLastPage] = useState(1);
-    const history = useHistory();
-    
   const getPosts = async () => {
-    const postsData = await axiosInstance.get(`api/event/${eventId}/posts/?page=${currPage}`);
+    const postsData = await axiosInstance.get(
+      `api/event/${eventId}/posts/?page=${currPage}`
+    );
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
 
-  const getEvent = async() => {
+  const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
     setEvent(event.data);
-  }
-    useEffect(() => {
-       getEvent();
-    }, []);
-    useEffect(() => {
-      getPosts();
-    }, [currPage]);
+  };
+  useEffect(() => {
+    getEvent();
+  }, []);
+  useEffect(() => {
+    getPosts();
+  }, [currPage]);
 
   const handlePostClick = (id) => {
     history.push(`/post/${id}`);
@@ -69,24 +70,33 @@ const EventDetails = (props) =>{
   const addPost = async (e) => {
     e.preventDefault();
     const newPost = await axiosInstance.post("api/post", post);
-    setPost({body_content:""});
-    getPosts();
-  }
-  const onChange = e => {
-    setPost({...post, [e.target.name]: e.target.value});
-  }
+    setPost([newPost, ...posts]);
+  };
+  const onChange = (e) => {
+    setPost({ ...post, [e.target.name]: e.target.value });
+  };
   return (
     <div class="">
       <div class="col-lg-12 p-0">
         <div class="panel profile-cover">
           <div class="profile-cover__img eventHeader">
-            <CalendarTodayIcon fontSize={"large"} color={"error"}></CalendarTodayIcon>
-            <p className="eventDate">{event.start_date} – {event.end_date}</p>
+            <CalendarTodayIcon
+              fontSize={"large"}
+              color={"error"}
+            ></CalendarTodayIcon>
+            <p className="eventDate">
+              {event.start_date} – {event.end_date}
+            </p>
             <h3 class="h3">{event.name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
-          {/* User State Component (Pending, Interested, Going) */}
-        <UserEventState user={currentUser} eventId={eventId} />
+            {/* User State Component (Pending, Interested, Going) */}
+            <UserEventState
+              getEvent={getEvent}
+              user={currentUser}
+              eventId={eventId}
+              eventName={event.name}
+            />
           </div>
           <div class="profile-cover__info">
             <ul class="nav">
@@ -103,7 +113,7 @@ const EventDetails = (props) =>{
           </div>
         </div>
         <div class="panel">
-        <div class="panel-heading">
+          <div class="panel-heading">
             <h3>Description</h3>
             {event.description}
           </div>
@@ -163,39 +173,41 @@ const EventDetails = (props) =>{
                     <i class="fa fa-question-circle-o"></i>
                   </button>
                 </div>
-                <button onClick={addPost} class="btn btn-sm btn-rounded btn-info">
+                <button
+                  onClick={addPost}
+                  class="btn btn-sm btn-rounded btn-info"
+                >
                   Post
                 </button>
               </div>
             </form>
             <InfiniteScroll
-        dataLength={posts.length} //This field to render the next data
-        next={() => setCurrPage(currPage + 1)}
-        hasMore={currPage < lastPage}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: "center" }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-      >
-        {posts.map((p) => {
-          return (
-            <Post
-              data={p}
-              click={handlePostClick}
-              handleDeletePost={handleDeletePost}
-              onLike={() => handleLike(p.id)}
-            />
-          );
-        })}
-      </InfiniteScroll>
-      <ChatBox></ChatBox>
+              dataLength={posts.length} //This field to render the next data
+              next={() => setCurrPage(currPage + 1)}
+              hasMore={currPage < lastPage}
+              loader={<h4>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>Yay! You have seen it all</b>
+                </p>
+              }
+            >
+              {posts.map((p) => {
+                return (
+                  <Post
+                    data={p}
+                    click={handlePostClick}
+                    handleDeletePost={handleDeletePost}
+                    onLike={() => handleLike(p.id)}
+                  />
+                );
+              })}
+            </InfiniteScroll>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default Home(EventDetails);

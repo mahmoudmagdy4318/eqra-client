@@ -15,10 +15,10 @@ import Post from "./Post";
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
-import Home from "./Home";
 import { UserContext } from "../context/userContext";
+import auth from "../services/authService";
+import Home from "./Home";
 
-import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
 
 const limit = 80;
@@ -133,7 +133,6 @@ const Test = () => {
       })
       .then((res) => {
         console.log({ res });
-
         setPosts([res.data, ...posts]);
       })
       .catch((err) => console.log({ err }));
@@ -187,7 +186,7 @@ const Test = () => {
     try {
       const like = await axiosInstance.post("api/post/like", {
         post_id: id,
-        user_id: 22,
+        user_id: currentUser.id,
       });
       setPosts(
         posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
@@ -323,7 +322,6 @@ const Test = () => {
       </InfiniteScroll>
       {/* ******************************************************** */}
       {/* <Post /> */}
-      <ChatBox></ChatBox>
     </div>
     //
     // </>
