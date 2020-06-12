@@ -97,11 +97,7 @@ const Post = (props) => {
                 </strong>
 
                 <span class="tweetEntry-username">
-<<<<<<< HEAD
                   @<b>{_.get(postData, "user.username")}</b>
-=======
-                  @<b> {_.get(postData, "user.username")}</b>
->>>>>>> 4ce2063c62e11fc5da2a50a1c801860d89070235
                 </span>
               </Link>
               <span class="tweetEntry-timestamp">{timePassed}</span>
