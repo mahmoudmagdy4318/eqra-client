@@ -77,7 +77,7 @@ const UserEventState = (props) => {
         </StyledMenuItem>
       </StyledMenu>
       {/* Invite Followers Component */}
-      <InviteFollowers eventName={eventName}/>
+      <InviteFollowers eventName={eventName} getEvent={getEvent} eventId={eventId}/>
           </div>
     )
 }
