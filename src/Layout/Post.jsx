@@ -84,7 +84,7 @@ const Post = (props) => {
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline">
               <Link
                 class="tweetEntry-account-group"
-                to={`/user/${_.get(postData, "user.id")}`}
+                to={`/profile/${_.get(postData, "user.id")}`}
               >
                 <img
                   class="tweetEntry-avatar"

@@ -58,7 +58,7 @@ const Comment = (props) => {
     >
       <Link
         class="tweetEntry-account-group"
-        to={`/user/${_.get(data, "user.id")}`}
+        to={`/profile/${_.get(data, "user.id")}`}
       >
         <img
           class="tweetEntry-avatar"
