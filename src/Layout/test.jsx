@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useMemo } from "react";
 import Pusher from "pusher-js";
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -63,19 +63,6 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
 function getStyles(name, personName, theme) {
   return {
     fontWeight:
@@ -87,22 +74,71 @@ function getStyles(name, personName, theme) {
 
 const Test = () => {
   const currentUser = useContext(UserContext);
-  console.log("====================================");
-  console.log(currentUser);
-  console.log("====================================");
-
+  // console.log("====================================");
+  // console.log(currentUser);
+  // console.log("====================================");
   const classes = useStyles();
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState([]);
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const userContext=useContext(UserContext);
+  const [categories, setCategories] = useState([]);
+  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [newPostData, setNewPostData] = useState({});
+  const [newPostFile, setNewPostFile] = useState(null);
   const history = useHistory();
 
   const handleChange = (event) => {
-    setPersonName(event.target.value);
+    setCheckedCategories(event.target.value);
+    const obj = {};
+    checkedCategories.forEach((element) => {
+      obj[element] = element;
+    });
+    const cats = categories.reduce((acc, curr) => {
+      if (obj[curr.name]) acc.push(curr.id);
+      return acc;
+    }, []);
+    setNewPostData({ ...newPostData, genres: cats });
   };
+  const handleInput = (e) => {
+    setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
+  };
+
+  const handleFileInput = (e) => {
+    createImage(e.target.files[0]);
+  };
+
+  function createImage(file) {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      setNewPostFile(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+  const submitPost = () => {
+    const obj = {};
+    checkedCategories.forEach((element) => {
+      obj[element] = element;
+    });
+    const cats = categories.reduce((acc, curr) => {
+      if (obj[curr.name]) acc.push(curr.id);
+      return acc;
+    }, []);
+
+    axiosInstance
+      .post("api/post", {
+        ...newPostData,
+        genres: cats,
+        postFiles: newPostFile,
+      })
+      .then((res) => {
+        console.log({ res });
+
+        setPosts([res.data, ...posts]);
+      })
+      .catch((err) => console.log({ err }));
+  };
+
   function increseHeight() {
     textarea.style.height = "";
     textarea.style.height = Math.min(textarea.scrollHeight, limit) + "px";
@@ -113,16 +149,27 @@ const Test = () => {
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
+<<<<<<< HEAD
 
   const getCurrentUser=async()=>{
     const {data}=await auth.getCurrentUser();
     userContext.setUser(data);
   }
  
+=======
+  const getCategories = async () => {
+    const catData = await axiosInstance.get(`api/genre`);
+    setCategories(catData);
+  };
+
+>>>>>>> f9439d42cbb48839f9bf9cfce6337a101d201595
   useEffect(() => {
     getPosts();
   }, [currPage]);
 
+  useEffect(() => {
+    getCategories();
+  }, []);
   const handlePostClick = (id) => {
     history.push(`/post/${id}`);
   };
@@ -136,6 +183,15 @@ const Test = () => {
     }
   };
 
+  const submitEditingPost = (postData) => {
+    console.log(postData);
+    return axiosInstance
+      .patch(`/api/post/${postData.id}`, postData)
+      .then((res) => {
+        console.log(res);
+        setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
+      });
+  };
   const handleLike = async (id) => {
     try {
       const like = await axiosInstance.post("api/post/like", {
@@ -150,6 +206,26 @@ const Test = () => {
       console.log(error);
     }
   };
+
+  const categoryMenu = useMemo(
+    () =>
+      categories.slice(0, 20).map((cat) => (
+        <MenuItem key={cat.name} value={cat.name}>
+          <Checkbox checked={checkedCategories.indexOf(cat.name) > -1} />
+          <ListItemText primary={cat.name} />
+        </MenuItem>
+      )),
+    [categories.length, checkedCategories.length]
+  );
+
+  const handleSubmitAddingComment = (newComment) => {
+    // try {
+    console.log(newComment);
+    return axiosInstance.post("api/comment", newComment);
+    // } catch (err) {
+    // console.log(err);
+    // }
+  };
   return (
     <div className={classes.maincontainer}>
       <div className="con">
@@ -159,12 +235,15 @@ const Test = () => {
             className="avatar ml-2"
             alt=""
           />
+          {/* ****************************************** */}
           <TextareaAutosize
             aria-label="minimum height"
             rowsMin={3}
             rowsMax={8}
             placeholder="Write a post"
             class="write-area ml-4"
+            name="body_content"
+            onChange={handleInput}
           />
         </div>
         <div className="post-con-last ml-md-2 mb-2">
@@ -173,6 +252,8 @@ const Test = () => {
             className={classes.input}
             id="icon-button-file"
             type="file"
+            name="postFiles"
+            onChange={handleFileInput}
           />
           <label htmlFor="icon-button-file">
             <IconButton
@@ -196,20 +277,16 @@ const Test = () => {
               labelId="demo-mutiple-checkbox-label"
               id="demo-mutiple-checkbox"
               multiple
-              value={personName}
+              value={checkedCategories}
               onChange={handleChange}
               input={<Input />}
               renderValue={(selected) => selected.join(", ")}
               MenuProps={MenuProps}
             >
-              {names.map((name) => (
-                <MenuItem key={name} value={name}>
-                  <Checkbox checked={personName.indexOf(name) > -1} />
-                  <ListItemText primary={name} />
-                </MenuItem>
-              ))}
+              {categoryMenu}
             </Select>
           </FormControl>
+          {/* ******************************************** */}
         </div>
         <Grid
           container
@@ -218,7 +295,12 @@ const Test = () => {
           style={{ color: "#b1bbc3" }}
           className="mb-2"
         >
-          <button className=" btn-primary mr-md-4  px-4 py-2 post">Post</button>
+          <button
+            className=" btn-primary mr-md-4  px-4 py-2 post"
+            onClick={submitPost}
+          >
+            Post
+          </button>
         </Grid>
       </div>
       <hr className="line"></hr>
@@ -242,6 +324,8 @@ const Test = () => {
               click={handlePostClick}
               handleDeletePost={handleDeletePost}
               onLike={() => handleLike(p.id)}
+              submitEditingPost={submitEditingPost}
+              onSubmitAddingComment={handleSubmitAddingComment}
             />
           );
         })}

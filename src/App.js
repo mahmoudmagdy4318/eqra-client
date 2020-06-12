@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, Profiler } from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
@@ -7,8 +7,10 @@ import PostLikes from "./Likes/Post_Likes";
 import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
+// Category & Events
 import UserCategory from "./Category/Category";
 import CreateEvent from './Event/CreateEvent';
+import EventDetails from './Event/EventDetails';
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,10 +34,15 @@ import {
   faPlus,
   faComment,
   faImage,
-  faCamera
+  faUserPlus,
+  faCamera,
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
+<<<<<<< HEAD
 import EditUserProfile from './Layout/Profile/EditUserProfile';
+=======
+import EditUserProfile from "./Layout/Profile/EditUserProfile";
+>>>>>>> f9439d42cbb48839f9bf9cfce6337a101d201595
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -53,6 +60,7 @@ library.add(
   faPlus,
   faComment,
   faImage,
+  faUserPlus,
   faCamera
 );
 
@@ -82,7 +90,13 @@ const App = () => {
               key="createEvent"
               exact
               path="/event"
-              render={() => <CreateEvent />}
+              component={CreateEvent}
+            />
+            <Route
+              key="createEvent"
+              exact
+              path="/event/:id"
+              component={EventDetails}
             />
             <Route
               key="post"
@@ -92,8 +106,18 @@ const App = () => {
                 <SinglePost id={routeprops.match.params.id} />
               )}
             />
-            <Route key="profile" exact path="/profile" render={() => <Profile />}  />
-            <Route key="editUserProfile" exact path="/editprofile" component={EditUserProfile} />
+            <Route
+              key="profile"
+              exact
+              path="/profile"
+              render={() => <Profile />}
+            />
+            <Route
+              key="editUserProfile"
+              exact
+              path="/editprofile"
+              component={EditUserProfile}
+            />
 
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
