@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Profiler } from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
@@ -80,7 +80,12 @@ const App = () => {
                 <SinglePost id={routeprops.match.params.id} />
               )}
             />
-            <Route key="profile" exact path="/profile" component={Profile} />
+            <Route
+              key="profile"
+              exact
+              path="/profile"
+              render={() => <Profile />}
+            />
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>

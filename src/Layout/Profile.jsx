@@ -1,9 +1,11 @@
-import React from 'react'
-import User from './Profile/User.Jsx'
-import Writer from './Profile/Writer'
+import React from "react";
+// import User from "./ProfileComponents/User.Jsx";
+// import Writer from "./ProfileComponents/Writer";
+import Home from "./Home";
 
-const Profile = () => {
-  return localStorage.getItem('role') === 'user' ? <User /> : <Writer />
+function Profile(props) {
+  // const classes = {};
+  // return localStorage.getItem("role") === "user" ? <User /> : <Writer />;
+  return <div></div>;
 }
-
-export default Profile
+export default Home(Profile);

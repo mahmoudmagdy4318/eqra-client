@@ -1,7 +1,5 @@
 import React from "react";
-import Test from "./test";
 import MyNav from "./MyNav";
-import Profile from "./Profile";
 import "../styles/home.css";
 import {
   Grid,
@@ -12,8 +10,6 @@ import {
   withStyles,
   createStyles,
 } from "@material-ui/core";
-import Tester from "./Tester";
-import PostLikes from "../Likes/Post_Likes";
 const styles = createStyles((theme) => ({
   root: {
     flexGrow: 1,

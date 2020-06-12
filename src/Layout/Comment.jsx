@@ -1,42 +1,54 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Grid } from "@material-ui/core";
 import axiosInstance from "../API/axiosInstance";
 import AlertDialog from "../utils/DeleteConfirmation";
 import PostLikes from "../Likes/Post_Likes";
+import { Link } from "react-router-dom";
+import _ from "lodash";
+import CustomizedDialogs from "../utils/Edit";
+import { UserContext } from "../context/userContext";
 
 const Comment = (props) => {
-  const { data, onDelete, onLike } = props;
+  const { data, onDelete, onLike, submitEditingPost } = props;
   const [timePassed, setTimePassed] = useState("");
   const [togglePopUp, setTogglePopUp] = useState(false);
+  const [toggleEditPopUp, setToggleEditPopUp] = useState(false);
+  const currentUser = useContext(UserContext);
 
   const getDateDifference = (timeToCompare) => {
     const dateNow = new Date();
     const postDate = new Date(timeToCompare);
-    const diffTime = Math.abs(dateNow - postDate + 7200000);
+    const diffTime = Math.abs(dateNow - postDate);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays) setTimePassed(diffDays + (diffDays > 1 ? " days" : " day"));
+    if (diffDays)
+      setTimePassed(" " + diffDays + (diffDays > 1 ? " days ago" : " day ago"));
     else {
       const diffHoures = Math.floor(diffTime / (1000 * 60 * 60));
       if (diffHoures)
-        setTimePassed(diffHoures + (diffHoures > 1 ? " hours" : " hour"));
+        setTimePassed(
+          " " + diffHoures + (diffHoures > 1 ? " hours ago" : " hour ago")
+        );
       else {
         const diffMinutes = Math.floor(diffTime / (1000 * 60));
         if (diffMinutes)
-          setTimePassed(diffMinutes + (diffMinutes > 1 ? " mins" : " min"));
+          setTimePassed(
+            " " + diffMinutes + (diffMinutes > 1 ? " mins ago" : " min ago")
+          );
         else {
           const diffSeconds = Math.floor(diffTime / 1000);
-          setTimePassed(diffSeconds + (diffSeconds > 1 ? " secs" : " sec"));
+          setTimePassed(
+            " " + diffSeconds + (diffSeconds > 1 ? " secs ago" : " sec ago")
+          );
         }
       }
     }
   };
-
   useEffect(() => {
     if (!data.created_at) return;
     setInterval(() => {
       getDateDifference(data.created_at);
-    }, 1000);
+    }, 5000);
   }, [data.created_at]);
 
   return (
@@ -44,7 +56,10 @@ const Comment = (props) => {
       class="tweetEntry-content p-2"
       style={{ "border-bottom": "1px solid #e1e8ed" }}
     >
-      <a class="tweetEntry-account-group" href="[accountURL]">
+      <Link
+        class="tweetEntry-account-group"
+        to={`/user/${_.get(data, "user.id")}`}
+      >
         <img
           class="tweetEntry-avatar"
           src={require("../assets/avatar.jpg")}
@@ -57,17 +72,17 @@ const Comment = (props) => {
         />
 
         <strong class="tweetEntry-fullname" style={{ "font-size": "12px" }}>
-          {data.user.name}
+          {data.user.full_name}
         </strong>
 
         <span class="tweetEntry-username" style={{ "font-size": "12px" }}>
-          @<b>[username]</b>
+          @<b>{data.user.username}</b>
         </span>
 
         <span class="tweetEntry-timestamp" style={{ "font-size": "12px" }}>
           {timePassed}
         </span>
-      </a>
+      </Link>
 
       <div class="tweetEntry-text-container" style={{ "font-size": "12px" }}>
         {data.content}
@@ -92,19 +107,37 @@ const Comment = (props) => {
           className="mt-3 mx-1"
           onClick={onLike}
         />
-        <FontAwesomeIcon item icon="edit" size="1x" className="mt-3 mx-1" />
-        <FontAwesomeIcon
-          item
-          icon="trash"
-          size="1x"
-          className="mt-3 mx-1"
-          onClick={() => setTogglePopUp(true)}
-        />
+        {currentUser.id === _.get(data, "user.id") ? (
+          <>
+            <FontAwesomeIcon
+              item
+              icon="edit"
+              size="1x"
+              className="mt-3 mx-1"
+              onClick={() => setToggleEditPopUp(true)}
+            />
+            <FontAwesomeIcon
+              item
+              icon="trash"
+              size="1x"
+              className="mt-3 mx-1"
+              onClick={() => setTogglePopUp(true)}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </Grid>
       <AlertDialog
         toggle={togglePopUp}
         setOpen={setTogglePopUp}
         onConfirm={onDelete(data.id)}
+      />
+      <CustomizedDialogs
+        open={toggleEditPopUp}
+        setOpen={setToggleEditPopUp}
+        post={data}
+        submitEditingPost={submitEditingPost}
       />
     </div>
   );

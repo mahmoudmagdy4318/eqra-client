@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Comment from "./Comment";
 import _ from "lodash";
-import Moment from "react-moment";
 import PostLikes from "../Likes/Post_Likes";
-import axiosInstance from "../API/axiosInstance";
 import AlertDialog from "../utils/DeleteConfirmation";
+import { Link } from "react-router-dom";
+import CustomizedDialogs from "../utils/Edit";
+import { UserContext } from "../context/userContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,28 +19,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
-  const { data: postData, click, handleDeletePost, onLike } = props;
+  const {
+    data: postData,
+    click,
+    handleDeletePost,
+    onLike,
+    submitEditingPost,
+    onSubmitAddingComment,
+  } = props;
   const classes = useStyles();
   const [show, showComment] = useState(false);
   const [timePassed, setTimePassed] = useState("");
   const [togglePopUp, setTogglePopUp] = useState(false);
+  const [toggleEditPopUp, setToggleEditPopUp] = useState(false);
+  const [newComment, setNewComment] = useState({
+    content: "",
+    postId: postData.id,
+  });
+
+  const currentUser = useContext(UserContext);
+  // console.log({ currentUser });
   const getDateDifference = (timeToCompare) => {
     const dateNow = new Date();
     const postDate = new Date(timeToCompare);
-    const diffTime = Math.abs(dateNow - postDate + 7200000);
+    const diffTime = Math.abs(dateNow - postDate);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays) setTimePassed(diffDays + (diffDays > 1 ? " days" : " day"));
+    if (diffDays)
+      setTimePassed(" " + diffDays + (diffDays > 1 ? " days ago" : " day ago"));
     else {
       const diffHoures = Math.floor(diffTime / (1000 * 60 * 60));
       if (diffHoures)
-        setTimePassed(diffHoures + (diffHoures > 1 ? " hours" : " hour"));
+        setTimePassed(
+          " " + diffHoures + (diffHoures > 1 ? " hours ago" : " hour ago")
+        );
       else {
         const diffMinutes = Math.floor(diffTime / (1000 * 60));
         if (diffMinutes)
-          setTimePassed(diffMinutes + (diffMinutes > 1 ? " mins" : " min"));
+          setTimePassed(
+            " " + diffMinutes + (diffMinutes > 1 ? " mins ago" : " min ago")
+          );
         else {
           const diffSeconds = Math.floor(diffTime / 1000);
-          setTimePassed(diffSeconds + (diffSeconds > 1 ? " secs" : " sec"));
+          setTimePassed(
+            " " + diffSeconds + (diffSeconds > 1 ? " secs ago" : " sec ago")
+          );
         }
       }
     }
@@ -50,7 +72,7 @@ const Post = (props) => {
     if (!postData.created_at) return;
     const interval = setInterval(() => {
       getDateDifference(postData.created_at);
-    }, 1000);
+    }, 5000);
     // return clearInterval(interval);
   }, [postData.created_at]);
 
@@ -60,7 +82,10 @@ const Post = (props) => {
         <div class="tweetEntry">
           <div class="tweetEntry-content">
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline">
-              <a class="tweetEntry-account-group" href="[accountURL]">
+              <Link
+                class="tweetEntry-account-group"
+                to={`/user/${_.get(postData, "user.id")}`}
+              >
                 <img
                   class="tweetEntry-avatar"
                   src="http://placekitten.com/200/200"
@@ -68,29 +93,35 @@ const Post = (props) => {
                 />
 
                 <strong class="tweetEntry-fullname">
-                  {_.get(postData, "user.name")}
+                  {_.get(postData, "user.full_name")}
                 </strong>
 
                 <span class="tweetEntry-username">
-                  @<b>[username]</b>
+                  @<b>{_.get(postData, "user.username")}</b>
                 </span>
-
-                <span class="tweetEntry-timestamp">{timePassed}</span>
-              </a>
+              </Link>
+              <span class="tweetEntry-timestamp">{timePassed}</span>
               <div className="ml-md-5">
-                <FontAwesomeIcon
-                  item
-                  icon="edit"
-                  size="1x"
-                  className="mt-3 mx-1"
-                />
-                <FontAwesomeIcon
-                  item
-                  icon="trash"
-                  size="1x"
-                  className="mt-3 mx-1"
-                  onClick={() => setTogglePopUp(true)}
-                />
+                {currentUser.id === _.get(postData, "user.id") ? (
+                  <>
+                    <FontAwesomeIcon
+                      item
+                      icon="edit"
+                      size="1x"
+                      className="mt-3 mx-1"
+                      onClick={() => setToggleEditPopUp(true)}
+                    />
+                    <FontAwesomeIcon
+                      item
+                      icon="trash"
+                      size="1x"
+                      className="mt-3 mx-1"
+                      onClick={() => setTogglePopUp(true)}
+                    />
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
             <div
@@ -147,8 +178,27 @@ const Post = (props) => {
                   placeholder="Add comment"
                   ml={5}
                   className="mb-2"
+                  value={newComment.content}
+                  onChange={(e) =>
+                    setNewComment({ ...newComment, content: e.target.value })
+                  }
                 />
               </form>
+              <button
+                className=" btn-secondary mr-md-4  px-4 py-2 post"
+                onClick={() =>
+                  onSubmitAddingComment(newComment)
+                    .then((res) => {
+                      setNewComment({ content: "", postId: postData.id });
+                      showComment(false);
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                    })
+                }
+              >
+                add
+              </button>
               {/* <Comment /> */}
             </div>
           )}
@@ -158,6 +208,13 @@ const Post = (props) => {
         toggle={togglePopUp}
         setOpen={setTogglePopUp}
         onConfirm={handleDeletePost(postData.id)}
+      />
+
+      <CustomizedDialogs
+        open={toggleEditPopUp}
+        setOpen={setToggleEditPopUp}
+        post={postData}
+        submitEditingPost={submitEditingPost}
       />
     </>
   );
