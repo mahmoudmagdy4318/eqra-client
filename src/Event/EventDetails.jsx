@@ -7,7 +7,6 @@ import Home from "../Layout/Home";
 import { UserContext } from "../context/userContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import ChatBox from "../Chat/ChatBox";
 
 import "./EventDetails.css";
 // Component
@@ -204,7 +203,6 @@ const EventDetails = (props) => {
                 );
               })}
             </InfiniteScroll>
-            <ChatBox></ChatBox>
           </div>
         </div>
       </div>
