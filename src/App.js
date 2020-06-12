@@ -11,6 +11,7 @@ import UserContext from "./context/userContext";
 import UserCategory from "./Category/Category";
 import CreateEvent from './Event/CreateEvent';
 import EventDetails from './Event/EventDetails';
+import AllEvents from './Event/AllEvents';
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,6 +36,7 @@ import {
   faImage,
   faUserPlus,
   faCamera,
+  faCalendarWeek
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
@@ -56,7 +58,8 @@ library.add(
   faComment,
   faImage,
   faUserPlus,
-  faCamera
+  faCamera,
+  faCalendarWeek
 );
 
 const App = () => {
@@ -84,8 +87,14 @@ const App = () => {
             <Route
               key="createEvent"
               exact
-              path="/event"
+              path="/newEvent"
               component={CreateEvent}
+            />
+            <Route
+              key="createEvent"
+              exact
+              path="/events"
+              component={AllEvents}
             />
             <Route
               key="createEvent"

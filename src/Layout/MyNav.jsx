@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/nav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useHistory } from "react-router-dom";
+import EventNoteIcon from '@material-ui/icons/EventNote';
 
 const MyNav = () => {
   const history = useHistory();
@@ -25,6 +26,11 @@ const MyNav = () => {
         <Link className="menu-item m-md-3 pb-2" to="/profile">
           <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2">Profile</span>
+        </Link>
+
+        <Link className="menu-item m-md-3 pb-2" to="/events">
+        <FontAwesomeIcon item icon="calendar-week" size="1x" className="mt-3 mx-1" />
+          <span className="mt-2 pt-1 ml-2">Events</span>
         </Link>
 
         <Link className="menu-item m-md-3 pb-2" to="/logout">
