@@ -35,7 +35,7 @@ import {
   faCamera
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
-import EditUserProfile from './Layout/profile/EditUserProfile';
+import EditUserProfile from './Layout/Profile/EditUserProfile';
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(

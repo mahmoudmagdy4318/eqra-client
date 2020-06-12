@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use((cfg) => {
   cfg.headers["Authorization"] = `${localStorage.getItem("Authorization")}`;
   // "Content-Type", "application/x-www-form-urlencoded"
   // cfg.headers["Content-Type"] = "";
-  cfg.headers['content-type']= 'multipart/form-data'
+  // cfg.headers['content-type']= 'multipart/form-data'
 
   return cfg;
 });

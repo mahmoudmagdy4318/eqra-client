@@ -85,7 +85,7 @@ z-index: 999;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
+/* 
 .chatbox__title h5:before {
   content: '';
   display: block;
@@ -99,7 +99,7 @@ z-index: 999;
 
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
-}
+} */
 
 .chatbox__title__tray,
 .chatbox__title__close {

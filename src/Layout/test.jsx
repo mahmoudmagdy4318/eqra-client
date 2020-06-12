@@ -19,7 +19,6 @@ import {UserContext} from '../context/userContext';
 import auth from '../services/authService'
 import Home from "./Home";
 
-import ChatBox from "../components/ChatBox";
 const textarea = document.getElementById("textar ea");
 
 const limit = 80;
@@ -249,7 +248,6 @@ const Test = () => {
       </InfiniteScroll>
       {/* ******************************************************** */}
       {/* <Post /> */}
-      <ChatBox></ChatBox>
     </div>
     //
     // </>

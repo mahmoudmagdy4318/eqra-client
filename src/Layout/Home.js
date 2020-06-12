@@ -1,7 +1,6 @@
 import React from "react";
 import MyNav from "./MyNav";
-import Profile from "./Profile";
-import FollowList from '../follow-list/FollowList'
+import Chat from '../Chat/Chat'
 import "../styles/home.css";
 import {
   Grid,
@@ -55,9 +54,9 @@ const Home = (Component) => {
               <Grid md={6} className="inner-grid">
                 <Component {...props} />
               </Grid>
-              {/* <Grid md={3} className={classes.sticky}> */}
-                <FollowList></FollowList>                
-              {/* </Grid> */}
+              <Grid md={3} className={classes.sticky}>
+                <Chat/>                
+              </Grid>
             </Grid>
           </Container>
         </div>
