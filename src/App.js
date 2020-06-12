@@ -104,8 +104,8 @@ const App = () => {
             <Route
               key="profile"
               exact
-              path="/profile"
-              render={() => <Profile />}
+              path="/profile/:id"
+              render={(routeprops) => <Profile id={routeprops.match.params.id}/>}
             />
             <Route
               key="editUserProfile"

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "../styles/nav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
 const MyNav = () => {
-  const history = useHistory();
+  const currentUser = useContext(UserContext);
+ 
+  const [profileData, updateProfileData] = useState({}); 
+  useEffect(() => {
+    updateProfileData(currentUser);
+  });   
+
   return (
     <>
       <nav className="nav my-nav">
@@ -22,7 +29,7 @@ const MyNav = () => {
           <span className="mt-2 pt-1 ml-2">Messeges</span>
         </Link>
 
-        <Link className="menu-item m-md-3 pb-2" to="/profile">
+        <Link className="menu-item m-md-3 pb-2" to={`/profile/${profileData.id}`}>
           <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2">Profile</span>
         </Link>
