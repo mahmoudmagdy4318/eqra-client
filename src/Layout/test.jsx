@@ -15,8 +15,8 @@ import Post from "./Post";
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
-import {UserContext} from '../context/userContext';
-import auth from '../services/authService'
+import { UserContext } from "../context/userContext";
+import auth from "../services/authService";
 import Home from "./Home";
 
 const textarea = document.getElementById("textar ea");
@@ -149,20 +149,11 @@ const Test = () => {
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
-<<<<<<< HEAD
-
-  const getCurrentUser=async()=>{
-    const {data}=await auth.getCurrentUser();
-    userContext.setUser(data);
-  }
- 
-=======
   const getCategories = async () => {
     const catData = await axiosInstance.get(`api/genre`);
     setCategories(catData);
   };
 
->>>>>>> f9439d42cbb48839f9bf9cfce6337a101d201595
   useEffect(() => {
     getPosts();
   }, [currPage]);
