@@ -133,7 +133,6 @@ const Test = () => {
       })
       .then((res) => {
         console.log({ res });
-
         setPosts([res.data, ...posts]);
       })
       .catch((err) => console.log({ err }));
@@ -187,7 +186,7 @@ const Test = () => {
     try {
       const like = await axiosInstance.post("api/post/like", {
         post_id: id,
-        user_id: 22,
+        user_id: currentUser.id,
       });
       setPosts(
         posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
