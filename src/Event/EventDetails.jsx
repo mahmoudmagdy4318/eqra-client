@@ -1,13 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import Post from "../Layout/Post";
 import axiosInstance from "../API/axiosInstance";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { useHistory } from "react-router-dom";
 import Home from "../Layout/Home";
 import { UserContext } from "../context/userContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-
+import EventPosts from "./EventPosts";
 import "./EventDetails.css";
 // Component
 import UserEventState from "./UserEventState";
@@ -19,17 +15,6 @@ const EventDetails = (props) => {
   const [post, setPost] = React.useState({ body_content: "", eventId });
   const [posts, setPosts] = useState([]);
   const [event, setEvent] = useState({});
-  const [currPage, setCurrPage] = useState(1);
-  const [lastPage, setLastPage] = useState(1);
-  const history = useHistory();
-
-  const getPosts = async () => {
-    const postsData = await axiosInstance.get(
-      `api/event/${eventId}/posts/?page=${currPage}`
-    );
-    setPosts([...posts, ...postsData.data]);
-    setLastPage(postsData.meta.last_page);
-  };
 
   const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
@@ -38,45 +23,7 @@ const EventDetails = (props) => {
   useEffect(() => {
     getEvent();
   }, []);
-  useEffect(() => {
-    getPosts();
-  }, [currPage]);
 
-  const handlePostClick = (id) => {
-    history.push(`/post/${id}`);
-  };
-
-  const handleDeletePost = (id) => async () => {
-    try {
-      await axiosInstance.delete(`api/post/${id}`);
-      setPosts(posts.filter((p) => p.id !== id));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLike = async (id) => {
-    try {
-      const like = await axiosInstance.post("api/post/like", {
-        post_id: id,
-        user_id: 22,
-      });
-      setPosts(
-        posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
-      );
-      console.log(like);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const addPost = async (e) => {
-    e.preventDefault();
-    const newPost = await axiosInstance.post("api/post", post);
-    setPost([newPost, ...posts]);
-  };
-  const onChange = (e) => {
-    setPost({ ...post, [e.target.name]: e.target.value });
-  };
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -122,90 +69,7 @@ const EventDetails = (props) => {
           <div class="panel-heading">
             <h3 class="panel-title">Discssion</h3>
           </div>
-          <div class="panel-content panel-activity">
-            <form class="panel-activity__status mb-2">
-              <textarea
-                name="body_content"
-                placeholder="Share what you've been up to..."
-                class="form-control"
-                value={post.body_content}
-                onChange={onChange}
-              ></textarea>
-              <div class="actions">
-                <div class="btn-group">
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Image"
-                  >
-                    <FontAwesomeIcon
-                      item
-                      icon="image"
-                      size="1x"
-                      className="mt-3 mx-1"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Video"
-                  >
-                    <i class="fa fa-video-camera"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Idea"
-                  >
-                    <i class="fa fa-lightbulb-o"></i>
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Question"
-                  >
-                    <i class="fa fa-question-circle-o"></i>
-                  </button>
-                </div>
-                <button
-                  onClick={addPost}
-                  class="btn btn-sm btn-rounded btn-info"
-                >
-                  Post
-                </button>
-              </div>
-            </form>
-            <InfiniteScroll
-              dataLength={posts.length} //This field to render the next data
-              next={() => setCurrPage(currPage + 1)}
-              hasMore={currPage < lastPage}
-              loader={<h4>Loading...</h4>}
-              endMessage={
-                <p style={{ textAlign: "center" }}>
-                  <b>Yay! You have seen it all</b>
-                </p>
-              }
-            >
-              {posts.map((p) => {
-                return (
-                  <Post
-                    data={p}
-                    click={handlePostClick}
-                    handleDeletePost={handleDeletePost}
-                    onLike={() => handleLike(p.id)}
-                  />
-                );
-              })}
-            </InfiniteScroll>
-          </div>
+          <EventPosts eventId={eventId} />
         </div>
       </div>
     </div>
