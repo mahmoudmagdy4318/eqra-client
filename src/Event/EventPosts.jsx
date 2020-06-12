@@ -14,7 +14,7 @@ const EventPosts = (props) => {
   const [lastPage, setLastPage] = useState(1);
   const [categories, setCategories] = useState([]);
   const [checkedCategories, setCheckedCategories] = useState([]);
-  const [newPostData, setNewPostData] = useState({eventId: ""});
+  const [newPostData, setNewPostData] = useState({eventId: eventId});
   const [newPostFile, setNewPostFile] = useState(null);
   const history = useHistory();
   
@@ -36,9 +36,9 @@ const EventPosts = (props) => {
   }
   const submitPost = (e) => {
       e.preventDefault();
-
+    console.log(newPostData)
     axiosInstance
-      .post("api/post", {
+      .post(`api/post`, {
         ...newPostData,
         postFiles: newPostFile,
       })
@@ -50,7 +50,7 @@ const EventPosts = (props) => {
   };
 
   const getPosts = async () => {
-    const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
+    const postsData = await axiosInstance.get(`api/event/${eventId}/posts/?page=${currPage}`);
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
