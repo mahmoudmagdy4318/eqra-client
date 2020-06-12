@@ -8,15 +8,17 @@ const Post = ({ name }) => {
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([
-    { id: 1, body: 'gdela gdela gdelaaaaaaaaaa' },
-    { id: 2, body: 'doctor kero fe 3seeeeeeeeer' },
-    { id: 3, body: 'a7la msa 3la el nas el kwysa :3' },
+    { id: 1, new: false, body: 'gdela gdela gdelaaaaaaaaaa' },
+    { id: 2, new: false, body: 'doctor kero fe 3seeeeeeeeer' },
+    { id: 3, new: false, body: 'a7la msa 3la el nas el kwysa :3' },
   ]);
 
   const newPost = () => {
-    setPostList([...postList, { id: uuid(), body: postBody }]);
-    setPostBody('');
-    console.log(postList);
+    if (postBody !== "") {
+      setPostList([...postList, { id: uuid(), new: true, body: postBody }]);
+      setPostBody('');
+      setFeatured(false);
+    }
   };
 
   return (
@@ -29,7 +31,7 @@ const Post = ({ name }) => {
           multiline
           variant="standard"
           className={styles.posts_postForm_postBody}
-          onChange={(e) => { setPostBody(e.target.value) }}
+          onChange={(e) => { setPostBody(e.target.value); }}
           value={postBody}
         />
 
@@ -54,26 +56,26 @@ const Post = ({ name }) => {
       </div>
       <br />
       <div className={styles.posts_showPosts}>
-        {postList.map((post) => {
+        {postList.slice(0).reverse().map((post) => {
           return (
             <>
-            <Card className={styles.root} variant="outlined" key={post.id}>
-              <CardContent className={styles.posts_showPosts_body} >
-                <div className={styles.posts_showPosts_body_title} >
-                  <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="" />
-                  <Typography color="textSecondary" className={styles.posts_showPosts_body_title_username} gutterBottom>
-                    {name}
+              <Card className={styles.root + " " + `${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
+                <CardContent className={styles.posts_showPosts_body} >
+                  <div className={styles.posts_showPosts_body_title} >
+                    <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="" />
+                    <Typography color="textSecondary" className={styles.posts_showPosts_body_title_username} gutterBottom>
+                      {name}
+                    </Typography>
+                  </div>
+                  <Typography variant="body2" component="p">
+                    {post.body}
                   </Typography>
-                </div>
-                <Typography variant="body2" component="p">
-                  {post.body}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
-              </CardActions>
-            </Card>
-            <br/>
+                </CardContent>
+                <CardActions>
+                  <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
+                </CardActions>
+              </Card>
+              <br />;
             </>
           )
         })}
@@ -81,6 +83,6 @@ const Post = ({ name }) => {
       </div>
     </section>
   );
-}
+};
 
 export default Post

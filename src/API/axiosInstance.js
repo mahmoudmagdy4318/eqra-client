@@ -7,6 +7,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use((cfg) => {
   cfg.headers["Accept"] = "application/json";
   cfg.headers["Authorization"] = `${localStorage.getItem("Authorization")}`;
+  // "Content-Type", "application/x-www-form-urlencoded"
+  // cfg.headers["Content-Type"] = "";
+  cfg.headers['content-type']= 'multipart/form-data'
+
   return cfg;
 });
 

@@ -73,6 +73,26 @@ function SinglePost(props) {
       console.log(error);
     }
   };
+
+  const submitEditingComment = (commentData) => {
+    return axiosInstance
+      .patch(`api/comment/${commentData.id}`, commentData)
+      .then((res) => {
+        setComments(
+          comments.map((c) => (c.id === commentData.id ? commentData : c))
+        );
+      });
+  };
+
+  const submitEditingPost = (editedPost) => {
+    console.log(editedPost);
+    return axiosInstance
+      .patch(`/api/post/${editedPost.id}`, editedPost)
+      .then((res) => {
+        console.log(res);
+        setPostData(editedPost);
+      });
+  };
   return (
     <>
       {/* <div>{id}</div> */}
@@ -81,6 +101,7 @@ function SinglePost(props) {
         click={() => {}}
         handleDeletePost={handleDelete}
         onLike={() => handlePostLike(postData.id)}
+        submitEditingPost={submitEditingPost}
       />
       <InfiniteScroll
         dataLength={comments.length} //This field to render the next data
@@ -100,6 +121,7 @@ function SinglePost(props) {
               data={c}
               onDelete={handleDeleteComment}
               onLike={() => handleLike(c.id)}
+              submitEditingPost={submitEditingComment}
             />
           );
         })}

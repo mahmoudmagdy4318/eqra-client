@@ -10,7 +10,7 @@ import Details from './writerComponents/Details/Details';
 import Featured from './writerComponents/LeftBar/Featured';
 import Event from './writerComponents/LeftBar/Event';
 import Post from './writerComponents/Posts/Post';
-import Book from './writerComponents/Book';
+import Book from './writerComponents/books/Book';
 import { UserContext } from "../../context/userContext";
 
 const Writer = () => {

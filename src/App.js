@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Profiler } from "react";
 import { ToastContainer } from "react-toastify";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
@@ -9,13 +9,18 @@ import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 // Category & Events
 import UserCategory from "./Category/Category";
+<<<<<<< HEAD
 import CreateEvent from './Event/CreateEvent';
 import EventDetails from './Event/EventDetails';
+=======
+import CreateEvent from "./Event/CreateEvent";
+>>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
 import http from "./services/httpService";
+// import Profile from './Layout/Profile';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faEnvelope,
@@ -32,9 +37,14 @@ import {
   faPlus,
   faComment,
   faImage,
+<<<<<<< HEAD
   faUserPlus
+=======
+  faCamera,
+>>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
+import EditUserProfile from "./Layout/profile/EditUserProfile";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -52,7 +62,11 @@ library.add(
   faPlus,
   faComment,
   faImage,
+<<<<<<< HEAD
   faUserPlus
+=======
+  faCamera
+>>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
 );
 
 const App = () => {
@@ -97,7 +111,19 @@ const App = () => {
                 <SinglePost id={routeprops.match.params.id} />
               )}
             />
-            <Route key="profile" exact path="/profile" component={Profile} />
+            <Route
+              key="profile"
+              exact
+              path="/profile"
+              render={() => <Profile />}
+            />
+            <Route
+              key="editUserProfile"
+              exact
+              path="/editprofile"
+              component={EditUserProfile}
+            />
+
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>

@@ -128,7 +128,7 @@ export default function SimplePopover(props) {
               }}
             >
               {props.content.map((l) => (
-                <Fragment key={l.name}>
+                <Fragment key={l.full_name}>
                   <ListItem
                     onClick={() => handleUserClick(l.id)}
                     className={classes.UserDiv}
@@ -138,7 +138,7 @@ export default function SimplePopover(props) {
                         <img className={classes.image} src="/favicon.ico" />
                       </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={l.name} />
+                    <ListItemText primary={l.full_name} />
                   </ListItem>
                   <Divider variant="inset" component="li" />
                 </Fragment>

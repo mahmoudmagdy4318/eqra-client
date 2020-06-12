@@ -14,7 +14,7 @@ const UserEventState = (props) => {
     const currentUser = props.user;
     const eventId = props.eventId;
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [currentEventState, setCurrentEventState] = React.useState({state: "going"});
+    const [currentEventState, setCurrentEventState] = React.useState({state: "pending"});
     const getUserState = async () => {
         const userState = await axiosInstance.get(`api/event/${eventId}/participantStatus`);
         setCurrentEventState({state: userState.state});
