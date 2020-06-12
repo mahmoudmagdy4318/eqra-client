@@ -11,6 +11,7 @@ import ChatBox from "../components/ChatBox";
 
 
 import './EventDetails.css';
+// Component
 import UserEventState from './UserEventState';
 const EventDetails = (props) =>{
     const eventId = props.match.params.id;
@@ -69,8 +70,7 @@ const EventDetails = (props) =>{
   const addPost = async (e) => {
     e.preventDefault();
     const newPost = await axiosInstance.post("api/post", post);
-    setPost({body_content:""});
-    getPosts();
+    setPost([newPost, ...posts]);
   }
   const onChange = e => {
     setPost({...post, [e.target.name]: e.target.value});
@@ -86,7 +86,7 @@ const EventDetails = (props) =>{
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
           {/* User State Component (Pending, Interested, Going) */}
-        <UserEventState user={currentUser} eventId={eventId} />
+        <UserEventState getEvent = {getEvent} user={currentUser} eventId={eventId} eventName={event.name}/>
           </div>
           <div class="profile-cover__info">
             <ul class="nav">

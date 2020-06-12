@@ -4,14 +4,18 @@ import ListItemText from '@material-ui/core/ListItemText';
 import StarIcon from '@material-ui/icons/Star';
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import DoneIcon from '@material-ui/icons/Done';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import axiosInstance from '../API/axiosInstance';
+
+//Component
+import InviteFollowers from './InviteFollowers';
 const UserEventState = (props) => {
     const eventId = props.eventId;
+    const eventName = props.eventName;
+    const getEvent = props.getEvent;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [currentEventState, setCurrentEventState] = React.useState({state: "pending"});
     const getUserState = async () => {
@@ -23,15 +27,14 @@ const UserEventState = (props) => {
     }, []);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
-      console.log(event.currentTarget)
     };
     const handleClose = () => {
       setAnchorEl(null);
     };
     const changeCurrentEventState = async (state) =>{
         setCurrentEventState({state});
-        const res = await axiosInstance.post(`api/event/${eventId}/participantStatus`, {state: state});
-        console.log(res)
+        await axiosInstance.post(`api/event/${eventId}/participantStatus`, {state: state});
+        getEvent();
     }
     return(
         <div>
@@ -73,14 +76,8 @@ const UserEventState = (props) => {
           <ListItemText primary="Going"/>
         </StyledMenuItem>
       </StyledMenu>
-      <Button
-        variant="contained"
-        color="primary"
-        size={"medium"}
-        startIcon={<PersonAddIcon/>}
-      >
-        Invite
-      </Button>
+      {/* Invite Followers Component */}
+      <InviteFollowers eventName={eventName}/>
           </div>
     )
 }
