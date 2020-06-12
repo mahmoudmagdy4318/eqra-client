@@ -1,0 +1,22 @@
+.eventHeader{
+    text-align: left !important;
+    margin-top: 30px;
+    margin-left: -17px;
+}
+.eventDate{
+    margin-bottom: -3px;
+    font-size: 15px;
+    color: tomato;
+    font-weight: bold;
+}
+.eventList{
+    margin-left: 6px !important;
+    padding-left: 13px !important;
+    font-size: 14px !important;
+}
+.iconMargin{
+    margin-left: 2px;
+}
+.MuiButton-containedPrimary{
+    margin-right: 5px !important;
+}
