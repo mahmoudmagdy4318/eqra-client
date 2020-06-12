@@ -9,12 +9,8 @@ import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 // Category & Events
 import UserCategory from "./Category/Category";
-<<<<<<< HEAD
-import CreateEvent from './Event/CreateEvent';
-import EventDetails from './Event/EventDetails';
-=======
 import CreateEvent from "./Event/CreateEvent";
->>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
+import EventDetails from "./Event/EventDetails";
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,11 +33,8 @@ import {
   faPlus,
   faComment,
   faImage,
-<<<<<<< HEAD
-  faUserPlus
-=======
+  faUserPlus,
   faCamera,
->>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/profile/EditUserProfile";
@@ -62,11 +55,8 @@ library.add(
   faPlus,
   faComment,
   faImage,
-<<<<<<< HEAD
-  faUserPlus
-=======
+  faUserPlus,
   faCamera
->>>>>>> 898dfb6cb67ff6bc5e74ff81815ee420418894a0
 );
 
 const App = () => {
