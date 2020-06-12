@@ -40,11 +40,7 @@ import {
   faCalendarWeek
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
-<<<<<<< HEAD
-import EditUserProfile from './Layout/Profile/EditUserProfile';
-=======
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
->>>>>>> f9439d42cbb48839f9bf9cfce6337a101d201595
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
