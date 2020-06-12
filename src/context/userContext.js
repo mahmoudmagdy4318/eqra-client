@@ -5,16 +5,22 @@ export const UserContext = React.createContext();
 
 const Provider = (props) => {
   const [user, setUser] = useState({});
-  useEffect(() => {
+  const setAuthData = () =>
     http
       .get("http://localhost:8000/api/auth/user")
       .then(({ data: { user } }) => {
+        debugger;
         setUser(user);
       });
+
+  useEffect(() => {
+    setAuthData();
   }, []);
 
   return (
-    <UserContext.Provider value={user}>{props.children}</UserContext.Provider>
+    <UserContext.Provider value={{ data: { user }, actions: { setAuthData } }}>
+      {props.children}
+    </UserContext.Provider>
   );
 };
 export default Provider;

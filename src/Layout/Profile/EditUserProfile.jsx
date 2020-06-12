@@ -5,7 +5,9 @@ import { UserContext } from "../../context/userContext";
 import Home from "../Home";
 import axiosInstance from "../../API/axiosInstance";
 const EditUserProfile = () => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const [profileData, updateProfileData] = useState({});
   const [firstName, updateFirstName] = useState(currentUser.first_name);
   const [lastName, updateLasttName] = useState(currentUser.last_name);
@@ -18,7 +20,7 @@ const EditUserProfile = () => {
   useEffect(() => {
     updateProfileData(currentUser);
   });
-  // useEffect(() => { 
+  // useEffect(() => {
   //   if(fileData != null &&  fileData instanceof File == false){
   //     updateFileData("http://localhost:8000")
   //   }
@@ -85,14 +87,13 @@ const EditUserProfile = () => {
                     alt="User avatar"
                   />
                 )}
-                {fileData != null &&
-
+                {fileData != null && (
                   <img
                     class="img-circle profile-avatar"
                     src={fileData}
                     alt="User avatar"
                   />
-                }
+                )}
 
                 <div class="p-image">
                   <FontAwesomeIcon

@@ -8,13 +8,14 @@ import { UserContext } from "../context/userContext";
 import { getMessages, sendMessage } from "./service/messages";
 
 const ChatBox = () => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const [classes, setClasses] = useState("chatbox chatbox22 chatbox--closed");
   const [open, setOpen] = useState(true);
   const [currentMessage, setCurrentMessage] = useState("");
   const [reciever, setReciever] = useState({});
   const [messages, setMessages] = useState([]);
-
   Pusher.logToConsole = true;
 
   const pusher = new Pusher("0e0882c25b1299c47bdb", {
@@ -27,10 +28,16 @@ const ChatBox = () => {
       },
     },
   });
+  debugger;
   useEffect(() => {
+    debugger;
+    if (!currentUser.id) return;
+    console.log("one", currentUser);
     const channel = pusher.subscribe("private-chat." + currentUser.id);
-    channel.bind("message-sent", function (data) {});
-  }, [currentUser]);
+    channel.bind("message-sent", function (data) {
+      console.log({ data });
+    });
+  }, [JSON.stringify(currentUser)]);
 
   const handleChatBoxStatus = (e) => {
     e.stopPropagation();

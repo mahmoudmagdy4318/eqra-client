@@ -3,15 +3,17 @@ import "../styles/nav.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserContext } from "../context/userContext";
 import { Link, useHistory } from "react-router-dom";
-import EventNoteIcon from '@material-ui/icons/EventNote';
+import EventNoteIcon from "@material-ui/icons/EventNote";
 
 const MyNav = () => {
-  const currentUser = useContext(UserContext);
- 
-  const [profileData, updateProfileData] = useState({}); 
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
+
+  const [profileData, updateProfileData] = useState({});
   useEffect(() => {
     updateProfileData(currentUser);
-  });   
+  });
 
   return (
     <>
@@ -26,22 +28,45 @@ const MyNav = () => {
         </Link>
 
         <Link className="menu-item m-md-3 pb-2" href="#">
-          <FontAwesomeIcon item icon="envelope" size="1x" className="mt-3 mx-1" />
+          <FontAwesomeIcon
+            item
+            icon="envelope"
+            size="1x"
+            className="mt-3 mx-1"
+          />
           <span className="mt-2 pt-1 ml-2">Messeges</span>
         </Link>
 
-        <Link className="menu-item m-md-3 pb-2" to={`/profile/${profileData.id}`}>
-          <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
+        <Link
+          className="menu-item m-md-3 pb-2"
+          to={`/profile/${profileData.id}`}
+        >
+          <FontAwesomeIcon
+            item
+            icon="user-circle"
+            size="1x"
+            className="mt-3 mx-1"
+          />
           <span className="mt-2 pt-1 ml-2">Profile</span>
         </Link>
 
         <Link className="menu-item m-md-3 pb-2" to="/events">
-        <FontAwesomeIcon item icon="calendar-week" size="1x" className="mt-3 mx-1" />
+          <FontAwesomeIcon
+            item
+            icon="calendar-week"
+            size="1x"
+            className="mt-3 mx-1"
+          />
           <span className="mt-2 pt-1 ml-2">Events</span>
         </Link>
 
         <Link className="menu-item m-md-3 pb-2" to="/logout">
-          <FontAwesomeIcon item icon="user-circle" size="1x" className="mt-3 mx-1" />
+          <FontAwesomeIcon
+            item
+            icon="user-circle"
+            size="1x"
+            className="mt-3 mx-1"
+          />
           <span className="mt-2 pt-1 ml-2">Log Out</span>
         </Link>
       </nav>

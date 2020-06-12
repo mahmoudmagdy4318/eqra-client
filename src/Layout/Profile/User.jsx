@@ -60,7 +60,9 @@ const MenuProps = {
   },
 };
 const User = (props) => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const classes = useStyles();
   const { id } = props;
   const [personName, setPersonName] = React.useState([]);
@@ -255,28 +257,28 @@ const User = (props) => {
               ></textarea>
               <div class="actions">
                 {/* <div class="btn-group"> */}
-                  {/* <button
+                {/* <button
                     type="button"
                     class="btn-link"
                     title=""
                     data-toggle="tooltip"
                     data-original-title="Post an Image"
                   > */}
-                  {/* <input
+                {/* <input
                     accept="image/*"
                     id="icon-button-file"
                     type="file"
                     name="postFiles"
                     onChange={handleFileInput}
                   /> */}
-                  <FontAwesomeIcon
-                    item
-                    icon="image"
-                    size="1x"
-                    className="mt-3 mx-1"
-                  />
-                  {/* </button> */}
-                  <div>
+                <FontAwesomeIcon
+                  item
+                  icon="image"
+                  size="1x"
+                  className="mt-3 mx-1"
+                />
+                {/* </button> */}
+                <div>
                   <FormControl className={classes.formControl}>
                     <InputLabel id="demo-mutiple-checkbox-label">
                       Select a category or more
@@ -297,14 +299,15 @@ const User = (props) => {
                 </div>
                 {/* </div> */}
                 <div>
-                <button
-                  type="submit"
-                  class="btn btn-sm btn-rounded btn-info"
-                  onClick={submitPost}
-                >
-                  Post
-                </button>
-                </div></div>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-rounded btn-info"
+                    onClick={submitPost}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
             </form>
             <InfiniteScroll
               dataLength={posts.length} //This field to render the next data
@@ -328,7 +331,6 @@ const User = (props) => {
                   />
                 );
               })}
-            
             </InfiniteScroll>
           </div>
         </div>
