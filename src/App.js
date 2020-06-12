@@ -7,8 +7,10 @@ import PostLikes from "./Likes/Post_Likes";
 import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
+// Category & Events
 import UserCategory from "./Category/Category";
 import CreateEvent from './Event/CreateEvent';
+import EventDetails from './Event/EventDetails';
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -30,6 +32,7 @@ import {
   faPlus,
   faComment,
   faImage,
+  faUserPlus
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 // import ProtectedRoute from "./ProtectedRoute";
@@ -48,7 +51,8 @@ library.add(
   faUserCircle,
   faPlus,
   faComment,
-  faImage
+  faImage,
+  faUserPlus
 );
 
 const App = () => {
@@ -78,6 +82,12 @@ const App = () => {
               exact
               path="/event"
               component={CreateEvent}
+            />
+            <Route
+              key="createEvent"
+              exact
+              path="/event/:id"
+              component={EventDetails}
             />
             <Route
               key="post"
