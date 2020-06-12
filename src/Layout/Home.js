@@ -1,5 +1,6 @@
 import React from "react";
 import MyNav from "./MyNav";
+import Chat from '../Chat/Chat'
 import "../styles/home.css";
 import {
   Grid,
@@ -52,7 +53,7 @@ const Home = (Component) => {
                 <Component {...props} />
               </Grid>
               <Grid md={3} className={classes.sticky}>
-                <Paper className={classes.paper}>xs</Paper>
+                <Chat/>                
               </Grid>
             </Grid>
           </Container>

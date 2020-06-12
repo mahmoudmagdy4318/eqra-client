@@ -4,6 +4,7 @@ import _ from "lodash";
 const axiosInstance = axios.create({
   baseURL: "/",
 });
+
 axiosInstance.interceptors.request.use((cfg) => {
   cfg.headers["Accept"] = "application/json";
   cfg.headers["Authorization"] = `${localStorage.getItem("Authorization")}`;
@@ -13,6 +14,8 @@ axiosInstance.interceptors.request.use((cfg) => {
 
   return cfg;
 });
+
+
 
 axiosInstance.interceptors.response.use(
   ({ data }) => data,
