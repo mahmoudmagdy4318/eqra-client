@@ -11,7 +11,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import axiosInstance from '../API/axiosInstance';
 const UserEventState = (props) => {
-    const currentUser = props.user;
     const eventId = props.eventId;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [currentEventState, setCurrentEventState] = React.useState({state: "pending"});
