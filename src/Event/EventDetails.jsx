@@ -3,19 +3,14 @@ import axiosInstance from "../API/axiosInstance";
 import Home from "../Layout/Home";
 import { UserContext } from "../context/userContext";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import EventPosts from './EventPosts';
 import "./EventDetails.css";
 // Component
+import EventPosts from './EventPosts';
 import UserEventState from "./UserEventState";
 const EventDetails = (props) => {
   const eventId = props.match.params.id;
   const currentUser = useContext(UserContext);
-  
   const [event, setEvent] = useState({});
-  
-
-  
-
   const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
     setEvent(event.data);
@@ -69,6 +64,7 @@ const EventDetails = (props) => {
           <div class="panel-heading">
             <h3 class="panel-title">Discssion</h3>
           </div>
+          {/* Event Posts Component */}
           <EventPosts eventId={eventId} />
         </div>
       </div>
