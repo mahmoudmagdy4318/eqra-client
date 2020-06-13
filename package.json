@@ -34,7 +34,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-toastify": "^6.0.5",
-    "react-uuid": "^1.0.2",
     "toastify": "^2.0.0"
   },
   "scripts": {
