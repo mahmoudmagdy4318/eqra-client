@@ -7,6 +7,7 @@ import "./EventDetails.css";
 // Component
 import EventPosts from './EventPosts';
 import UserEventState from "./UserEventState";
+import Moment from "react-moment";
 const EventDetails = (props) => {
   const eventId = props.match.params.id;
   const {
@@ -31,9 +32,9 @@ const EventDetails = (props) => {
               fontSize={"large"}
               color={"error"}
             ></CalendarTodayIcon>
-            <p className="eventDate">
-              {event.start_date} – {event.end_date}
-            </p>
+            <p className="eventDate bigSize">
+                      <Moment format="D MMM YYYY" withTitle>{event.start_date}</Moment> - <Moment format="D MMM YYYY" withTitle>{event.end_date}</Moment>
+              </p>
             <h3 class="h3">{event.name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">

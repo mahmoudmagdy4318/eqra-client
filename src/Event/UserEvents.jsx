@@ -14,7 +14,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import axiosInstance from "../API/axiosInstance";
 import { Link } from "react-router-dom";
-
+import Moment from "react-moment";
 
 const UserEvents = (props) => {
   const classes = useStyles();
@@ -78,7 +78,7 @@ const UserEvents = (props) => {
                   <Typography gutterBottom variant="h5" component="h2">
                     {event.name}
                     <p className="eventDate">
-                      {event.start_date} - {event.end_date}
+                      <Moment format="D MMM YYYY" withTitle>{event.start_date}</Moment> - <Moment format="D MMM YYYY" withTitle>{event.end_date}</Moment>
                     </p>
                   </Typography>
                   <Typography

@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Moment from 'react-moment';
 import axiosInstance from '../API/axiosInstance';
 // Included Component
 import EventNavBar from './EventNavbar';
@@ -58,8 +59,8 @@ const AllEvents = (props) => {
                     {event.name}
                     </Typography>
                     <Typography>
-                    <p className="eventDate smallSize">
-                      {event.start_date} - {event.end_date}
+                    <p className="eventDate">
+                      <Moment format="D MMM YYYY" withTitle>{event.start_date}</Moment> - <Moment format="D MMM YYYY" withTitle>{event.end_date}</Moment>
                     </p>
                     </Typography>
                     <br/>
