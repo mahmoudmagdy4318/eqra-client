@@ -13,6 +13,7 @@ import axiosInstance from '../API/axiosInstance';
 import EventNavBar from './EventNavbar';
 import UserEvents from  './UserEvents';
 import './AllEvents.css';
+import { Link } from 'react-router-dom';
 const AllEvents = (props) => {
     const classes = useStyles();
     const [events, setEvents] = React.useState([]);
@@ -20,7 +21,6 @@ const AllEvents = (props) => {
     const getEvents = async () => {
         const allEvents = await axiosInstance.get("api/event");
         setEvents(allEvents.data);
-        console.log(allEvents.data);
     }
     React.useEffect(() => {
         getEvents();
@@ -37,15 +37,16 @@ const AllEvents = (props) => {
             </Typography>
             <div>
               <h3>Upcoming Events</h3>
-              <UserEvents/>
+              <UserEvents {...props}/>
             </div>
           </Container>
         </div>
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
+          <h2>Events You Many Interested In</h2>
           <Grid container spacing={4}>
             {events.map((event) => (
-              <Grid item key={event.id} xs={12} sm={6} md={4}>
+              <Grid item key={event.id} xs={12} sm={6} md={6}>
                 <Card className={classes.card} onClick={() => props.history.push(`/event/${event.id}`)}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -57,16 +58,22 @@ const AllEvents = (props) => {
                     {event.name}
                     </Typography>
                     <Typography>
+                    <p className="eventDate smallSize">
+                      {event.start_date} - {event.end_date}
+                    </p>
+                    </Typography>
+                    <br/>
+                    <Typography>
                     {event.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      View
-                    </Button>
-                    <Button size="small" color="primary">
-                      Edit
-                    </Button>
+                  <Button size="small" color="primary">
+                  <Link>Share</Link>
+                </Button>
+                <Button size="small" color="primary">
+                  <Link to={`/event/${event.id}`}>See More..</Link>
+                </Button>
                   </CardActions>
                 </Card>
               </Grid>

@@ -1,3 +1,14 @@
 .eventsContainers{
     margin-top: 10px;
 }
+.eventDate{
+    margin-bottom: -3px;
+    color: tomato;
+    font-weight: bold;
+}
+.eventRecords{
+    float: right;
+}
+.smallSize{
+    font-size: 12px;
+}

@@ -9,7 +9,6 @@ const Provider = (props) => {
     http
       .get("http://localhost:8000/api/auth/user")
       .then(({ data: { user } }) => {
-        debugger;
         setUser(user);
       });
 

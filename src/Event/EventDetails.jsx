@@ -12,8 +12,6 @@ const EventDetails = (props) => {
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
-  const [post, setPost] = React.useState({ body_content: "", eventId });
-  const [posts, setPosts] = useState([]);
   const [event, setEvent] = useState({});
 
   const getEvent = async () => {
