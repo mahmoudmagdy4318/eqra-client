@@ -23,6 +23,7 @@ import HomeIcon from "@material-ui/icons/Home";
 import MessageIcon from "@material-ui/icons/Message";
 import PersonIcon from "@material-ui/icons/Person";
 import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 const EventNavBar = (props) => {
   const {
     data: { user: currentUser },
@@ -72,7 +73,11 @@ const EventNavBar = (props) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <Link to="/logout" className="disable-link">
+          Logout
+        </Link>
+      </MenuItem>
     </Menu>
   );
 
@@ -146,18 +151,22 @@ const EventNavBar = (props) => {
             }}
           >
             <MenuList>
-              <MenuItem>
-                <ListItemIcon>
-                  <HomeIcon fontSize="medium" color={"primary"} />
-                </ListItemIcon>
-                <Typography variant="inherit">Home</Typography>
-              </MenuItem>
-              <MenuItem>
-                <ListItemIcon>
-                  <PersonIcon fontSize="medium" color={"primary"} />
-                </ListItemIcon>
-                <Typography variant="inherit">Profile</Typography>
-              </MenuItem>
+              <Link to="/" className="disable-link ">
+                <MenuItem>
+                  <ListItemIcon>
+                    <HomeIcon fontSize="medium" color={"primary"} />
+                  </ListItemIcon>
+                  <Typography variant="inherit">Home </Typography>
+                </MenuItem>
+              </Link>
+              <Link className="disable-link " to={`/profile/${currentUser.id}`}>
+                <MenuItem>
+                  <ListItemIcon>
+                    <PersonIcon fontSize="medium" color={"primary"} />
+                  </ListItemIcon>
+                  <Typography variant="inherit"> Profile</Typography>
+                </MenuItem>
+              </Link>
               <MenuItem>
                 <ListItemIcon>
                   <NotificationsIcon fontSize="medium" color={"primary"} />
@@ -191,8 +200,8 @@ const EventNavBar = (props) => {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {currentUser.role === "writer" ? (
-              <Button 
-              href="/newEvent"
+              <Button
+                href="/newEvent"
                 variant="contained"
                 color="primary"
                 size="small"

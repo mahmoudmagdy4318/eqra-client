@@ -12,3 +12,10 @@
 .smallSize{
     font-size: 12px;
 }
+.disable-link {
+    color:black;
+    
+  }
+.disable-link:hover{
+    text-decoration: none;
+}

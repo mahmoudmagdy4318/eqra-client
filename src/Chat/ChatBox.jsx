@@ -28,9 +28,7 @@ const ChatBox = () => {
       },
     },
   });
-  debugger;
   useEffect(() => {
-    debugger;
     if (!currentUser.id) return;
     console.log("one", currentUser);
     const channel = pusher.subscribe("private-chat." + currentUser.id);
