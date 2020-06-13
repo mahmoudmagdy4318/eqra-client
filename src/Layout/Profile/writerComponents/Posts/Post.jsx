@@ -10,6 +10,7 @@ const Post = ({ name }) => {
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
+  let [postId, setPostId] = useState(0);
 
   let [currPage, setCurrPage] = useState(1);
   let [lastPage, setLastPage] = useState(1);
@@ -35,9 +36,8 @@ const Post = ({ name }) => {
   const deletePost = (id) => async () => {
     try {
       await axiosInstance.delete(`api/post/${id}`);
-      setPostList(postList.filter((p) => p.id !== id));
+      setPostList(postList.filter(p => p.id !== id));
       setAnchorEl(null);
-
     } catch (error) {
       console.log(error);
     }
@@ -47,14 +47,16 @@ const Post = ({ name }) => {
     axiosInstance.get(`/api/userposts?page=${currPage}`)
       .then((data) => {
         console.log("server response : ", data);
-        setPostList(...postList, data.data);
+        setPostList([...postList, ...data.data]);
+        setLastPage(data.meta.last_page);
       })
   }, [currPage])
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
+  const handleClick = (event,id) => {
     setAnchorEl(event.currentTarget);
+    setPostId(id)
   };
 
   const handleClose = () => {
@@ -111,17 +113,17 @@ const Post = ({ name }) => {
             return (
               <>
                 <Card className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
-                  <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                  <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e)=>handleClick(e,post.id)}>
                     <ExpandMoreIcon />
                   </Button>
                   <Menu
-                    id="simple-menu"
+                    id={`post-${post.id}`}
                     anchorEl={anchorEl}
                     keepMounted
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
-                    <MenuItem onClick={deletePost(post.id)}>Delete</MenuItem>
+                    <MenuItem onClick={deletePost(postId)}>Delete {postId}</MenuItem>
                     <MenuItem onClick={handleClose}>Edit</MenuItem>
                   </Menu>
                   <CardContent className={styles.posts_showPosts_body} >
