@@ -43,7 +43,8 @@
 .post-con-last {
   display: flex;
   flex-direction: row;
-  justify-content: space-flex-start;
+  justify-content: space-between;
+  align-items: center;
 }
 .post {
   background-color: #303f9f;

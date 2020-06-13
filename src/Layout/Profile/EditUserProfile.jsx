@@ -6,23 +6,25 @@ import Home from "../Home";
 import axiosInstance from "../../API/axiosInstance";
 const EditUserProfile = () => {
   const currentUser = useContext(UserContext);
+  console.log(currentUser)
   const [profileData, updateProfileData] = useState({});
-  const [firstName, updateFirstName] = useState(currentUser.first_name);
-  const [lastName, updateLasttName] = useState(currentUser.last_name);
-  const [username, updateUserName] = useState(currentUser.username);
-  // const [pictur, updatePictur] = useState(currentUser.pictur);
-  const [fileData, updateFileData] = useState(currentUser.pictur);
-  const [displayedPic, dispaly] = useState("http://localhost:8000");
+  const [firstName, updateFirstName] = useState(profileData.first_name);
+  const [lastName, updateLasttName] = useState(profileData.last_name);
+  const [username, updateUserName] = useState(profileData.username);
+  const [fileData, updateFileData] = useState(profileData.pictur);
+  const [originalFile,updateOriginalFile]=useState();
 
-  // console.log(currentUser);
   useEffect(() => {
     updateProfileData(currentUser);
   });
-  // useEffect(() => { 
-  //   if(fileData != null &&  fileData instanceof File == false){
-  //     updateFileData("http://localhost:8000")
-  //   }
-  // });
+  useEffect(() => {
+    updateFirstName(currentUser.first_name);
+    updateLasttName(currentUser.last_name)
+    updateUserName(currentUser.username);
+    updateFileData(currentUser.pictur);
+    updateOriginalFile('');
+
+  }, [profileData]);
   const onChange = (e) => {
     console.log(e.target.files);
     let files = e.target.files || e.dataTransfer.files;
@@ -30,30 +32,27 @@ const EditUserProfile = () => {
     createImage(files[0]);
   };
   const createImage = (file) => {
+    //sent file
+    updateOriginalFile(file)
     let reader = new FileReader();
     reader.onload = (e) => {
       updateFileData(e.target.result);
+     
     };
     reader.readAsDataURL(file);
+    //displayed file
     updateFileData(file);
   };
-  const fileUpload = async (image) => {
+  const fileUpload = async () => {
     const formData = new FormData();
-    // formData.append("pictur", image);
-    console.log(firstName);
     formData.append("id", currentUser.id);
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
     formData.append("full_name", `${firstName} ${lastName}`);
     formData.append("username", username);
-    // if (fileData instanceof File){
-    formData.append("pictur", fileData);
-    // }
+    formData.append("pictur", originalFile);
     formData.append("_method", "PUT");
 
-    for (var key of formData.entries()) {
-      console.log(key[0] + ", " + key[1]);
-    }
     try {
       const url = await axiosInstance.post(`api/auth/users/edit`, formData);
       console.log(url);
@@ -64,13 +63,13 @@ const EditUserProfile = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     // this.fileUpload(this.state.image);
-    console.log(fileData);
-    fileUpload(fileData);
+    // console.log(fileData);
+    fileUpload(originalFile);
   };
   return (
     <div class="container bootstrap snippets">
       <div class="row">
-        <div class="col-xs-12 col-sm-9">
+        <div class="col-sm-12">
           <form
             class="form-horizontal"
             onSubmit={onFormSubmit}
@@ -89,26 +88,29 @@ const EditUserProfile = () => {
 
                   <img
                     class="img-circle profile-avatar"
-                    src={fileData}
+                    src={toString(fileData).startsWith('/storage')?`http://localhost:8000${fileData}`:fileData}
                     alt="User avatar"
                   />
                 }
 
                 <div class="p-image">
-                  <FontAwesomeIcon
-                    item
-                    icon="camera"
-                    size="1x"
-                    className="mt-3 mx-1 upload-button"
-                  />
-
+             
                   <input
                     type="file"
                     onChange={(e) => {
                       onChange(e);
                     }}
                     accept="image/*"
+                    style={{ display: 'none' }} id="icon-camera-file"
                   />
+                  <label htmlFor="icon-camera-file">
+                    <FontAwesomeIcon
+                      item
+                      icon="camera"
+                      size="1x"
+                      className="mt-3 mx-1 upload-button"
+                    />
+                  </label>
                 </div>
               </div>
             </div>
@@ -121,12 +123,10 @@ const EditUserProfile = () => {
                   <div class="col-sm-10">
                     <label class=" control-label">First name</label>
                     <input
-                      onChange={(e) => {
-                        updateFirstName(e.target.value);
-                      }}
+                      onChange={(e) => {updateFirstName(e.target.value)}}
                       type="text"
                       class="form-control"
-                      defaultValue={profileData.first_name}
+                    defaultValue={firstName}
                     />
                   </div>
                 </div>
@@ -137,9 +137,10 @@ const EditUserProfile = () => {
                       type="text"
                       onChange={(e) => {
                         updateLasttName(e.target.value);
+                        console.log(lastName)
                       }}
                       class="form-control"
-                      defaultValue={profileData.last_name}
+                      defaultValue={lastName}
                     />
                   </div>
                 </div>
@@ -152,7 +153,7 @@ const EditUserProfile = () => {
                       onChange={(e) => {
                         updateUserName(e.target.value);
                       }}
-                      defaultValue={profileData.username}
+                      defaultValue={username}
                     />
                   </div>
                 </div>
@@ -161,17 +162,10 @@ const EditUserProfile = () => {
                     <button type="submit" class="btn btn-primary">
                       Submit
                     </button>
-                    <button type="reset" class="btn btn-default">
-                      Cancel
-                    </button>
+
                   </div>
                 </div>
-                {/* <div class="form-group">
-                <label class="col-sm-2 control-label">Work address</label>
-                <div class="col-sm-10">
-                  <textarea rows="3" class="form-control"></textarea>
-                </div>
-              </div> */}
+           
               </div>
             </div>
           </form>

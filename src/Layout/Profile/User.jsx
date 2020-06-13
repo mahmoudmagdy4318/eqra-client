@@ -14,6 +14,7 @@ import {
   ListItemText,
   Input,
   InputLabel,
+  Button,
 } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -71,6 +72,9 @@ const User = (props) => {
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [newPostData, setNewPostData] = useState({});
   const [newPostFile, setNewPostFile] = useState(null);
+  const[myfollowers,updateFollowers]=useState(0)
+  const [myfollowing, updateFollowing] = useState(0)
+
   const history = useHistory();
   useEffect(() => {
     console.log(id);
@@ -109,7 +113,8 @@ const User = (props) => {
       )),
     [categories.length, checkedCategories.length]
   );
-  const submitPost = () => {
+  const submitPost = (e) => {
+    e.preventDefault();
     const obj = {};
     checkedCategories.forEach((element) => {
       obj[element] = element;
@@ -172,6 +177,42 @@ const User = (props) => {
   const editProfile = () => {
     history.push(`/editprofile`);
   };
+  const bringFollowers=async() =>{
+    try{ 
+    const followers = await axiosInstance.get(`api/my-followers`);
+    // console.log(followers);
+      updateFollowers(followers.length)
+    }catch(error){
+      console.log(error)
+    }
+  }
+  const following = async () => {
+    try {
+      const following = await axiosInstance.get(`api/persons-i-follow`);
+      updateFollowing(following.length)
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  useEffect(() =>{
+    bringFollowers()
+    following()
+  })
+  const submitEditingPost = (postData) => {
+    console.log(postData);
+    return axiosInstance
+      .patch(`/api/post/${postData.id}`, postData)
+      .then((res) => {
+        console.log(res);
+        setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
+      });
+  };
+  const handleSubmitAddingComment = (newComment) => {
+    console.log(newComment);
+    return axiosInstance.post("api/comment", newComment);
+ 
+  };
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -185,7 +226,8 @@ const User = (props) => {
             )}
             {currentUser.pictur != null && (
               <img
-                src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                src={`http://localhost:8000${currentUser.pictur}`}
+
                 alt=""
               />
             )}
@@ -232,10 +274,10 @@ const User = (props) => {
           <div class="profile-cover__info">
             <ul class="nav">
               <li>
-                <strong>33</strong>Followers
+            <strong>{myfollowers}</strong>Followers
               </li>
               <li>
-                <strong>136</strong>Following
+            <strong>{myfollowing}</strong>Following
               </li>
             </ul>
           </div>
@@ -254,30 +296,17 @@ const User = (props) => {
                 onChange={handleInput}
               ></textarea>
               <div class="actions">
-                {/* <div class="btn-group"> */}
-                  {/* <button
-                    type="button"
-                    class="btn-link"
-                    title=""
-                    data-toggle="tooltip"
-                    data-original-title="Post an Image"
-                  > */}
-                  {/* <input
-                    accept="image/*"
-                    id="icon-button-file"
-                    type="file"
-                    name="postFiles"
-                    onChange={handleFileInput}
-                  /> */}
+                <input accept="image/*" type="file"  style={{ display: 'none' }} id="icon-button-file" />
+                <label htmlFor="icon-button-file">
                   <FontAwesomeIcon
                     item
                     icon="image"
-                    size="1x"
+                    size="2x"
                     className="mt-3 mx-1"
                   />
-                  {/* </button> */}
+                </label>
                   <div>
-                  <FormControl className={classes.formControl}>
+                  <FormControl className={classes.formControl} >
                     <InputLabel id="demo-mutiple-checkbox-label">
                       Select a category or more
                     </InputLabel>
@@ -300,7 +329,7 @@ const User = (props) => {
                 <button
                   type="submit"
                   class="btn btn-sm btn-rounded btn-info"
-                  onClick={submitPost}
+                  onClick={(e)=>{submitPost(e)}}
                 >
                   Post
                 </button>
@@ -325,6 +354,8 @@ const User = (props) => {
                     click={handlePostClick}
                     handleDeletePost={handleDeletePost}
                     onLike={() => handleLike(p.id)}
+                    submitEditingPost={submitEditingPost}
+                    onSubmitAddingComment={handleSubmitAddingComment}
                   />
                 );
               })}
