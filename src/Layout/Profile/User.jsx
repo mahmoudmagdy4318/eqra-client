@@ -61,7 +61,9 @@ const MenuProps = {
   },
 };
 const User = (props) => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const classes = useStyles();
   const { id } = props;
   const [personName, setPersonName] = React.useState([]);
@@ -79,13 +81,7 @@ const User = (props) => {
   useEffect(() => {
     console.log(id);
   });
-  // const getUserData = async () => {
-  //   console.log("call");
-  //   const userData = await axiosInstance.get(`api/auth/user`);
-  //   console.log(userData);
-  //   // setPosts([...posts, ...postsData.data]);
-  //   // setLastPage(postsData.meta.last_page);
-  // };
+
   const handleInput = (e) => {
     setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
   };
@@ -359,7 +355,6 @@ const User = (props) => {
                   />
                 );
               })}
-            
             </InfiniteScroll>
           </div>
         </div>

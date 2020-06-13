@@ -74,7 +74,9 @@ function getStyles(name, personName, theme) {
 }
 
 const Test = () => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   // console.log("====================================");
   // console.log(currentUser);
   // console.log("====================================");

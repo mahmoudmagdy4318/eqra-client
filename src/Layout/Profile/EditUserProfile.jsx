@@ -5,8 +5,9 @@ import { UserContext } from "../../context/userContext";
 import Home from "../Home";
 import axiosInstance from "../../API/axiosInstance";
 const EditUserProfile = () => {
-  const currentUser = useContext(UserContext);
-  console.log(currentUser)
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const [profileData, updateProfileData] = useState({});
   const [firstName, updateFirstName] = useState(profileData.first_name);
   const [lastName, updateLasttName] = useState(profileData.last_name);
@@ -84,14 +85,13 @@ const EditUserProfile = () => {
                     alt="User avatar"
                   />
                 )}
-                {fileData != null &&
-
+                {fileData != null && (
                   <img
                     class="img-circle profile-avatar"
                     src={toString(fileData).startsWith('/storage')?`http://localhost:8000${fileData}`:fileData}
                     alt="User avatar"
                   />
-                }
+                )}
 
                 <div class="p-image">
              

@@ -11,23 +11,23 @@ export async function login(email, password) {
     password,
   });
   localStorage.setItem(tokenKey, "Bearer " + data.access_token);
-  localStorage.setItem('role', data.role);
-
+  localStorage.setItem("role", data.role);
+  return data;
 }
 
-export function loginWithJwt(jwt,role) {
+export function loginWithJwt(jwt, role) {
   localStorage.setItem(tokenKey, jwt);
-  localStorage.setItem('role', role);
+  localStorage.setItem("role", role);
 }
 
 export async function logout() {
   localStorage.removeItem(tokenKey);
-  localStorage.removeItem('role');
-  await http.get(apiEndPoint+'/logout');
+  localStorage.removeItem("role");
+  await http.get(apiEndPoint + "/logout");
 }
 
 export function getCurrentUser() {
-    return http.get(apiEndPoint+'/user');
+  return http.get(apiEndPoint + "/user");
 }
 
 export function getJwt() {

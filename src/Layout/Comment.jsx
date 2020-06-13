@@ -14,7 +14,9 @@ const Comment = (props) => {
   const [timePassed, setTimePassed] = useState("");
   const [togglePopUp, setTogglePopUp] = useState(false);
   const [toggleEditPopUp, setToggleEditPopUp] = useState(false);
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
 
   const getDateDifference = (timeToCompare) => {
     const dateNow = new Date();

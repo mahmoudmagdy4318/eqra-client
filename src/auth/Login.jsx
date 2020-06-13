@@ -1,24 +1,21 @@
-import React, { useState,useContext } from 'react';
-import { Redirect } from "react-router-dom";
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { Snackbar } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
-import auth from '../services/authService';
-import http from '../services/httpService';
-import axiosInstance from "../API/axiosInstance"
-import UserContext from '../context/userContext';
-
-
-
+import React, { useState, useContext } from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import Avatar from "@material-ui/core/Avatar";
+import Button from "@material-ui/core/Button";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import TextField from "@material-ui/core/TextField";
+import Link from "@material-ui/core/Link";
+import Grid from "@material-ui/core/Grid";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { Snackbar } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import auth from "../services/authService";
+import http from "../services/httpService";
+import axiosInstance from "../API/axiosInstance";
+import { UserContext } from "../context/userContext";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -26,16 +23,16 @@ function Alert(props) {
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -44,44 +41,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login(props) {
-
   let [user, setUser] = useState({
     email: "",
     password: "",
-    remember_me: false
+    remember_me: false,
   });
+  const {
+    actions: { setAuthData },
+  } = useContext(UserContext);
   const [warning, setWarning] = React.useState(false);
   const [error, setError] = React.useState(false);
-
+  const histoy = useHistory();
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setWarning(false);
   };
-  const updateField = e => {
+  const updateField = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const logIn = async (e) => {
+    debugger;
     e.preventDefault();
-    if (user.email === "" || user.password === "")
-      setWarning(true);
+    if (user.email === "" || user.password === "") setWarning(true);
     else
       try {
-        const {data}=await auth.login(user.email,user.password);
-        http.setJwt("Bearer "+ data.access_token);
-        window.location='/';
+        const data = await auth.login(user.email, user.password);
+        http.setJwt("Bearer " + data.access_token);
+        debugger;
+        setAuthData();
+        histoy.push("/");
       } catch (error) {
         setError(true);
       }
   };
   const classes = useStyles();
 
-  if(auth.getJwt())return <Redirect to="/"/>
+  if (auth.getJwt()) {
+    debugger;
+    return <Redirect to="/" />;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <Snackbar open={warning} autoHideDuration={3000} onClose={handleClose}>
