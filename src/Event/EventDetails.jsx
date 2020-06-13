@@ -3,17 +3,16 @@ import axiosInstance from "../API/axiosInstance";
 import Home from "../Layout/Home";
 import { UserContext } from "../context/userContext";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import EventPosts from "./EventPosts";
 import "./EventDetails.css";
 // Component
+import EventPosts from './EventPosts';
 import UserEventState from "./UserEventState";
+import Moment from "react-moment";
 const EventDetails = (props) => {
   const eventId = props.match.params.id;
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
-  const [post, setPost] = React.useState({ body_content: "", eventId });
-  const [posts, setPosts] = useState([]);
   const [event, setEvent] = useState({});
 
   const getEvent = async () => {
@@ -33,9 +32,9 @@ const EventDetails = (props) => {
               fontSize={"large"}
               color={"error"}
             ></CalendarTodayIcon>
-            <p className="eventDate">
-              {event.start_date} – {event.end_date}
-            </p>
+            <p className="eventDate bigSize">
+                      <Moment format="D MMM YYYY" withTitle>{event.start_date}</Moment> - <Moment format="D MMM YYYY" withTitle>{event.end_date}</Moment>
+              </p>
             <h3 class="h3">{event.name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
@@ -69,6 +68,7 @@ const EventDetails = (props) => {
           <div class="panel-heading">
             <h3 class="panel-title">Discssion</h3>
           </div>
+          {/* Event Posts Component */}
           <EventPosts eventId={eventId} />
         </div>
       </div>

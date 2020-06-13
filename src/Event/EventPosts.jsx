@@ -5,19 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InfiniteScroll from "react-infinite-scroll-component";
 import axiosInstance from "../API/axiosInstance";
 import { useHistory } from "react-router-dom";
+import './EventPosts.css';
 const EventPosts = (props) => {
   const eventId = props.eventId;
-
   const currentUser = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [categories, setCategories] = useState([]);
-  const [checkedCategories, setCheckedCategories] = useState([]);
   const [newPostData, setNewPostData] = useState({eventId: eventId});
   const [newPostFile, setNewPostFile] = useState(null);
   const history = useHistory();
-  
   
   const handleInput = (e) => {
     setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
@@ -54,18 +51,11 @@ const EventPosts = (props) => {
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
   };
-  const getCategories = async () => {
-    const catData = await axiosInstance.get(`api/genre`);
-    setCategories(catData);
-  };
 
   useEffect(() => {
     getPosts();
   }, [currPage]);
 
-  useEffect(() => {
-    getCategories();
-  }, []);
   const handlePostClick = (id) => {
     history.push(`/post/${id}`);
   };
@@ -79,14 +69,12 @@ const EventPosts = (props) => {
     }
   };
 
-  const submitEditingPost = (postData) => {
+  const submitEditingPost = async (postData) => {
     console.log(postData);
-    return axiosInstance
-      .patch(`/api/post/${postData.id}`, postData)
-      .then((res) => {
-        console.log(res);
-        setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
-      });
+    const res = await axiosInstance
+      .patch(`/api/post/${postData.id}`, postData);
+    console.log(res);
+    setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
   };
   const handleLike = async (id) => {
     try {
@@ -104,12 +92,8 @@ const EventPosts = (props) => {
   };
 
   const handleSubmitAddingComment = (newComment) => {
-    // try {
     console.log(newComment);
     return axiosInstance.post("api/comment", newComment);
-    // } catch (err) {
-    // console.log(err);
-    // }
   };
   return (
     <div class="panel-content panel-activity">
