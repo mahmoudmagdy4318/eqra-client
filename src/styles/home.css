@@ -60,6 +60,7 @@
   margin: auto;
   border-radius: 5px;
   background-color: #fff;
+  min-height: 700px;
 }
 .line {
   width: 100%;
