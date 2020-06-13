@@ -9,8 +9,13 @@ import EventPosts from './EventPosts';
 import UserEventState from "./UserEventState";
 const EventDetails = (props) => {
   const eventId = props.match.params.id;
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
+  const [post, setPost] = React.useState({ body_content: "", eventId });
+  const [posts, setPosts] = useState([]);
   const [event, setEvent] = useState({});
+
   const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
     setEvent(event.data);

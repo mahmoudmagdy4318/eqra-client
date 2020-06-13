@@ -37,7 +37,9 @@ const Post = (props) => {
     postId: postData.id,
   });
 
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   // console.log({ currentUser });
   const getDateDifference = (timeToCompare) => {
     const dateNow = new Date();

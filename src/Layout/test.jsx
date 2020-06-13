@@ -18,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/userContext";
 import auth from "../services/authService";
 import Home from "./Home";
+import '../styles/home.css';
 
 const textarea = document.getElementById("textar ea");
 
@@ -73,7 +74,9 @@ function getStyles(name, personName, theme) {
 }
 
 const Test = () => {
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   // console.log("====================================");
   // console.log(currentUser);
   // console.log("====================================");
@@ -220,15 +223,33 @@ const Test = () => {
     <div className={classes.maincontainer}>
       <div className="con">
         <div className="post-con mt-md-2 mb-md-1">
-          <img
+          {/* <img
             src={require("../assets/download.png")}
             className="avatar ml-2"
             alt=""
-          />
+          /> */}
+          {currentUser.pictur == null && (
+            <img
+              src="https://bootdey.com/img/Content/avatar/avatar6.png"
+              alt=""
+              width="60"
+              height="60"
+              style={{"width":"80px","height":"80px"}}
+            />
+          )}
+          {currentUser.pictur != null && (
+            <img
+              src={`http://localhost:8000${currentUser.pictur}`}
+              width="60"
+              height="60"
+              alt=""
+              className="ml-2"
+              style={{"width":"80px","height":"80px"}}            />
+          )}
           {/* ****************************************** */}
           <TextareaAutosize
             aria-label="minimum height"
-            rowsMin={3}
+            rowsMin={5}
             rowsMax={8}
             placeholder="Write a post"
             class="write-area ml-4"
@@ -236,7 +257,7 @@ const Test = () => {
             onChange={handleInput}
           />
         </div>
-        <div className="post-con-last ml-md-2 mb-2">
+        <div className="post-con-last ml-md-2 mb-2 mt-md-5">
           <input
             accept="image/*"
             className={classes.input}
@@ -276,9 +297,15 @@ const Test = () => {
               {categoryMenu}
             </Select>
           </FormControl>
+          <button
+            className=" btn-primary mr-md-4  px-4 py-2 post"
+            onClick={submitPost}
+          >
+            Post
+          </button>
           {/* ******************************************** */}
         </div>
-        <Grid
+        {/* <Grid
           container
           xs={12}
           justify={"flex-end"}
@@ -291,7 +318,7 @@ const Test = () => {
           >
             Post
           </button>
-        </Grid>
+        </Grid> */}
       </div>
       <hr className="line"></hr>
       {/* ************************************************ */}
