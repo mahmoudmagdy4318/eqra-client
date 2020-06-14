@@ -6,7 +6,9 @@ import styles from './post.module.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
 
-const Post = ({ name }) => {
+const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
+  console.log(userid);
+  
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
@@ -17,11 +19,12 @@ const Post = ({ name }) => {
 
   const newPost = () => {
     if (postBody !== "") {
+      // featured ? setNewFeaturedPosts(true) : '';
       let newPostData = {
         body_content: postBody,
         genres: [1],
         isFeatured: featured,
-      }
+      };
       axiosInstance
         .post("api/post", newPostData)
         .then((res) => {
@@ -44,19 +47,20 @@ const Post = ({ name }) => {
   };
 
   useEffect(() => {
-    axiosInstance.get(`/api/userposts?page=${currPage}`)
+    axiosInstance.get(`api/userposts/${userid}?page=${currPage}`)
       .then((data) => {
         console.log("server response : ", data);
         setPostList([...postList, ...data.data]);
         setLastPage(data.meta.last_page);
       })
-  }, [currPage])
+      .catch(err=>console.log(err));
+  }, [currPage]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event,id) => {
+  const handleClick = (event, id) => {
     setAnchorEl(event.currentTarget);
-    setPostId(id)
+    setPostId(id);
   };
 
   const handleClose = () => {
@@ -113,7 +117,7 @@ const Post = ({ name }) => {
             return (
               <>
                 <Card className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
-                  <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e)=>handleClick(e,post.id)}>
+                  <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post.id)}>
                     <ExpandMoreIcon />
                   </Button>
                   <Menu
@@ -128,7 +132,7 @@ const Post = ({ name }) => {
                   </Menu>
                   <CardContent className={styles.posts_showPosts_body} >
                     <div className={styles.posts_showPosts_body_title} >
-                      <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png" alt="" />
+                      <img src={image} alt="" />
                       <Typography color="textSecondary" className={styles.posts_showPosts_body_title_username} gutterBottom>
                         {name}
                       </Typography>
@@ -141,7 +145,7 @@ const Post = ({ name }) => {
                     <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
                   </CardActions>
                 </Card>
-                <br />
+                <br />;
               </>
             )
           })}
