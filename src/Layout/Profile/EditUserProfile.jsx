@@ -114,32 +114,7 @@ const EditUserProfile = () => {
     <div class="container bootstrap snippets">
       <div class="row">
         <div class="col-sm-12">
-          {/* <form  class="form-horizontal"
-            onSubmit={onFormSubmit}
-            encType="multipart/form-data" noValidate autoComplete="off">
-            <div>
-              <TextField
-                error={true}
-                id="standard-error-helper-text"
-                label="First name"
-                defaultValue="Hello World"
-                helperText=""
-              />
-              </div>
-            <TextField
-              id="outlined-full-width"
-              label="Label"
-              style={{ margin: 8 }}
-              placeholder="Placeholder"
-              helperText="Full width!"
-              fullWidth
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-            />
-              </form> */}
+       
           <form
             class="form-horizontal"
             onSubmit={onFormSubmit}
@@ -189,17 +164,7 @@ const EditUserProfile = () => {
                 <h4 class="panel-title">Information</h4>
               </div>
               <div class="panel-body">
-                {/* <div class="form-group">
-                  <div class="col-sm-10">
-                    <label class=" control-label">First name</label>
-                    <input
-                      onChange={(e) => {updateFirstName(e.target.value)}}
-                      type="text"
-                      class="form-control"
-                    defaultValue={firstName}
-                    />
-                  </div>
-                </div> */}
+            
                 <TextField
                   id="outlined-full-width"
                   error={firstNameVal.error}
@@ -219,20 +184,7 @@ const EditUserProfile = () => {
                 
                  
                 />
-                {/* <div class="form-group">
-                  <div class="col-sm-10">
-                    <label class="control-label">Last name</label>
-                    <input
-                      type="text"
-                      onChange={(e) => {
-                        updateLasttName(e.target.value);
-                        console.log(lastName)
-                      }}
-                      class="form-control"
-                      defaultValue={lastName}
-                    />
-                  </div>
-                </div> */}
+              
                 <TextField
                   id="outlined-full-width"
                   error={lastNameVal.error}
@@ -251,19 +203,7 @@ const EditUserProfile = () => {
 
 
                 />
-                {/* <div class="form-group">
-                  <div class="col-sm-10">
-                    <label class=" control-label">username</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      onChange={(e) => {
-                        updateUserName(e.target.value);
-                      }}
-                      defaultValue={username}
-                    />
-                  </div>
-                </div> */}
+         
                 <TextField
                   id="outlined-full-width"
                   error={usernameVal.error}

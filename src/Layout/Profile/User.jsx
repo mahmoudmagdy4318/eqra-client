@@ -78,6 +78,7 @@ const User = (props) => {
   const [myfollowers, updateFollowers] = useState(0);
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
+  const [followText,updateFollowText]=useState("");
 
   const history = useHistory();
   useEffect(() => {
@@ -93,6 +94,7 @@ const User = (props) => {
     try {
       const data = await axiosInstance.get(`api/auth/getuser/${id}`);
       updateMyUser(data.user);
+    
     } catch (error) {
       console.error(error);
     }
@@ -270,7 +272,7 @@ const User = (props) => {
                   size="1x"
                   className="mt-3 mx-1"
                 />
-                <span>Follow</span>
+                <span>{followText}</span>
               </button>
             )}
             <button class="btn btn-rounded btn-info">
