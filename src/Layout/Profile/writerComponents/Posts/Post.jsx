@@ -7,8 +7,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
 
 const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
-  console.log('userid', userid);
-
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
@@ -39,8 +37,8 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
   const deletePost = (id) => async () => {
     try {
       await axiosInstance.delete(`api/post/${id}`);
-      setPostList(postList.filter(p => p.id !== id));
       setAnchorEl(null);
+      setPostList(postList.filter(p => p.id !== id));
     } catch (error) {
       console.log(error);
     }
@@ -49,7 +47,6 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
   useEffect(() => {
     axiosInstance.get(`api/userposts/${userid}?page=${currPage}`)
       .then((data) => {
-        console.log("server response : ", data);
         setPostList([...postList, ...data.data]);
         setLastPage(data.meta.last_page);
       })
@@ -115,38 +112,35 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
         >
           {postList.map((post) => {
             return (
-              <>
-                <Card className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
-                  <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post.id)}>
-                    <ExpandMoreIcon />
-                  </Button>
-                  <Menu
-                    id={`post-${post.id}`}
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem onClick={deletePost(postId)}>Delete {postId}</MenuItem>
-                    <MenuItem onClick={handleClose}>Edit</MenuItem>
-                  </Menu>
-                  <CardContent className={styles.posts_showPosts_body} >
-                    <div className={styles.posts_showPosts_body_title} >
-                      <img src={image} alt="" />
-                      <Typography color="textSecondary" className={styles.posts_showPosts_body_title_username} gutterBottom>
-                        {name}
-                      </Typography>
-                    </div>
-                    <Typography variant="body2" component="p">
-                      {post.body_content}
+              <Card className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
+                <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post.id)}>
+                  <ExpandMoreIcon />
+                </Button>
+                <Menu
+                  id={`post-${post.id}`}
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem onClick={deletePost(postId)}>Delete</MenuItem>
+                  <MenuItem onClick={handleClose}>Edit</MenuItem>
+                </Menu>
+                <CardContent className={styles.posts_showPosts_body} >
+                  <div className={styles.posts_showPosts_body_title} >
+                    <img src={image} alt="" />
+                    <Typography color="textSecondary" className={styles.posts_showPosts_body_title_username} gutterBottom>
+                      {name}
                     </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
-                  </CardActions>
-                </Card>
-                <br />
-              </>
+                  </div>
+                  <Typography variant="body2" component="p">
+                    {post.body_content}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
+                </CardActions>
+              </Card>
             )
           })}
         </InfiniteScroll>

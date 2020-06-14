@@ -23,6 +23,7 @@
 .root{
   background: yellow;
   position: relative;
+  margin-bottom: 15px;
 }
 .root .posts_showPosts_body{
   padding-bottom: 0;

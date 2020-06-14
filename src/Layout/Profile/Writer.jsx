@@ -15,20 +15,21 @@ import axiosInstance from "../../API/axiosInstance";
 
 const Writer = () => {
   const { data: { user: currentUser }, } = useContext(UserContext);
+  console.log('currentUser',currentUser);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
+  const [followersFollowing, setFollowersFollowing] = useState([])
 
   useEffect(() => {
     axiosInstance.get(`/api/userFeaturedPosts/${currentUser.id}`)
       .then((data) => {
-        console.log("server response : ", data);
         setFeaturedPostsList([...data.data]);
       })
       .catch(err=>console.log(err))
     setNewFeaturedPosts(false)
-  }, [newFeaturedPosts,currentUser.id])
 
-  console.log(currentUser);
+    axiosInstance.get('api/followersCount').then(data=>setFollowersFollowing(data))
+  }, [newFeaturedPosts,currentUser.id])
   return (
     <Container>
       <Link to="/" style={{ display: "block", padding: 10 }}>
@@ -41,8 +42,8 @@ const Writer = () => {
         image={currentUser.pictur ? currentUser.pictur
           : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
         }
-        followers={40}
-        following={25}
+        followers={followersFollowing.followers}
+        following={followersFollowing.following}
       />
 
       <section className={styles.grid}>
