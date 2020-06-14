@@ -7,8 +7,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
 
 const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
-  console.log(userid);
-  
+  console.log('userid', userid);
+
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
@@ -19,7 +19,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
 
   const newPost = () => {
     if (postBody !== "") {
-      // featured ? setNewFeaturedPosts(true) : '';
+      if (featured) { setNewFeaturedPosts(true) }
       let newPostData = {
         body_content: postBody,
         genres: [1],
@@ -53,8 +53,8 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
         setPostList([...postList, ...data.data]);
         setLastPage(data.meta.last_page);
       })
-      .catch(err=>console.log(err));
-  }, [currPage]);
+      .catch(err => console.log(err));
+  }, [currPage, userid]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -145,7 +145,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
                     <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
                   </CardActions>
                 </Card>
-                <br />;
+                <br />
               </>
             )
           })}

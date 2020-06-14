@@ -18,14 +18,15 @@ const Writer = () => {
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
 
-  // useEffect(() => {
-  //   axiosInstance.get(`/api/userFeaturedPosts`)
-  //     .then((data) => {
-  //       console.log("server response : ", data);
-  //       setFeaturedPostsList([...data.data]);
-  //     })
-  //   setNewFeaturedPosts(false)
-  // }, [newFeaturedPosts])
+  useEffect(() => {
+    axiosInstance.get(`/api/userFeaturedPosts/${currentUser.id}`)
+      .then((data) => {
+        console.log("server response : ", data);
+        setFeaturedPostsList([...data.data]);
+      })
+      .catch(err=>console.log(err))
+    setNewFeaturedPosts(false)
+  }, [newFeaturedPosts,currentUser.id])
 
   console.log(currentUser);
   return (
