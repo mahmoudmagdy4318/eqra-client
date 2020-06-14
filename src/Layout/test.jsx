@@ -223,11 +223,6 @@ const Test = () => {
     <div className={classes.maincontainer}>
       <div className="con">
         <div className="post-con mt-md-2 mb-md-1">
-          {/* <img
-            src={require("../assets/download.png")}
-            className="avatar ml-2"
-            alt=""
-          /> */}
           {currentUser.pictur == null && (
             <img
               src="https://bootdey.com/img/Content/avatar/avatar6.png"
@@ -305,20 +300,7 @@ const Test = () => {
           </button>
           {/* ******************************************** */}
         </div>
-        {/* <Grid
-          container
-          xs={12}
-          justify={"flex-end"}
-          style={{ color: "#b1bbc3" }}
-          className="mb-2"
-        >
-          <button
-            className=" btn-primary mr-md-4  px-4 py-2 post"
-            onClick={submitPost}
-          >
-            Post
-          </button>
-        </Grid> */}
+      
       </div>
       <hr className="line"></hr>
       {/* ************************************************ */}

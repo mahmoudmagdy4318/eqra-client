@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
+import { identity } from "lodash";
 
 // import "..
 const limit = 80;
@@ -74,13 +75,28 @@ const User = (props) => {
   const [checkedCategories, setCheckedCategories] = useState([]);
   const [newPostData, setNewPostData] = useState({});
   const [newPostFile, setNewPostFile] = useState(null);
-  const[myfollowers,updateFollowers]=useState(0)
-  const [myfollowing, updateFollowing] = useState(0)
+  const [myfollowers, updateFollowers] = useState(0);
+  const [myfollowing, updateFollowing] = useState(0);
+  const [myUser, updateMyUser] = useState({});
 
   const history = useHistory();
   useEffect(() => {
     console.log(id);
-  });
+    if (id == currentUser.id) {
+      updateMyUser(currentUser);
+    } else {
+      bringSpecificUser(id);
+    }
+    // getPosts(id);
+  }, [id]);
+  const bringSpecificUser = async (id) => {
+    try {
+      const data = await axiosInstance.get(`api/auth/getuser/${id}`);
+      updateMyUser(data.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleInput = (e) => {
     setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
@@ -127,20 +143,26 @@ const User = (props) => {
         postFiles: newPostFile,
       })
       .then((res) => {
-        console.log({ res });
+        // console.log({ res });
 
         setPosts([res.data, ...posts]);
       })
       .catch((err) => console.log({ err }));
   };
-  const getPosts = async () => {
-    const postsData = await axiosInstance.get(`api/userposts?page=${currPage}`);
-    console.log(postsData);
+  const getPosts = async (userid) => {
+    try{  
+    const postsData = await axiosInstance.get(
+      `api/userposts/${userid}?page=${currPage}`
+    );
+    // console.log(postsData);
     setPosts([...posts, ...postsData.data]);
     setLastPage(postsData.meta.last_page);
+    }catch(error){
+      console.log(error);
+    }
   };
   useEffect(() => {
-    getPosts();
+    getPosts(id);
   }, [currPage]);
 
   const handlePostClick = (id) => {
@@ -173,28 +195,27 @@ const User = (props) => {
   const editProfile = () => {
     history.push(`/editprofile`);
   };
-  const bringFollowers=async() =>{
-    try{ 
-    const followers = await axiosInstance.get(`api/my-followers`);
-    // console.log(followers);
-      updateFollowers(followers.length)
-    }catch(error){
-      console.log(error)
+  const bringFollowers = async () => {
+    try {
+      const followers = await axiosInstance.get(`api/my-followers`);
+      // console.log(followers);
+      updateFollowers(followers.length);
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
   const following = async () => {
     try {
       const following = await axiosInstance.get(`api/persons-i-follow`);
-      updateFollowing(following.length)
+      updateFollowing(following.length);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-
-  }
-  useEffect(() =>{
-    bringFollowers()
-    following()
-  })
+  };
+  useEffect(() => {
+    bringFollowers();
+    following();
+  });
   const submitEditingPost = (postData) => {
     console.log(postData);
     return axiosInstance
@@ -207,30 +228,25 @@ const User = (props) => {
   const handleSubmitAddingComment = (newComment) => {
     console.log(newComment);
     return axiosInstance.post("api/comment", newComment);
- 
   };
   return (
     <div class="">
       <div class="col-lg-12 p-0">
         <div class="panel profile-cover">
           <div class="profile-cover__img">
-            {currentUser.pictur == null && (
+            {myUser.pictur == null && (
               <img
                 src="https://bootdey.com/img/Content/avatar/avatar6.png"
                 alt=""
               />
             )}
-            {currentUser.pictur != null && (
-              <img
-                src={`http://localhost:8000${currentUser.pictur}`}
-
-                alt=""
-              />
+            {myUser.pictur != null && (
+              <img src={`http://localhost:8000${myUser.pictur}`} alt="" />
             )}
-            <h3 class="h3">{currentUser.full_name}</h3>
+            <h3 class="h3">{myUser.full_name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
-            {id == currentUser.id && (
+            {id == currentUser.id &&(
               <button
                 class="btn btn-rounded btn-info"
                 onClick={() => {
@@ -246,8 +262,8 @@ const User = (props) => {
                 <span>Edit profile</span>
               </button>
             )}
-            {id != currentUser.id && (
-              <button>
+            {id != currentUser.id &&(
+              <button class="btn btn-rounded btn-info">
                 <FontAwesomeIcon
                   item
                   icon="plus"
@@ -270,10 +286,10 @@ const User = (props) => {
           <div class="profile-cover__info">
             <ul class="nav">
               <li>
-            <strong>{myfollowers}</strong>Followers
+                <strong>{myfollowers}</strong>Followers
               </li>
               <li>
-            <strong>{myfollowing}</strong>Following
+                <strong>{myfollowing}</strong>Following
               </li>
             </ul>
           </div>
@@ -292,7 +308,12 @@ const User = (props) => {
                 onChange={handleInput}
               ></textarea>
               <div class="actions">
-                <input accept="image/*" type="file"  style={{ display: 'none' }} id="icon-button-file" />
+                <input
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                  id="icon-button-file"
+                />
                 <label htmlFor="icon-button-file">
                   <FontAwesomeIcon
                     item
@@ -301,8 +322,8 @@ const User = (props) => {
                     className="mt-3 mx-1"
                   />
                 </label>
-                  <div>
-                  <FormControl className={classes.formControl} >
+                <div>
+                  <FormControl className={classes.formControl}>
                     <InputLabel id="demo-mutiple-checkbox-label">
                       Select a category or more
                     </InputLabel>
@@ -322,14 +343,17 @@ const User = (props) => {
                 </div>
                 {/* </div> */}
                 <div>
-                <button
-                  type="submit"
-                  class="btn btn-sm btn-rounded btn-info"
-                  onClick={(e)=>{submitPost(e)}}
-                >
-                  Post
-                </button>
-                </div></div>
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-rounded btn-info"
+                    onClick={(e) => {
+                      submitPost(e);
+                    }}
+                  >
+                    Post
+                  </button>
+                </div>
+              </div>
             </form>
             <InfiniteScroll
               dataLength={posts.length} //This field to render the next data
