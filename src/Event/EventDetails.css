@@ -20,3 +20,7 @@
 .MuiButton-containedPrimary{
     margin-right: 5px !important;
 }
+
+.bigSize{
+    font-size:18px;
+}

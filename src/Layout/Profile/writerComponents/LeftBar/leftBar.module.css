@@ -16,6 +16,7 @@
   max-width: 80%;
 }
 
-::-webkit-scrollbar {
+.featured::-webkit-scrollbar,
+.events::-webkit-scrollbar {
   width: 0px;
 }

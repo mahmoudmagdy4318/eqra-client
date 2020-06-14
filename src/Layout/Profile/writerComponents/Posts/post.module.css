@@ -22,9 +22,16 @@
 }
 .root{
   background: yellow;
+  position: relative;
 }
 .root .posts_showPosts_body{
   padding-bottom: 0;
+}
+
+.root .options{
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }
 
 .posts_showPosts_body_title {
@@ -34,6 +41,7 @@
 .posts_showPosts_body_title img {
   width: 50px;
   height: 50px;
+  border-radius: 50%;
 }
 
 .posts_showPosts_body_title .posts_showPosts_body_title_username {
