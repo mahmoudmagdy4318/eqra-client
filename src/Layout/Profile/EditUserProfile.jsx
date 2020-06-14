@@ -4,16 +4,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserContext } from "../../context/userContext";
 import Home from "../Home";
 import axiosInstance from "../../API/axiosInstance";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField'
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: 200,
+    },
+  },
+}));
 const EditUserProfile = () => {
+  const classes = useStyles();
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
+  console.log(currentUser);
   const [profileData, updateProfileData] = useState({});
   const [firstName, updateFirstName] = useState(profileData.first_name);
   const [lastName, updateLasttName] = useState(profileData.last_name);
   const [username, updateUserName] = useState(profileData.username);
   const [fileData, updateFileData] = useState(profileData.pictur);
   const [originalFile,updateOriginalFile]=useState();
+  const [open, setOpen] = useState(false);
+  const[successMsg,setSuccessMessage]=useState("");
+  const [firstNameVal, setFirstNameVal] = useState({ error: false, helper: "" })
+  const [lastNameVal,setLastNameVal]=useState({error:false,helper:""})
+  const [usernameVal, setUsernameVal] = useState({ error: false, helper: "" })
 
   useEffect(() => {
     updateProfileData(currentUser);
@@ -55,26 +77,74 @@ const EditUserProfile = () => {
     formData.append("_method", "PUT");
 
     try {
-      const url = await axiosInstance.post(`api/auth/users/edit`, formData);
-      console.log(url);
-    } catch (error) {
-      console.error(error);
+      const data = await axiosInstance.post(`api/auth/users/edit`, formData);
+      console.log(data);
+      setOpen(true);
+      setSuccessMessage(data.message);
+    }catch(formErr) {
+      // console.error(formErr.response.data.errors);
+      const { errors } = formErr.response.data;
+      console.log(errors)
+      handelErrors(errors);
+    }
+  }
+  const handelErrors=(errors) =>{
+    if (errors.first_name) {
+      setFirstNameVal({ error: true, helper: errors.first_name[0] });
+    }
+    if (errors.last_name) {
+      setLastNameVal({ error: true, helper: errors.last_name[0] });
+    }
+    if (errors.username) {
+      setUsernameVal({ error: true, helper: errors.username[0] });
     }
   };
   const onFormSubmit = (e) => {
     e.preventDefault();
-    // this.fileUpload(this.state.image);
-    // console.log(fileData);
     fileUpload(originalFile);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
   };
   return (
     <div class="container bootstrap snippets">
       <div class="row">
         <div class="col-sm-12">
+          {/* <form  class="form-horizontal"
+            onSubmit={onFormSubmit}
+            encType="multipart/form-data" noValidate autoComplete="off">
+            <div>
+              <TextField
+                error={true}
+                id="standard-error-helper-text"
+                label="First name"
+                defaultValue="Hello World"
+                helperText=""
+              />
+              </div>
+            <TextField
+              id="outlined-full-width"
+              label="Label"
+              style={{ margin: 8 }}
+              placeholder="Placeholder"
+              helperText="Full width!"
+              fullWidth
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+            />
+              </form> */}
           <form
             class="form-horizontal"
             onSubmit={onFormSubmit}
             encType="multipart/form-data"
+             noValidate autoComplete="off"
           >
             <div class="panel panel-default">
               <div class="panel-body text-center">
@@ -119,7 +189,7 @@ const EditUserProfile = () => {
                 <h4 class="panel-title">Information</h4>
               </div>
               <div class="panel-body">
-                <div class="form-group">
+                {/* <div class="form-group">
                   <div class="col-sm-10">
                     <label class=" control-label">First name</label>
                     <input
@@ -129,8 +199,27 @@ const EditUserProfile = () => {
                     defaultValue={firstName}
                     />
                   </div>
-                </div>
-                <div class="form-group">
+                </div> */}
+                <TextField
+                  id="outlined-full-width"
+                  error={firstNameVal.error}
+                  label="First name"
+                  style={{ margin: 8 }}
+                  defaultValue={currentUser.first_name}
+                  value={firstName}
+                  onChange={(e) => { updateFirstName(e.target.value) }}
+                  helperText={firstNameVal.helper}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                  variant="outlined"
+                
+                 
+                />
+                {/* <div class="form-group">
                   <div class="col-sm-10">
                     <label class="control-label">Last name</label>
                     <input
@@ -143,8 +232,26 @@ const EditUserProfile = () => {
                       defaultValue={lastName}
                     />
                   </div>
-                </div>
-                <div class="form-group">
+                </div> */}
+                <TextField
+                  id="outlined-full-width"
+                  error={lastNameVal.error}
+                  label="last name"
+                  style={{ margin: 8 }}
+                  value={lastName}
+                  onChange={(e) => { updateLasttName(e.target.value) }}
+                  helperText={lastNameVal.helper}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                  variant="outlined"
+
+
+                />
+                {/* <div class="form-group">
                   <div class="col-sm-10">
                     <label class=" control-label">username</label>
                     <input
@@ -156,10 +263,26 @@ const EditUserProfile = () => {
                       defaultValue={username}
                     />
                   </div>
-                </div>
+                </div> */}
+                <TextField
+                  id="outlined-full-width"
+                  error={usernameVal.error}
+                  label="username"
+                  style={{ margin: 8 }}
+                  value={username}
+                  onChange={(e) => { updateUserName(e.target.value) }}
+                  helperText={usernameVal.helper}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  required
+                  variant="outlined"
+                />
                 <div class="form-group">
                   <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary button-sumbit ml-md-2 mt-md-2">
                       Submit
                     </button>
 
@@ -171,6 +294,11 @@ const EditUserProfile = () => {
           </form>
         </div>
       </div>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          {successMsg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

@@ -66,14 +66,14 @@ export default function Login(props) {
   };
 
   const logIn = async (e) => {
-    debugger;
+    // debugger;
     e.preventDefault();
     if (user.email === "" || user.password === "") setWarning(true);
     else
       try {
         const data = await auth.login(user.email, user.password);
         http.setJwt("Bearer " + data.access_token);
-        debugger;
+        // debugger;
         setAuthData();
         histoy.push("/");
       } catch (error) {
@@ -83,7 +83,7 @@ export default function Login(props) {
   const classes = useStyles();
 
   if (auth.getJwt()) {
-    debugger;
+    // debugger;
     return <Redirect to="/" />;
   }
   return (
