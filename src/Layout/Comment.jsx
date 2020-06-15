@@ -14,6 +14,7 @@ const Comment = (props) => {
   const [timePassed, setTimePassed] = useState("");
   const [togglePopUp, setTogglePopUp] = useState(false);
   const [toggleEditPopUp, setToggleEditPopUp] = useState(false);
+  const [currentUserCommentLike, setcurrentUserCommentLike] = useState(false);
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
@@ -48,11 +49,26 @@ const Comment = (props) => {
   };
   useEffect(() => {
     if (!data.created_at) return;
+    getDateDifference(data.created_at);
+  }, []);
+
+  useEffect(() => {
+    if (!data.created_at) return;
     setInterval(() => {
       getDateDifference(data.created_at);
-    }, 5000);
+    }, 3000);
   }, [data.created_at]);
 
+  const getCommentLikeState = async () => {
+    const res = await axiosInstance.get(
+      `api/comment/${data.id}/likes/${currentUser.id}`
+    );
+    setcurrentUserCommentLike(res.res);
+  };
+  useEffect(() => {
+    if (!currentUser.id || !data.id) return;
+    getCommentLikeState();
+  }, []);
   return (
     <div
       class="tweetEntry-content p-2"
@@ -102,13 +118,36 @@ const Comment = (props) => {
       )}
       <Grid container xs={12} justify={"flex-end"} style={{ color: "#b1bbc3" }}>
         <PostLikes id={data.id} type="comment" noOfLikes={data.likes} />
-        <FontAwesomeIcon
-          item
-          icon="heart"
-          size="1x"
-          className="mt-3 mx-1"
-          onClick={onLike}
-        />
+        {currentUserCommentLike ? (
+          <FontAwesomeIcon
+            item
+            icon="heart"
+            size="1x"
+            className="mt-3 mx-1"
+            style={{ color: "red" }}
+            onClick={() =>
+              onLike(currentUserCommentLike)
+                .then(() => {
+                  setcurrentUserCommentLike(!currentUserCommentLike);
+                })
+                .catch((err) => console.log(err))
+            }
+          />
+        ) : (
+          <FontAwesomeIcon
+            item
+            icon="heart"
+            size="1x"
+            className="mt-3 mx-1"
+            onClick={() =>
+              onLike(currentUserCommentLike)
+                .then(() => {
+                  setcurrentUserCommentLike(!currentUserCommentLike);
+                })
+                .catch((err) => console.log(err))
+            }
+          />
+        )}
         {currentUser.id === _.get(data, "user.id") ? (
           <>
             <FontAwesomeIcon

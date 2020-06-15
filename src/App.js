@@ -9,9 +9,9 @@ import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
 // Category & Events
 import UserCategory from "./Category/Category";
-import CreateEvent from './Event/CreateEvent';
-import EventDetails from './Event/EventDetails';
-import AllEvents from './Event/AllEvents';
+import CreateEvent from "./Event/CreateEvent";
+import EventDetails from "./Event/EventDetails";
+import AllEvents from "./Event/AllEvents";
 import Home from "./Layout/Home";
 import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
@@ -37,10 +37,11 @@ import {
   faImage,
   faUserPlus,
   faCamera,
-  faCalendarWeek
+  faCalendarWeek,
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
+import TrendsPosts from "./Trends/TrendsPosts";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -115,7 +116,9 @@ const App = () => {
               key="profile"
               exact
               path="/profile/:id"
-              render={(routeprops) => <Profile id={routeprops.match.params.id}/>}
+              render={(routeprops) => (
+                <Profile id={routeprops.match.params.id} />
+              )}
             />
             <Route
               key="editUserProfile"
@@ -123,7 +126,12 @@ const App = () => {
               path="/editprofile"
               component={EditUserProfile}
             />
-
+            <Route
+              key="trendsPosts"
+              exact
+              path="/search"
+              render={() => <TrendsPosts />}
+            />
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>

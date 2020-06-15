@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Home from "../Layout/Home";
 import axiosInstance from "../API/axiosInstance";
 import Post from "../Layout/Post";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Comment from "../Layout/Comment";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
 function SinglePost(props) {
   const { id } = props;
@@ -14,6 +15,10 @@ function SinglePost(props) {
   const [finalPage, setFinalPage] = useState(1);
   const [togglePopUp, setTogglePopUp] = useState(false);
   const history = useHistory();
+
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
 
   const getPostData = async () => {
     const data = await axiosInstance.get(`api/post/${id}`);
@@ -51,26 +56,49 @@ function SinglePost(props) {
     }
   };
 
-  const handleLike = async (id) => {
-    const like = await axiosInstance.post("api/comment/like", {
-      comment_id: id,
-      user_id: 22,
-    });
-    setComments(
-      comments.map((c) => (c.id === id ? { ...c, likes: c.likes + 1 } : c))
-    );
-    console.log(like);
+  const handleLike = (id) => (currentState) => {
+    if (!currentState) {
+      return axiosInstance
+        .post("api/comment/like", {
+          comment_id: id,
+          user_id: currentUser.id,
+        })
+        .then(() => {
+          setComments(
+            comments.map((c) =>
+              c.id === id ? { ...c, likes: c.likes + 1 } : c
+            )
+          );
+        });
+    } else {
+      return axiosInstance
+        .delete(`api/comment/${id}/likes/${currentUser.id}`)
+        .then(() => {
+          setComments(
+            comments.map((c) =>
+              c.id === id ? { ...c, likes: c.likes - 1 } : c
+            )
+          );
+        });
+    }
   };
-  const handlePostLike = async (id) => {
-    try {
-      const like = await axiosInstance.post("api/post/like", {
-        post_id: id,
-        user_id: 22,
-      });
-      setPostData({ ...postData, likes: postData.likes + 1 });
-      console.log(like);
-    } catch (error) {
-      console.log(error);
+
+  const handlePostLike = (id) => (currentUserLike) => {
+    if (currentUserLike) {
+      return axiosInstance
+        .delete(`api/post/${id}/likes/${currentUser.id}`)
+        .then(() => {
+          setPostData({ ...postData, likes: postData.likes - 1 });
+        });
+    } else {
+      return axiosInstance
+        .post("api/post/like", {
+          post_id: id,
+          user_id: currentUser.id,
+        })
+        .then(() => {
+          setPostData({ ...postData, likes: postData.likes + 1 });
+        });
     }
   };
 
@@ -100,7 +128,7 @@ function SinglePost(props) {
         data={postData}
         click={() => {}}
         handleDeletePost={handleDelete}
-        onLike={() => handlePostLike(postData.id)}
+        onLike={handlePostLike(postData.id)}
         submitEditingPost={submitEditingPost}
       />
       <InfiniteScroll
@@ -120,7 +148,7 @@ function SinglePost(props) {
               key={c.id}
               data={c}
               onDelete={handleDeleteComment}
-              onLike={() => handleLike(c.id)}
+              onLike={handleLike(c.id)}
               submitEditingPost={submitEditingComment}
             />
           );
