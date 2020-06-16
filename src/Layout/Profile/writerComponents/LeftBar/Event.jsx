@@ -8,8 +8,8 @@ const Event = () => {
   useEffect(() => {
     axiosInstance.get(`api/user/event`)
       .then((data) => {
-        console.log("server response Events : ", data);
-        // setFeaturedPostsList([...data.data]);
+        // console.log("server response Events : ", data);
+        setEvents([...data.data]);
       })
       .catch(err=>console.log(err))
   }, [])

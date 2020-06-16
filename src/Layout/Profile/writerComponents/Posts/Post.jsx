@@ -1,16 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Checkbox, FormControlLabel, TextField, Card, Typography, CardContent, CardActions, Menu, MenuItem } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './post.module.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
+import CustomizedDialogs from '../../../../utils/Edit';
 
 const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
+  let [postData, setPostData] = useState({});
   let [postId, setPostId] = useState(0);
+  let [EditPopUp, setEditPopUp] = useState(false);
+  let [currentUserLikes, setCurrentUserLikes] = useState([]);
 
   let [currPage, setCurrPage] = useState(1);
   let [lastPage, setLastPage] = useState(1);
@@ -44,25 +50,64 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
     }
   };
 
+
+  const EditingPost = (postData) => {
+    console.log(postData);
+    return axiosInstance
+      .patch(`/api/post/${postData.id}`, postData)
+      .then((res) => {
+        console.log(res);
+        setPostList([...postList.map((p) => (p.id === postData.id ? postData : p))]);
+      });
+  };
+
   useEffect(() => {
     axiosInstance.get(`api/userposts/${userid}?page=${currPage}`)
       .then((data) => {
-        setPostList([...postList, ...data.data]);
+        setPostList([...data.data]);
         setLastPage(data.meta.last_page);
       })
       .catch(err => console.log(err));
-  }, [currPage, userid]);
+  }, [currPage, userid,currentUserLikes]);
+
+  useEffect(() => {
+    axiosInstance.get(
+      `api/posts/${userid}/likes`
+    ).then(res =>
+      setCurrentUserLikes([].concat.apply([], ...res))
+    )
+  }, [userid])
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event, id) => {
+  const handleClick = (event, post) => {
+    setPostData(post);
+    setPostId(post.id);
     setAnchorEl(event.currentTarget);
-    setPostId(id);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const reactLove = (id) => {
+    if (currentUserLikes.includes(id)) {
+      return axiosInstance
+        .delete(`api/post/${id}/likes/${userid}`)
+        .then(() => {
+          setCurrentUserLikes(currentUserLikes.filter(item => item !== id));
+        });
+    } else {
+      return axiosInstance
+        .post("api/post/like", {
+          post_id: id,
+          user_id: userid,
+        })
+        .then(() => {
+          setCurrentUserLikes([...currentUserLikes, id]);
+        });
+    }
+  }
 
   return (
     <section className={styles.posts}>
@@ -112,8 +157,8 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
         >
           {postList.map((post) => {
             return (
-              <Card className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
-                <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post.id)}>
+              <Card id={`post-${post.id}`} className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
+                <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post)}>
                   <ExpandMoreIcon />
                 </Button>
                 <Menu
@@ -124,7 +169,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
                   onClose={handleClose}
                 >
                   <MenuItem onClick={deletePost(postId)}>Delete</MenuItem>
-                  <MenuItem onClick={handleClose}>Edit</MenuItem>
+                  <MenuItem onClick={() => { setEditPopUp(true); }}>Edit</MenuItem>
                 </Menu>
                 <CardContent className={styles.posts_showPosts_body} >
                   <div className={styles.posts_showPosts_body_title} >
@@ -133,12 +178,19 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
                       {name}
                     </Typography>
                   </div>
-                  <Typography variant="body2" component="p">
+                  <Typography variant="body2" component="p" style={{ padding: '2px 30px' }}>
                     {post.body_content}
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button size="small"> <ChatBubbleOutlineIcon /> </Button>
+                <CardActions className={styles.post_action} >
+                  <ChatBubbleOutlineIcon className={styles.post_action_icons} />
+                  <div>
+                    {currentUserLikes.includes(post.id) ?
+                      <FavoriteIcon color={'secondary'} className={styles.post_action_icons} onClick={() => reactLove(post.id)} /> :
+                      <FavoriteBorderIcon className={styles.post_action_icons} onClick={() => reactLove(post.id)} />
+                    }
+                    {post.likes}
+                  </div>
                 </CardActions>
               </Card>
             )
@@ -147,7 +199,13 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
 
 
       </div>
-    </section>
+      <CustomizedDialogs
+        open={EditPopUp}
+        setOpen={setEditPopUp}
+        post={postData}
+        submitEditingPost={EditingPost}
+      />
+    </section >
   );
 };
 

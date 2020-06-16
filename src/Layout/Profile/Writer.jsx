@@ -15,7 +15,6 @@ import axiosInstance from "../../API/axiosInstance";
 
 const Writer = () => {
   const { data: { user: currentUser }, } = useContext(UserContext);
-  console.log('currentUser',currentUser);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
   const [followersFollowing, setFollowersFollowing] = useState([])
