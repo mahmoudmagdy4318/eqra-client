@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, Checkbox, FormControlLabel, TextField, Card, Typography, CardContent, CardActions, Menu, MenuItem } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import styles from './post.module.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
+import { UserContext } from '../../../../context/userContext';
 
 const Post = ({ name }) => {
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
@@ -44,7 +48,7 @@ const Post = ({ name }) => {
   };
 
   useEffect(() => {
-    axiosInstance.get(`/api/userposts?page=${currPage}`)
+    axiosInstance.get(`/api/userposts/${currentUser.id}?page=${currPage}`)
       .then((data) => {
         console.log("server response : ", data);
         setPostList([...postList, ...data.data]);

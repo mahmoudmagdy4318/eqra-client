@@ -4,16 +4,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { UserContext } from "../../context/userContext";
 import Home from "../Home";
 import axiosInstance from "../../API/axiosInstance";
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField'
+import Snackbar from "@material-ui/core/Snackbar";
+import MuiAlert from "@material-ui/lab/Alert";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import FormDialog from "../../utils/formDialog";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 const useStyles = makeStyles((theme) => ({
   root: {
-    '& .MuiTextField-root': {
+    "& .MuiTextField-root": {
       margin: theme.spacing(1),
       width: 200,
     },
@@ -30,23 +31,28 @@ const EditUserProfile = () => {
   const [lastName, updateLasttName] = useState(profileData.last_name);
   const [username, updateUserName] = useState(profileData.username);
   const [fileData, updateFileData] = useState(profileData.pictur);
-  const [originalFile,updateOriginalFile]=useState();
+  const [originalFile, updateOriginalFile] = useState();
   const [open, setOpen] = useState(false);
-  const[successMsg,setSuccessMessage]=useState("");
-  const [firstNameVal, setFirstNameVal] = useState({ error: false, helper: "" })
-  const [lastNameVal,setLastNameVal]=useState({error:false,helper:""})
-  const [usernameVal, setUsernameVal] = useState({ error: false, helper: "" })
+  const [successMsg, setSuccessMessage] = useState("");
+  const [firstNameVal, setFirstNameVal] = useState({
+    error: false,
+    helper: "",
+  });
+  const [lastNameVal, setLastNameVal] = useState({ error: false, helper: "" });
+  const [usernameVal, setUsernameVal] = useState({ error: false, helper: "" });
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openUpdatePass, setOpenUpdatePass] = useState(false);
+  const [successMsgPass, setSuccessMessagePass] = useState("");
 
   useEffect(() => {
     updateProfileData(currentUser);
   });
   useEffect(() => {
     updateFirstName(currentUser.first_name);
-    updateLasttName(currentUser.last_name)
+    updateLasttName(currentUser.last_name);
     updateUserName(currentUser.username);
     updateFileData(currentUser.pictur);
-    updateOriginalFile('');
-
+    updateOriginalFile("");
   }, [profileData]);
   const onChange = (e) => {
     console.log(e.target.files);
@@ -56,11 +62,10 @@ const EditUserProfile = () => {
   };
   const createImage = (file) => {
     //sent file
-    updateOriginalFile(file)
+    updateOriginalFile(file);
     let reader = new FileReader();
     reader.onload = (e) => {
       updateFileData(e.target.result);
-     
     };
     reader.readAsDataURL(file);
     //displayed file
@@ -81,14 +86,14 @@ const EditUserProfile = () => {
       console.log(data);
       setOpen(true);
       setSuccessMessage(data.message);
-    }catch(formErr) {
+    } catch (formErr) {
       // console.error(formErr.response.data.errors);
       const { errors } = formErr.response.data;
-      console.log(errors)
+      console.log(errors);
       handelErrors(errors);
     }
-  }
-  const handelErrors=(errors) =>{
+  };
+  const handelErrors = (errors) => {
     if (errors.first_name) {
       setFirstNameVal({ error: true, helper: errors.first_name[0] });
     }
@@ -105,21 +110,43 @@ const EditUserProfile = () => {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpen(false);
+  };
+  const handleCloseSnack = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenUpdatePass(false);
+  };
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+  const sendUpdatedPassword = async (password) => {
+    try {
+      const data = await axiosInstance.put(
+        `api/auth/updatepassword`,
+        {newPassword:password}
+      );
+      console.log(data);
+      setOpenUpdatePass(true);
+      setSuccessMessagePass(data.msg);
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div class="container bootstrap snippets">
       <div class="row">
         <div class="col-sm-12">
-       
           <form
             class="form-horizontal"
             onSubmit={onFormSubmit}
             encType="multipart/form-data"
-             noValidate autoComplete="off"
+            noValidate
+            autoComplete="off"
           >
             <div class="panel panel-default">
               <div class="panel-body text-center">
@@ -133,20 +160,24 @@ const EditUserProfile = () => {
                 {fileData != null && (
                   <img
                     class="img-circle profile-avatar"
-                    src={toString(fileData).startsWith('/storage')?`http://localhost:8000${fileData}`:fileData}
+                    src={
+                      toString(fileData).startsWith("/storage")
+                        ? `http://localhost:8000${fileData}`
+                        : fileData
+                    }
                     alt="User avatar"
                   />
                 )}
 
                 <div class="p-image">
-             
                   <input
                     type="file"
                     onChange={(e) => {
                       onChange(e);
                     }}
                     accept="image/*"
-                    style={{ display: 'none' }} id="icon-camera-file"
+                    style={{ display: "none" }}
+                    id="icon-camera-file"
                   />
                   <label htmlFor="icon-camera-file">
                     <FontAwesomeIcon
@@ -159,12 +190,11 @@ const EditUserProfile = () => {
                 </div>
               </div>
             </div>
-            <div class="panel panel-default">
+            <div class="panel panel-default mb-0">
               <div class="panel-heading">
                 <h4 class="panel-title">Information</h4>
               </div>
-              <div class="panel-body">
-            
+              <div class="panel-body pb-0">
                 <TextField
                   id="outlined-full-width"
                   error={firstNameVal.error}
@@ -172,7 +202,9 @@ const EditUserProfile = () => {
                   style={{ margin: 8 }}
                   defaultValue={currentUser.first_name}
                   value={firstName}
-                  onChange={(e) => { updateFirstName(e.target.value) }}
+                  onChange={(e) => {
+                    updateFirstName(e.target.value);
+                  }}
                   helperText={firstNameVal.helper}
                   fullWidth
                   margin="normal"
@@ -181,17 +213,17 @@ const EditUserProfile = () => {
                   }}
                   required
                   variant="outlined"
-                
-                 
                 />
-              
+
                 <TextField
                   id="outlined-full-width"
                   error={lastNameVal.error}
                   label="last name"
                   style={{ margin: 8 }}
                   value={lastName}
-                  onChange={(e) => { updateLasttName(e.target.value) }}
+                  onChange={(e) => {
+                    updateLasttName(e.target.value);
+                  }}
                   helperText={lastNameVal.helper}
                   fullWidth
                   margin="normal"
@@ -200,17 +232,17 @@ const EditUserProfile = () => {
                   }}
                   required
                   variant="outlined"
-
-
                 />
-         
+
                 <TextField
                   id="outlined-full-width"
                   error={usernameVal.error}
                   label="username"
                   style={{ margin: 8 }}
                   value={username}
-                  onChange={(e) => { updateUserName(e.target.value) }}
+                  onChange={(e) => {
+                    updateUserName(e.target.value);
+                  }}
                   helperText={usernameVal.helper}
                   fullWidth
                   margin="normal"
@@ -222,21 +254,45 @@ const EditUserProfile = () => {
                 />
                 <div class="form-group">
                   <div class="col-sm-10 col-sm-offset-2">
-                    <button type="submit" class="btn btn-primary button-sumbit ml-md-2 mt-md-2">
+                    <button
+                      type="submit"
+                      class="btn btn-primary button-sumbit ml-md-2 mt-md-2"
+                    >
                       Submit
                     </button>
-
                   </div>
                 </div>
-           
               </div>
             </div>
           </form>
+         
+        </div>
+      </div>
+      <div className="row">
+        <div class="form-group">
+          <div class="col-sm-10 col-sm-offset-2">
+            <button
+              class="btn btn-info button-sumbit ml-md-2 mt-md-2"
+              onClick={handleClickOpen}
+            >
+              update password
+              </button>
+            <FormDialog
+              open={openDialog}
+              setOpen={setOpenDialog}
+              sendUpdatedPassword={sendUpdatedPassword}
+            />
+          </div>
         </div>
       </div>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success">
           {successMsg}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openUpdatePass} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          {successMsgPass}
         </Alert>
       </Snackbar>
     </div>

@@ -91,7 +91,7 @@ const Post = (props) => {
                 <img
                   class="tweetEntry-avatar"
                   src="http://placekitten.com/200/200"
-                  alt=""
+                  alt="" img
                 />
 
                 <strong class="tweetEntry-fullname">
