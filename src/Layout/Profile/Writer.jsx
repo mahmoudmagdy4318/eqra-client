@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Writer.module.css";
 
@@ -11,10 +11,24 @@ import Event from "./writerComponents/LeftBar/Event";
 import Post from "./writerComponents/Posts/Post";
 import Book from "./writerComponents/books/Book";
 import { UserContext } from "../../context/userContext";
+import axiosInstance from "../../API/axiosInstance";
 
 const Writer = () => {
   const { data: { user: currentUser }, } = useContext(UserContext);
-  console.log(currentUser);
+  let [featuredPostsList, setFeaturedPostsList] = useState([]);
+  let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
+  const [followersFollowing, setFollowersFollowing] = useState([])
+
+  useEffect(() => {
+    axiosInstance.get(`/api/userFeaturedPosts/${currentUser.id}`)
+      .then((data) => {
+        setFeaturedPostsList([...data.data]);
+      })
+      .catch(err=>console.log(err))
+    setNewFeaturedPosts(false)
+
+    axiosInstance.get('api/followersCount').then(data=>setFollowersFollowing(data))
+  }, [newFeaturedPosts,currentUser.id])
   return (
     <Container>
       <Link to="/" style={{ display: "block", padding: 10 }}>
@@ -23,21 +37,23 @@ const Writer = () => {
 
       <Details
         name={currentUser.full_name}
-        description={"i teach computer science at bla bla bla never mind me :3"}
+        email={currentUser.email}
         image={currentUser.pictur ? currentUser.pictur
           : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
         }
-        followers={40}
-        following={25}
+        followers={followersFollowing.followers}
+        following={followersFollowing.following}
       />
 
       <section className={styles.grid}>
         <div>
-          <Featured />
+          <Featured featuredPosts={featuredPostsList} />
           <Event />
         </div>
         <div className={styles.second}>
           <Post
+            userid={currentUser.id}
+            setNewFeaturedPosts={setNewFeaturedPosts}
             name={currentUser.full_name}
             image={currentUser.pictur ? currentUser.pictur
               : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"

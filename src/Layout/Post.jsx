@@ -8,6 +8,7 @@ import AlertDialog from "../utils/DeleteConfirmation";
 import { Link } from "react-router-dom";
 import CustomizedDialogs from "../utils/Edit";
 import { UserContext } from "../context/userContext";
+import axiosInstance from "../API/axiosInstance";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +33,7 @@ const Post = (props) => {
   const [timePassed, setTimePassed] = useState("");
   const [togglePopUp, setTogglePopUp] = useState(false);
   const [toggleEditPopUp, setToggleEditPopUp] = useState(false);
+  const [currentUserLike, setCurrentUserLike] = useState(false);
   const [newComment, setNewComment] = useState({
     content: "",
     postId: postData.id,
@@ -72,12 +74,29 @@ const Post = (props) => {
 
   useEffect(() => {
     if (!postData.created_at) return;
+    getDateDifference(postData.created_at);
+    // return clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!postData.created_at) return;
     const interval = setInterval(() => {
       getDateDifference(postData.created_at);
-    }, 5000);
+    }, 3000);
     // return clearInterval(interval);
   }, [postData.created_at]);
 
+  const checkForLike = async () => {
+    const res = await axiosInstance.get(
+      `api/post/${postData.id}/likes/${currentUser.id}`
+    );
+    setCurrentUserLike(res.res);
+  };
+  useEffect(() => {
+    debugger;
+    if (!currentUser.id || !postData.id) return;
+    checkForLike();
+  }, [currentUser, postData]);
   return (
     <>
       <div class="tweetEntry-tweetHolder mb-2">
@@ -157,12 +176,37 @@ const Post = (props) => {
               onClick={() => showComment(!show)}
             />
             <FontAwesomeIcon icon="retweet" size="1x" className="ml-5 mt-3" />
-            <FontAwesomeIcon
-              icon="heart"
-              size="1x"
-              className="ml-5 mt-3"
-              onClick={onLike}
-            />
+            {currentUserLike ? (
+              <FontAwesomeIcon
+                icon="heart"
+                size="1x"
+                className="ml-5 mt-3"
+                onClick={() => {
+                  onLike(currentUserLike)
+                    .then(() => {
+                      debugger;
+                      setCurrentUserLike(!currentUserLike);
+                    })
+                    .catch((err) => console.log(err));
+                }}
+                style={{ color: "red" }}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon="heart"
+                size="1x"
+                className="ml-5 mt-3"
+                onClick={() => {
+                  debugger;
+                  onLike(currentUserLike)
+                    .then(() => {
+                      setCurrentUserLike(!currentUserLike);
+                    })
+                    .catch((err) => console.log(err));
+                }}
+              />
+            )}
+
             <PostLikes
               id={postData.id}
               type="post"

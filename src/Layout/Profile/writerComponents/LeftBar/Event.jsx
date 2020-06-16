@@ -1,14 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './leftBar.module.css'
 import { Link } from 'react-router-dom'
+import axiosInstance from "../../../../API/axiosInstance";
 
 const Event = () => {
-  let events = [
-    { id: 1, title: 'The art of art' },
-    { id: 2, title: 'get riiiiiich' },
-    { id: 3, title: '1000 way to kill a fly' },
-    { id: 4, title: 'kill a fly every day for health life' },
-  ]
+  const [events, setEvents] = useState([])
+  useEffect(() => {
+    axiosInstance.get(`api/user/event`)
+      .then((data) => {
+        // console.log("server response Events : ", data);
+        setEvents([...data.data]);
+      })
+      .catch(err=>console.log(err))
+  }, [])
+  
   return (
     <>
       <h3>Upcoming Events</h3>

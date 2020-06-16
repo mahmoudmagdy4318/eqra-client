@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useMemo } from "react";
-import Pusher from "pusher-js";
 import { Typography, TextareaAutosize, Grid } from "@material-ui/core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -11,14 +10,14 @@ import FormControl from "@material-ui/core/FormControl";
 import ListItemText from "@material-ui/core/ListItemText";
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
+import _ from "lodash";
 import Post from "./Post";
 import axiosInstance from "../API/axiosInstance";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../context/userContext";
-import auth from "../services/authService";
 import Home from "./Home";
-import '../styles/home.css';
+import "../styles/home.css";
 
 const textarea = document.getElementById("textar ea");
 
@@ -73,7 +72,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const Test = () => {
+const Test = (props) => {
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
@@ -147,9 +146,24 @@ const Test = () => {
   }
 
   const getPosts = async () => {
-    const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
-    setPosts([...posts, ...postsData.data]);
-    setLastPage(postsData.meta.last_page);
+    // debugger;
+    if (props.writer) {
+      console.log({ props });
+      const postsData = await axiosInstance.get(
+        `api/trends/${props.writer}?page=${currPage}`
+      );
+      setPosts(
+        _.get(posts[0], "user.id") === _.get(postsData, "data.user.id")
+          ? [...posts, ...postsData.data]
+          : postsData.data
+      );
+      setLastPage(postsData.last_page);
+      console.log(postsData);
+    } else {
+      const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
+      setPosts([...posts, ...postsData.data]);
+      setLastPage(postsData.meta.last_page);
+    }
   };
   const getCategories = async () => {
     const catData = await axiosInstance.get(`api/genre`);
@@ -158,10 +172,10 @@ const Test = () => {
 
   useEffect(() => {
     getPosts();
-  }, [currPage]);
+  }, [, currPage, props]);
 
   useEffect(() => {
-    getCategories();
+    if (!props.writer) getCategories();
   }, []);
   const handlePostClick = (id) => {
     history.push(`/post/${id}`);
@@ -185,18 +199,26 @@ const Test = () => {
         setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
       });
   };
-  const handleLike = async (id) => {
-    try {
-      const like = await axiosInstance.post("api/post/like", {
-        post_id: id,
-        user_id: currentUser.id,
-      });
-      setPosts(
-        posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
-      );
-      console.log(like);
-    } catch (error) {
-      console.log(error);
+  const handleLike = (id) => (currentUserLike) => {
+    if (currentUserLike) {
+      return axiosInstance
+        .delete(`api/post/${id}/likes/${currentUser.id}`)
+        .then(() => {
+          setPosts(
+            posts.map((p) => (p.id === id ? { ...p, likes: p.likes - 1 } : p))
+          );
+        });
+    } else {
+      return axiosInstance
+        .post("api/post/like", {
+          post_id: id,
+          user_id: currentUser.id,
+        })
+        .then(() => {
+          setPosts(
+            posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
+          );
+        });
     }
   };
 
@@ -212,96 +234,96 @@ const Test = () => {
   );
 
   const handleSubmitAddingComment = (newComment) => {
-    // try {
     console.log(newComment);
     return axiosInstance.post("api/comment", newComment);
-    // } catch (err) {
-    // console.log(err);
-    // }
   };
   return (
     <div className={classes.maincontainer}>
-      <div className="con">
-        <div className="post-con mt-md-2 mb-md-1">
-          {currentUser.pictur == null && (
-            <img
-              src="https://bootdey.com/img/Content/avatar/avatar6.png"
-              alt=""
-              width="60"
-              height="60"
-              style={{"width":"80px","height":"80px"}}
-            />
-          )}
-          {currentUser.pictur != null && (
-            <img
-              src={`http://localhost:8000${currentUser.pictur}`}
-              width="60"
-              height="60"
-              alt=""
-              className="ml-2"
-              style={{"width":"80px","height":"80px"}}            />
-          )}
-          {/* ****************************************** */}
-          <TextareaAutosize
-            aria-label="minimum height"
-            rowsMin={5}
-            rowsMax={8}
-            placeholder="Write a post"
-            class="write-area ml-4"
-            name="body_content"
-            onChange={handleInput}
-          />
-        </div>
-        <div className="post-con-last ml-md-2 mb-2 mt-md-5">
-          <input
-            accept="image/*"
-            className={classes.input}
-            id="icon-button-file"
-            type="file"
-            name="postFiles"
-            onChange={handleFileInput}
-          />
-          <label htmlFor="icon-button-file">
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-            >
-              <FontAwesomeIcon
-                icon="image"
-                size="1x"
-                style={{ color: "#EE4956" }}
-                className="ml-5 mt-3"
+      {!props.writer ? (
+        <div className="con">
+          <div className="post-con mt-md-2 mb-md-1">
+            {currentUser.pictur == null && (
+              <img
+                src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                alt=""
+                width="60"
+                height="60"
+                style={{ width: "80px", height: "80px" }}
               />
-            </IconButton>
-          </label>
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-mutiple-checkbox-label">
-              Select a category or more
-            </InputLabel>
-            <Select
-              labelId="demo-mutiple-checkbox-label"
-              id="demo-mutiple-checkbox"
-              multiple
-              value={checkedCategories}
-              onChange={handleChange}
-              input={<Input />}
-              renderValue={(selected) => selected.join(", ")}
-              MenuProps={MenuProps}
+            )}
+            {currentUser.pictur != null && (
+              <img
+                src={`http://localhost:8000${currentUser.pictur}`}
+                width="60"
+                height="60"
+                alt=""
+                className="ml-2"
+                style={{ width: "80px", height: "80px" }}
+              />
+            )}
+            {/* ****************************************** */}
+            <TextareaAutosize
+              aria-label="minimum height"
+              rowsMin={5}
+              rowsMax={8}
+              placeholder="Write a post"
+              class="write-area ml-4"
+              name="body_content"
+              onChange={handleInput}
+            />
+          </div>
+          <div className="post-con-last ml-md-2 mb-2 mt-md-5">
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              type="file"
+              name="postFiles"
+              onChange={handleFileInput}
+            />
+            <label htmlFor="icon-button-file">
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+              >
+                <FontAwesomeIcon
+                  icon="image"
+                  size="1x"
+                  style={{ color: "#EE4956" }}
+                  className="ml-5 mt-3"
+                />
+              </IconButton>
+            </label>
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Select a category or more
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={checkedCategories}
+                onChange={handleChange}
+                input={<Input />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+              >
+                {categoryMenu}
+              </Select>
+            </FormControl>
+            <button
+              className=" btn-primary mr-md-4  px-4 py-2 post"
+              onClick={submitPost}
             >
-              {categoryMenu}
-            </Select>
-          </FormControl>
-          <button
-            className=" btn-primary mr-md-4  px-4 py-2 post"
-            onClick={submitPost}
-          >
-            Post
-          </button>
-          {/* ******************************************** */}
+              Post
+            </button>
+            {/* ******************************************** */}
+          </div>
         </div>
-      
-      </div>
+      ) : (
+        <></>
+      )}
       <hr className="line"></hr>
       {/* ************************************************ */}
       <InfiniteScroll
@@ -322,7 +344,7 @@ const Test = () => {
               data={p}
               click={handlePostClick}
               handleDeletePost={handleDeletePost}
-              onLike={() => handleLike(p.id)}
+              onLike={handleLike(p.id)}
               submitEditingPost={submitEditingPost}
               onSubmitAddingComment={handleSubmitAddingComment}
             />

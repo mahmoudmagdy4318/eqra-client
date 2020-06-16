@@ -1,6 +1,6 @@
 import React from "react";
 import MyNav from "./MyNav";
-import Chat from '../Chat/Chat'
+import Chat from "../Chat/Chat";
 import "../styles/home.css";
 import {
   Grid,
@@ -11,6 +11,7 @@ import {
   withStyles,
   createStyles,
 } from "@material-ui/core";
+import Trends from "../Trends/Trends";
 const styles = createStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -53,7 +54,8 @@ const Home = (Component) => {
                 <Component {...props} />
               </Grid>
               <Grid md={3} className={classes.sticky}>
-                <Chat/>                
+                <Chat />
+                <Trends />
               </Grid>
             </Grid>
           </Container>
