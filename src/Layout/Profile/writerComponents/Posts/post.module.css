@@ -69,7 +69,7 @@
   margin-top: 10px;
 }
 
-.post_action_icons:hover{
+.post_action_icons:hover {
   cursor: pointer;
 }
 
@@ -91,3 +91,24 @@
     opacity: 1;
   }
 }
+
+
+
+.root .paperRoot {
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+  .root .paperRoot .input {
+    margin-left: 10px;
+    flex: 1;
+  }
+  .root .paperRoot .iconButton {
+    padding: 10;
+  }
+  .root .paperRoot .divider {
+    height: 28;
+    margin: 4;
+  }
+  

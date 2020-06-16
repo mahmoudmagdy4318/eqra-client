@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Checkbox, FormControlLabel, TextField, Card, Typography, CardContent, CardActions, Menu, MenuItem } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, TextField, Card, Typography, CardContent, CardActions, Menu, MenuItem, Paper, IconButton, InputBase, Divider } from '@material-ui/core';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import SendIcon from '@material-ui/icons/Send';
+
 import styles from './post.module.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
@@ -14,6 +16,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
   let [postData, setPostData] = useState({});
+  let [inputField, setInputField] = useState(false)
   let [postId, setPostId] = useState(0);
   let [EditPopUp, setEditPopUp] = useState(false);
   let [currentUserLikes, setCurrentUserLikes] = useState([]);
@@ -68,7 +71,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
         setLastPage(data.meta.last_page);
       })
       .catch(err => console.log(err));
-  }, [currPage, userid,currentUserLikes]);
+  }, [currPage, userid, currentUserLikes]);
 
   useEffect(() => {
     axiosInstance.get(
@@ -183,7 +186,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
                   </Typography>
                 </CardContent>
                 <CardActions className={styles.post_action} >
-                  <ChatBubbleOutlineIcon className={styles.post_action_icons} />
+                  <ChatBubbleOutlineIcon className={styles.post_action_icons} onClick={() => setInputField(true)} />
                   <div>
                     {currentUserLikes.includes(post.id) ?
                       <FavoriteIcon color={'secondary'} className={styles.post_action_icons} onClick={() => reactLove(post.id)} /> :
@@ -192,6 +195,19 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
                     {post.likes}
                   </div>
                 </CardActions>
+
+                <Paper component="form" className={styles.paperRoot} onSubmit={(e)=>{e.preventDefault();console.log(e)}}>
+                  <InputBase
+                    className={styles.input}
+                    placeholder="Search Google Maps"
+                    inputProps={{ 'aria-label': 'search google maps' }}
+                  />
+                  <Divider className={styles.divider} orientation="vertical" />
+                  <IconButton color="primary" className={styles.iconButton} aria-label="directions">
+                    <SendIcon />
+                  </IconButton>
+                </Paper>
+
               </Card>
             )
           })}
