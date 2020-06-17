@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FormDialog(prpos) {
   const classes = useStyles();
-  const { open, setOpen, sendUpdatedPassword } = prpos;
+  const { open, setOpen, sendUpdatedPassword} = prpos;
   const [values, setValues] = React.useState({
     amount: "",
     password: "",
@@ -45,6 +45,14 @@ export default function FormDialog(prpos) {
     weightRange: "",
     showPassword: false,
   });
+  const [confirmValues, setConfirmValues] = React.useState({
+    amount: "",
+    password: "",
+    weight: "",
+    weightRange: "",
+    showPassword: false,
+  });
+
   useEffect(() => {
     // setOpen(openDia);
   });
@@ -60,8 +68,22 @@ export default function FormDialog(prpos) {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  const handleClickShowPasswordConfirm = () => {
+    setConfirmValues({
+      ...confirmValues,
+      showPassword: !confirmValues.showPassword,
+    });
+  };
+
+  const handleMouseDownPasswordConfirm = (event) => {
+    event.preventDefault();
+  };
+
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
+  };
+  const handleChangeConfirm = (prop) => (event) => {
+    setConfirmValues({ ...confirmValues, [prop]: event.target.value });
   };
 
   return (
@@ -99,6 +121,37 @@ export default function FormDialog(prpos) {
               }
               labelWidth={70}
             />
+            </FormControl>
+            <FormControl
+              className={clsx(classes.margin, classes.textField)}
+              variant="outlined"
+            >
+            <InputLabel htmlFor="outlined-adornment-password">
+              confirm password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={confirmValues.showPassword ? "text" : "password"}
+              value={confirmValues.password}
+              onChange={handleChangeConfirm("password")}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPasswordConfirm}
+                    onMouseDown={handleMouseDownPasswordConfirm}
+                    edge="end"
+                  >
+                    {confirmValues.showPassword ? (
+                      <Visibility />
+                    ) : (
+                      <VisibilityOff />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+              labelWidth={130}
+            />
           </FormControl>
         </DialogContent>
         <DialogActions>
@@ -108,7 +161,7 @@ export default function FormDialog(prpos) {
           <Button
             onClick={() => {
               setOpen(false);
-              sendUpdatedPassword(values.password);
+              sendUpdatedPassword(values.password,confirmValues.password);
             }}
             color="primary"
           >

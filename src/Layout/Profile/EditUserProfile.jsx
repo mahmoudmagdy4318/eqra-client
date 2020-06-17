@@ -43,6 +43,10 @@ const EditUserProfile = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openUpdatePass, setOpenUpdatePass] = useState(false);
   const [successMsgPass, setSuccessMessagePass] = useState("");
+  const [errOpen, seterrOpen] = useState(false);
+  const [errMsg, seterrMsg] = useState("");
+  // const [password, setpassword] = React.useState({ error: false, helper: "" });
+
 
   useEffect(() => {
     updateProfileData(currentUser);
@@ -124,19 +128,34 @@ const EditUserProfile = () => {
   const handleClickOpen = () => {
     setOpenDialog(true);
   };
-  const sendUpdatedPassword = async (password) => {
-    try {
-      const data = await axiosInstance.put(
-        `api/auth/updatepassword`,
-        {newPassword:password}
-      );
-      console.log(data);
-      setOpenUpdatePass(true);
-      setSuccessMessagePass(data.msg);
-    } catch (error) {
-      console.error(error);
+  const sendUpdatedPassword = async (mypassword, confirm) => {
+    if (mypassword =="" ){
+      seterrOpen(true);
+      seterrMsg("you should enter a valid password")
+      
+    }else if (mypassword == confirm) {
+      try {
+        const data = await axiosInstance.put(`api/auth/updatepassword`, {
+          newPassword: mypassword,
+          newPassword_confirmation: confirm,
+        });
+        setOpenUpdatePass(true);
+        setSuccessMessagePass(data.msg);
+      }catch (error) {
+        const { errors } = error.response.data; 
+      }
+    }else{
+      seterrOpen(true);
+      seterrMsg("password doesn't match")
     }
   };
+ const  handleErrClose =(event,reason) =>{
+   if (reason === "clickaway") {
+     return;
+   }
+   seterrOpen(false);
+
+  }
   return (
     <div class="container bootstrap snippets">
       <div class="row">
@@ -265,7 +284,6 @@ const EditUserProfile = () => {
               </div>
             </div>
           </form>
-         
         </div>
       </div>
       <div className="row">
@@ -276,7 +294,7 @@ const EditUserProfile = () => {
               onClick={handleClickOpen}
             >
               update password
-              </button>
+            </button>
             <FormDialog
               open={openDialog}
               setOpen={setOpenDialog}
@@ -290,9 +308,18 @@ const EditUserProfile = () => {
           {successMsg}
         </Alert>
       </Snackbar>
-      <Snackbar open={openUpdatePass} autoHideDuration={6000} onClose={handleCloseSnack}>
+      <Snackbar
+        open={openUpdatePass}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+      >
         <Alert onClose={handleCloseSnack} severity="success">
           {successMsgPass}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={errOpen} autoHideDuration={6000} onClose={handleErrClose}>
+        <Alert onClose={handleErrClose} severity="error">
+         {errMsg}
         </Alert>
       </Snackbar>
     </div>
