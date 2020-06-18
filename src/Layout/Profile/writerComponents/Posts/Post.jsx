@@ -21,11 +21,10 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
       if (featured) { setNewFeaturedPosts(true) }
       let newPostData = {
         body_content: postBody,
-        genres: [1],
+        genres: [],
         isFeatured: featured,
       };
-      axiosInstance
-        .post("api/post", newPostData)
+      axiosInstance.post("api/post", newPostData)
         .then((res) => {
           setPostList([{ id: res.data.id, new: true, body_content: res.data.body_content }, ...postList]);
           setPostBody('');
@@ -105,6 +104,7 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
           {postList.map((post) => {
             return (
               <SinglePost
+                key={post.id}
                 post={post}
                 currentUserLikes={currentUserLikes}
                 deletedPost={deletedPost}
