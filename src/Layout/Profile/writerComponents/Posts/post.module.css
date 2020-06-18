@@ -95,20 +95,31 @@
 
 
 .root .paperRoot {
-    padding: 2px 4px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-  .root .paperRoot .input {
-    margin-left: 10px;
-    flex: 1;
-  }
-  .root .paperRoot .iconButton {
-    padding: 10;
-  }
-  .root .paperRoot .divider {
-    height: 28;
-    margin: 4;
-  }
-  
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 0;
+  display: none;
+  transition: all 0.7s;
+}
+
+.root .shown{
+  height: 100%;
+  display: flex;
+  transition: all 0.7s;
+}
+
+.root .paperRoot .input {
+  margin-left: 10px;
+  flex: 1;
+}
+
+.root .paperRoot .iconButton {
+  padding: 10;
+}
+
+.root .paperRoot .divider {
+  height: 28;
+  margin: 4;
+}
