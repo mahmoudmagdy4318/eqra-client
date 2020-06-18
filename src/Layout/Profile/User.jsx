@@ -78,11 +78,11 @@ const User = (props) => {
   const [myfollowers, updateFollowers] = useState(0);
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
-  const [followText,updateFollowText]=useState("");
+  const [followText, updateFollowText] = useState("");
 
   const history = useHistory();
   useEffect(() => {
-    console.log(id);
+    // console.log(id);
     if (id == currentUser.id) {
       updateMyUser(currentUser);
     } else {
@@ -94,7 +94,6 @@ const User = (props) => {
     try {
       const data = await axiosInstance.get(`api/auth/getuser/${id}`);
       updateMyUser(data.user);
-    
     } catch (error) {
       console.error(error);
     }
@@ -152,14 +151,14 @@ const User = (props) => {
       .catch((err) => console.log({ err }));
   };
   const getPosts = async (userid) => {
-    try{  
-    const postsData = await axiosInstance.get(
-      `api/userposts/${userid}?page=${currPage}`
-    );
-    // console.log(postsData);
-    setPosts([...posts, ...postsData.data]);
-    setLastPage(postsData.meta.last_page);
-    }catch(error){
+    try {
+      const postsData = await axiosInstance.get(
+        `api/userposts/${userid}?page=${currPage}`
+      );
+      // console.log(postsData);
+      setPosts([...posts, ...postsData.data]);
+      setLastPage(postsData.meta.last_page);
+    } catch (error) {
       console.log(error);
     }
   };
@@ -197,27 +196,50 @@ const User = (props) => {
   const editProfile = () => {
     history.push(`/editprofile`);
   };
-  const bringFollowers = async () => {
+  const bringFollowers = async (userId) => {
     try {
-      const followers = await axiosInstance.get(`api/my-followers`);
+      const followers = await axiosInstance.get(`api/my-followers/${userId}`);
       // console.log(followers);
       updateFollowers(followers.length);
     } catch (error) {
       console.log(error);
     }
   };
-  const following = async () => {
+  const following = async (userId) => {
     try {
-      const following = await axiosInstance.get(`api/persons-i-follow`);
+      const following = await axiosInstance.get(
+        `api/persons-i-follow/${userId}`
+      );
       updateFollowing(following.length);
     } catch (error) {
       console.log(error);
     }
   };
+  const mainUserFollowers = async (userId) => {
+    try {
+      console.log(userId);
+      const followers = await axiosInstance.get(
+        `api/persons-i-follow/${userId}`
+      );
+      console.log(followers);
+      const guestExist = followers.some((ele) => ele.followed_id == id);
+      if (guestExist == true) {
+        console.log(guestExist);
+        updateFollowText("following");
+      } else {
+        console.log(guestExist);
+        updateFollowText("follow");
+      }
+      // debugger
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    bringFollowers();
-    following();
-  });
+    bringFollowers(id);
+    following(id);
+    mainUserFollowers(currentUser.id);
+  }, id);
   const submitEditingPost = (postData) => {
     console.log(postData);
     return axiosInstance
@@ -230,6 +252,44 @@ const User = (props) => {
   const handleSubmitAddingComment = (newComment) => {
     console.log(newComment);
     return axiosInstance.post("api/comment", newComment);
+  };
+  const enterBtn = (e) => {
+    if (followText == "following") {
+      updateFollowText("unfollow");
+    }
+  };
+  const leaveBtn = (e) => {
+    if (followText == "unfollow") {
+      updateFollowText("following");
+    }
+  };
+  const clickBtn = (e) => {
+    if (followText == "unfollow") {
+      unfollow();
+    }
+    if (followText == "follow") {
+      sendFollow();
+    }
+    bringFollowers(id);
+    following(id);
+  };
+  const unfollow = async () => {
+    try {
+      const sendUnfollow = axiosInstance.delete(`api/unfollow/${id}`);
+      console.log(sendUnfollow);
+      updateFollowText("follow");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const sendFollow = async () => {
+    try {
+      const sendUnfollow = axiosInstance.post(`api/follow/${id}`);
+      console.log(sendUnfollow);
+      updateFollowText("following");
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div class="">
@@ -248,7 +308,7 @@ const User = (props) => {
             <h3 class="h3">{myUser.full_name}</h3>
           </div>
           <div class="profile-cover__action bg--img" data-overlay="0.3">
-            {id == currentUser.id &&(
+            {id == currentUser.id && (
               <button
                 class="btn btn-rounded btn-info"
                 onClick={() => {
@@ -264,14 +324,27 @@ const User = (props) => {
                 <span>Edit profile</span>
               </button>
             )}
-            {id != currentUser.id &&(
-              <button class="btn btn-rounded btn-info">
-                <FontAwesomeIcon
-                  item
-                  icon="plus"
-                  size="1x"
-                  className="mt-3 mx-1"
-                />
+            {id != currentUser.id && (
+              <button
+                class="btn btn-rounded btn-info"
+                onMouseOver={(e) => {
+                  enterBtn(e);
+                }}
+                onMouseLeave={(e) => {
+                  leaveBtn(e);
+                }}
+                onClick={(e) => {
+                  clickBtn(e);
+                }}
+              >
+                {followText == "follow" && (
+                  <FontAwesomeIcon
+                    item
+                    icon="plus"
+                    size="1x"
+                    className="mt-3 mx-1"
+                  />
+                )}
                 <span>{followText}</span>
               </button>
             )}
