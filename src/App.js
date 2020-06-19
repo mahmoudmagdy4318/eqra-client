@@ -38,10 +38,13 @@ import {
   faUserPlus,
   faCamera,
   faCalendarWeek,
+  faLock
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
 import TrendsPosts from "./Trends/TrendsPosts";
+import ForgotPassword from "./Layout/ForgotPassword";
+import ResetPassword from "./Layout/ResetPassword";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -61,7 +64,8 @@ library.add(
   faImage,
   faUserPlus,
   faCamera,
-  faCalendarWeek
+  faCalendarWeek,
+  faLock
 );
 
 const App = () => {
@@ -77,6 +81,21 @@ const App = () => {
               exact
               path="/register"
               render={() => <SignUp />}
+            />
+            <Route
+              key="forgot"
+              exact
+              path="/forgot-password"
+              render={() => <ForgotPassword />}
+            />
+            <Route
+              key="reset"
+              exact
+              path="/reset-password/:token"
+              render={(routeprops) => (
+                <ResetPassword  token={routeprops.match.params.token} />
+              )}
+            
             />
             <Route key="logout" exact path="/logout" component={Logout} />
             <Route key="home" exact path="/" render={() => <Test />} />
