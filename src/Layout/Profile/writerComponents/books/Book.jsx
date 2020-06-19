@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Card, Typography, CardContent, CardActions, makeStyles, InputLabel, OutlinedInput, InputAdornment, FormControl } from '@material-ui/core';
+import { Button, Card, Typography, CardContent, CardActions, makeStyles, InputLabel, OutlinedInput, InputAdornment, FormControl, Tooltip, withStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import axiosInstance from "../../../../API/axiosInstance";
 import styles from './book.module.css'
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
@@ -42,6 +43,18 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+
+
+const HtmlTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: '#f5f5f9',
+    color: 'rgba(0, 0, 0, 0.87)',
+    maxWidth: 220,
+    fontSize: theme.typography.pxToRem(12),
+    border: '1px solid #dadde9',
+  },
+}))(Tooltip);
+
 const Book = () => {
   let [newBook, setNewBook] = useState({ title: '', description: '', price: 0, coverImage: null })
 
@@ -71,22 +84,28 @@ const Book = () => {
     setNewBook({ ...newBook, coverImage: e.target.files[0] })
   }
 
+  const removeBook = id => async (e) => {
+    let data = await axiosInstance.delete(`/api/book/${id}`);
+    setBooks(books.filter(b=>b.id !== id));
+  }
+
   const submitNewBook = (e) => {
     e.preventDefault();
     if (newBook.coverImage.type.split('/')[0] !== "image")
-      alert('wrong file type')
-      
-    console.log(newBook);
-    
-    axiosInstance.interceptors.request.use((cfg) => {
-      cfg.headers["Contetnt-Type"]="multipart/form-data";
-      return cfg;
-    })
-    axiosInstance.post('/api/book', newBook)
-      .then(data => console.log(data))
+      return alert('wrong file type')
+
+    const formData = new FormData();
+    formData.append("price", newBook.price);
+    formData.append("title", newBook.title);
+    formData.append("description", newBook.description);
+    formData.append("coverImage", newBook.coverImage);
+    formData.append("enctype", "multipart/form-data");
+
+    axiosInstance.post('/api/book', formData)
+      .then(data => {
+        setOpen(false); setBooks([...books, data.newBook])
+      })
       .catch(err => console.log(err))
-
-
   }
   return (
     <>
@@ -167,6 +186,7 @@ const Book = () => {
                           Upload Cover Image
                         <input
                             name="coverImage"
+                            accept="image/*"
                             onChange={uploadBookCover}
                             required
                             type="file"
@@ -200,14 +220,26 @@ const Book = () => {
         {books.length === 0 ? 'no books found' : books.slice(0).reverse().map((book) => {
           return (
             <Card className={styles.item} variant="outlined" key={book.id}>
-              <CardContent >
-                <img src={book.img} alt="" />
-                <Typography variant="body2" component="p">
-                  {book.title}
-                </Typography>
-              </CardContent>
+              {/* <Tooltip title={book.description} placement="left-start"> */}
+              <HtmlTooltip
+                placement="left-start"
+                title={
+                  <React.Fragment>
+                    <p className={styles.tooltipText} color="inherit">{book.description}</p>
+                  </React.Fragment>
+                }
+              >
+                <CardContent>
+                  <img src={book.coverImagePath} alt="" />
+                  <Typography variant="body2" component="p">
+                    {book.title}
+                  </Typography>
+                  <p className={styles.price}>${book.price}</p>
+                </CardContent>
+              </HtmlTooltip>
               <CardActions>
-                <Link size="small" to={`/book/${book.id}`}> Check this book </Link>
+                <Link size="small" to={`/book/${book.id}`}> Get a Copy!</Link>
+                <DeleteForeverIcon className={styles.delete} onClick={removeBook(book.id)} />
               </CardActions>
             </Card>
           )
