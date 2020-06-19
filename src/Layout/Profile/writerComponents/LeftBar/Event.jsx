@@ -11,18 +11,22 @@ const Event = () => {
         // console.log("server response Events : ", data);
         setEvents([...data.data]);
       })
-      .catch(err=>console.log(err))
+      .catch(err => console.log(err))
   }, [])
-  
+
   return (
     <>
-      <h3>Upcoming Events</h3>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <h3>Upcoming Events</h3>
+        <Link to="/newEvent" className={styles.newEvent}> New Event ?</Link>
+      </div>
+
       <ul className={styles.events}>
         {events.map(event => {
           return (
             <li className={styles.events_event} key={event.id}>
               <Link to={`/event/${event.id}`} >
-                { event.title.length > 26 ? `${event.title.substring(0,26)} ...` : event.title }
+                {event.title.length > 26 ? `${event.title.substring(0, 26)} ...` : event.title}
               </Link>
             </li>
           )
