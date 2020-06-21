@@ -14,7 +14,7 @@ const Details = ({ name, email, image, followers, following }) => {
       </div>
 
       <div className={followers}>
-        <p className={styles.sidedata}> <span> {followers} </span> followers </p>
+        <p className={styles.sidedata}> followers <span> {followers} </span> </p>
         <p className={styles.sidedata}> following <span> {following} </span> </p>
       </div>
     </section>

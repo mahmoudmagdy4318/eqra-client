@@ -13,7 +13,7 @@ import Book from "./writerComponents/books/Book";
 import { UserContext } from "../../context/userContext";
 import axiosInstance from "../../API/axiosInstance";
 
-const Writer = () => {
+const Writer = ({id:userWatchingId}) => {
   const { data: { user: currentUser }, } = useContext(UserContext);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
@@ -43,6 +43,7 @@ const Writer = () => {
         }
         followers={followersFollowing.followers}
         following={followersFollowing.following}
+        userWatchingId={userWatchingId}
       />
 
       <section className={styles.grid}>
