@@ -56,7 +56,7 @@ const UserEvents = (props) => {
               <CardActionArea>
                 <CardMedia
                   className={classes.media}
-                  image="https://source.unsplash.com/random"
+                  image={event.cover_image ? event.cover_image : "https://source.unsplash.com/random"}
                   title="Contemplative Reptile"
                 />
                 <CardContent>

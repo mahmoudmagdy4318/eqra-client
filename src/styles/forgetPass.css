@@ -6,3 +6,7 @@
     color: #fff;
     border: 1px solid #EE4956;
 }
+.panel{
+        border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}

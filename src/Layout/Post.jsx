@@ -87,6 +87,7 @@ const Post = (props) => {
   }, []);
 
   useEffect(() => {
+    console.log(postData)
     if (!postData.created_at) return;
     const interval = setInterval(() => {
       getDateDifference(postData.created_at);
@@ -161,17 +162,17 @@ const Post = (props) => {
             </Typography>
           </div>
 
-          {_.get(postData, "files.length") ? (
-            <div class="optionalMedia">
-              <img
-                class="optionalMedia-img"
-                src="http://placekitten.com/500/400"
-                alt=""
-              />
-            </div>
-          ) : (
-            <></>
-          )}
+          {
+                postData.files?.map((file) => {
+                  return(
+                    <img
+                  class="optionalMedia-img"
+                  src={file.filename}
+                  alt="postImage"
+                />
+                  )
+                })
+              }
 
           <div
             class="tweetEntry-action-list"

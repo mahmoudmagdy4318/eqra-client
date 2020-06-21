@@ -32,7 +32,7 @@ const AllEvents = (props) => {
       {/* Header Component */}
       <EventNavBar/>
         <div>
-          <Container  class="eventsContainers container" maxWidth="sm">
+          <Container  class="eventsContainers container" maxWidth="lg">
           <Typography  component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               <h1>Events Content</h1>
             </Typography>
@@ -42,7 +42,7 @@ const AllEvents = (props) => {
             </div>
           </Container>
         </div>
-        <Container className={classes.cardGrid} maxWidth="md">
+        <Container className={classes.cardGrid} maxWidth="lg">
           {/* End hero unit */}
           <h2>Events You Many Interested In</h2>
           <Grid container spacing={4}>
@@ -51,7 +51,7 @@ const AllEvents = (props) => {
                 <Card className={classes.card} onClick={() => props.history.push(`/event/${event.id}`)}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={event.cover_image ? event.cover_image : "https://source.unsplash.com/random"}
                     title={event.name}
                   />
                   <CardContent className={classes.cardContent}>
