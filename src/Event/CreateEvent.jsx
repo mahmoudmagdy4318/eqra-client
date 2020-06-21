@@ -7,6 +7,8 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import DescriptionIcon from '@material-ui/icons/Description';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Button from '@material-ui/core/Button';
 // Axios
 import axiosInstance from "../API/axiosInstance";
@@ -20,14 +22,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CreateEvent = (props) =>{
-  const [event, setEvent] = React.useState({name:"", description:"", location:"", start_date:"2020-05-24T10:30", end_date:"2021-05-24T10:30"});
+  const [event, setEvent] = React.useState({name:"", description:"", location:"", start_date:"2020-05-24T10:30", end_date:"2021-05-24T10:30", eventImage:null});
   const classes = useStyles();
   const onChange = e => {
     setEvent({...event, [e.target.name]: e.target.value});
   }
   const onSubmit = async(e)  => {
+    e.preventDefault();
+    if (event.eventImage.type.split('/')[0] !== "image")
+      return alert('wrong file type')
+    const formData = new FormData();
+    formData.append('name', event.name);
+    formData.append('description', event.description);
+    formData.append('location', event.location);
+    formData.append('start_date', event.start_date);
+    formData.append('end_date', event.end_date);
+    formData.append('cover_image', event.eventImage);
     try{
-      const newEvent = await axiosInstance.post("api/event", event);
+      const newEvent = await axiosInstance.post("api/event", formData);
       props.history.push(`/event/${newEvent.id}`);
     }catch(err){
       console.log(err);
@@ -132,6 +144,27 @@ const CreateEvent = (props) =>{
                     onChange={onChange}
                 />
               </Grid>
+              <Grid item xs={12}>
+                        <Button
+                          variant="outlined"
+                          component="label"
+                          style={{ marginRight: 7 }}
+                        >
+                          Upload Cover Image
+                        <input
+                            name="eventImage"
+                            accept="image/*"
+                            onChange={(e) => setEvent({ ...event, eventImage: e.target.files[0] })}
+                            required
+                            type="file"
+                            style={{ display: "none" }}
+                          />
+                        </Button>
+                        {event.eventImage !== null && event.eventImage.type.split('/')[0] === "image" ?
+                          <CheckCircleOutlineIcon style={{ color: '#4caf50' }} /> :
+                          <ErrorOutlineIcon style={{ color: '#f44336' }} />
+                        }
+                      </Grid>
               <Grid item xs={12}>
               <Button onClick={onSubmit} variant="contained" color="primary" fullWidth size={"large"}>
         Start Event

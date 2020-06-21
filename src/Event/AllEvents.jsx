@@ -51,7 +51,7 @@ const AllEvents = (props) => {
                 <Card className={classes.card} onClick={() => props.history.push(`/event/${event.id}`)}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={event.cover_image ? event.cover_image : "https://source.unsplash.com/random"}
                     title={event.name}
                   />
                   <CardContent className={classes.cardContent}>

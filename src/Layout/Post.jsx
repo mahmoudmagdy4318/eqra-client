@@ -93,7 +93,6 @@ const Post = (props) => {
     setCurrentUserLike(res.res);
   };
   useEffect(() => {
-    debugger;
     if (!currentUser.id || !postData.id) return;
     checkForLike();
   }, [currentUser, postData]);

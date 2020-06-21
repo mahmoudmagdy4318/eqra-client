@@ -14,10 +14,10 @@ const EventDetails = (props) => {
     data: { user: currentUser },
   } = useContext(UserContext);
   const [event, setEvent] = useState({});
-
   const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
     setEvent(event.data);
+    console.log(event.data)
   };
   useEffect(() => {
     getEvent();
@@ -27,7 +27,7 @@ const EventDetails = (props) => {
     <div class="">
       <div class="col-lg-12 p-0">
         <div class="panel profile-cover">
-          <div class="profile-cover__img eventHeader">
+          <div class="profile-cover__img eventHeader" >
             <CalendarTodayIcon
               fontSize={"large"}
               color={"error"}
@@ -37,7 +37,7 @@ const EventDetails = (props) => {
               </p>
             <h3 class="h3">{event.name}</h3>
           </div>
-          <div class="profile-cover__action bg--img" data-overlay="0.3">
+          <div class="profile-cover__action bg--img" data-overlay="0.3" style ={ { backgroundImage: "url("+event.cover_image+")" }}>
             {/* User State Component (Pending, Interested, Going) */}
             <UserEventState
               getEvent={getEvent}
