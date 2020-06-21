@@ -22,7 +22,7 @@ const MyNav = () => {
           <FontAwesomeIcon item icon="home" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2"> Home </span>
         </Link>
-        <Link className="menu-item m-md-3 pb-2" href="#">
+        {/* <Link className="menu-item m-md-3 pb-2" href="#">
           <FontAwesomeIcon item icon="bell" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2">Notifications</span>
         </Link>
@@ -35,7 +35,7 @@ const MyNav = () => {
             className="mt-3 mx-1"
           />
           <span className="mt-2 pt-1 ml-2">Messeges</span>
-        </Link>
+        </Link> */}
 
         <Link
           className="menu-item m-md-3 pb-2"

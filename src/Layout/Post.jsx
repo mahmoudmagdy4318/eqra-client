@@ -9,6 +9,14 @@ import { Link } from "react-router-dom";
 import CustomizedDialogs from "../utils/Edit";
 import { UserContext } from "../context/userContext";
 import axiosInstance from "../API/axiosInstance";
+import {
+  Grid,
+  Paper,
+  Container,
+  Typography,
+  withStyles,
+  createStyles,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,16 +101,15 @@ const Post = (props) => {
     setCurrentUserLike(res.res);
   };
   useEffect(() => {
-    debugger;
     if (!currentUser.id || !postData.id) return;
     checkForLike();
   }, [currentUser, postData]);
   return (
     <>
-      <div class="tweetEntry-tweetHolder mb-2">
+      <div class="tweetEntry-tweetHolder mb-3">
         <div class="tweetEntry">
           <div class="tweetEntry-content">
-            <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline">
+            <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline main-content">
               <Link
                 class="tweetEntry-account-group"
                 to={`/profile/${_.get(postData, "user.id")}`}
@@ -110,7 +117,7 @@ const Post = (props) => {
                 <img
                   class="tweetEntry-avatar"
                   src="http://placekitten.com/200/200"
-                  alt="" img
+                  alt="img"
                 />
 
                 <strong class="tweetEntry-fullname">
@@ -118,11 +125,11 @@ const Post = (props) => {
                 </strong>
 
                 <span class="tweetEntry-username">
-                  @<b>{_.get(postData, "user.username")}</b>
+                  @<b >{_.get(postData, "user.username")}</b>
                 </span>
               </Link>
               <span class="tweetEntry-timestamp">{timePassed}</span>
-              <div className="ml-md-5">
+              <div className="">
                 {currentUser.id === _.get(postData, "user.id") ? (
                   <>
                     <FontAwesomeIcon
@@ -145,12 +152,13 @@ const Post = (props) => {
                 )}
               </div>
             </div>
-            <div
-              class="tweetEntry-text-container"
+
+            <Typography
               onClick={() => click(postData.id)}
+              class="tweetEntry-text-container"
             >
               {postData.body_content}
-            </div>
+            </Typography>
           </div>
 
           {_.get(postData, "files.length") ? (
@@ -184,7 +192,6 @@ const Post = (props) => {
                 onClick={() => {
                   onLike(currentUserLike)
                     .then(() => {
-                      debugger;
                       setCurrentUserLike(!currentUserLike);
                     })
                     .catch((err) => console.log(err));
@@ -197,7 +204,6 @@ const Post = (props) => {
                 size="1x"
                 className="ml-5 mt-3"
                 onClick={() => {
-                  debugger;
                   onLike(currentUserLike)
                     .then(() => {
                       setCurrentUserLike(!currentUserLike);
@@ -218,7 +224,7 @@ const Post = (props) => {
               <form className={classes.root} noValidate autoComplete="off">
                 <TextField
                   id="standard-basic"
-                  label="comment"
+                  label="Add comment"
                   multiline={true}
                   name="comment"
                   placeholder="Add comment"
@@ -230,21 +236,25 @@ const Post = (props) => {
                   }
                 />
               </form>
-              <button
-                className=" btn-secondary mr-md-4  px-4 py-2 post"
-                onClick={() =>
-                  onSubmitAddingComment(newComment)
-                    .then((res) => {
-                      setNewComment({ content: "", postId: postData.id });
-                      showComment(false);
-                    })
-                    .catch((err) => {
-                      console.log(err);
-                    })
-                }
-              >
-                add
-              </button>
+              <div className="row">
+                <div class="col-md-2 offset-md-10 ">
+                  <button
+                    className="  mr-md-4  px-4 py-2 post"
+                    onClick={() =>
+                      onSubmitAddingComment(newComment)
+                        .then((res) => {
+                          setNewComment({ content: "", postId: postData.id });
+                          showComment(false);
+                        })
+                        .catch((err) => {
+                          console.log(err); 
+                        })
+                    }
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
               {/* <Comment /> */}
             </div>
           )}

@@ -240,7 +240,7 @@ const Test = (props) => {
   return (
     <div className={classes.maincontainer}>
       {!props.writer ? (
-        <div className="con">
+        <div className="con py-md-2 mb-4">
           <div className="post-con mt-md-2 mb-md-1">
             {currentUser.pictur == null && (
               <img
@@ -248,6 +248,7 @@ const Test = (props) => {
                 alt=""
                 width="60"
                 height="60"
+                className="ml-2 post-img"
                 style={{ width: "80px", height: "80px" }}
               />
             )}
@@ -257,7 +258,7 @@ const Test = (props) => {
                 width="60"
                 height="60"
                 alt=""
-                className="ml-2"
+                className="ml-2 post-img"
                 style={{ width: "80px", height: "80px" }}
               />
             )}
@@ -267,12 +268,12 @@ const Test = (props) => {
               rowsMin={5}
               rowsMax={8}
               placeholder="Write a post"
-              class="write-area ml-4"
+              class="write-area ml-2"
               name="body_content"
               onChange={handleInput}
             />
           </div>
-          <div className="post-con-last ml-md-2 mb-2 mt-md-5">
+          {/* <div className="post-con-last ml-md-2 mb-2 mt-md-1">
             <input
               accept="image/*"
               className={classes.input}
@@ -282,18 +283,14 @@ const Test = (props) => {
               onChange={handleFileInput}
             />
             <label htmlFor="icon-button-file">
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-              >
+           
                 <FontAwesomeIcon
                   icon="image"
-                  size="1x"
+                  size="2x"
                   style={{ color: "#EE4956" }}
-                  className="ml-5 mt-3"
+                  className="ml-5 mt-3 image"
                 />
-              </IconButton>
+            
             </label>
             <FormControl className={classes.formControl}>
               <InputLabel id="demo-mutiple-checkbox-label">
@@ -318,13 +315,61 @@ const Test = (props) => {
             >
               Post
             </button>
-            {/* ******************************************** */}
+          </div> */}
+          <div className="row ml-md-2 mb-2 mt-md-1 align-items-center">
+            <div className="col-1">
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="icon-button-file"
+              type="file"
+              name="postFiles"
+              onChange={handleFileInput}
+            />
+            <label htmlFor="icon-button-file">
+           
+                <FontAwesomeIcon
+                  icon="image"
+                  size="2x"
+                  style={{ color: "#EE4956" }}
+                  className=" image mt-md-4"
+                />
+            
+            </label>
+            </div>
+            <div className="col-8">
+            <FormControl className={classes.formControl}>
+              <InputLabel id="demo-mutiple-checkbox-label">
+                Select a category or more
+              </InputLabel>
+              <Select
+                labelId="demo-mutiple-checkbox-label"
+                id="demo-mutiple-checkbox"
+                multiple
+                value={checkedCategories}
+                onChange={handleChange}
+                input={<Input />}
+                renderValue={(selected) => selected.join(", ")}
+                MenuProps={MenuProps}
+              >
+                {categoryMenu}
+              </Select>
+            </FormControl>
+            </div>
+            <div className="col-2">
+            <button
+              className="mr-md-4  px-4 py-2 post mt-md-3"
+              onClick={submitPost}
+            >
+              Post
+            </button>
+            </div>
           </div>
         </div>
       ) : (
         <></>
       )}
-      <hr className="line"></hr>
+      {/* <hr className="line"></hr> */}
       {/* ************************************************ */}
       <InfiniteScroll
         dataLength={posts.length} //This field to render the next data
