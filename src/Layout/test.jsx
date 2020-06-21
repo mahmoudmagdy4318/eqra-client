@@ -126,13 +126,15 @@ const Test = (props) => {
       if (obj[curr.name]) acc.push(curr.id);
       return acc;
     }, []);
-
+    const formData = new FormData();
+    for (let i = 0; i < newPostData.postFiles.length; i++) {
+      formData.append(`postFiles[${i}]`, newPostData.postFiles[i])
+    }
+    formData.append('genres', cats);
+    formData.append('body_content', newPostData.body_content);
+    formData.append('genres', cats);
     axiosInstance
-      .post("api/post", {
-        ...newPostData,
-        genres: cats,
-        postFiles: newPostFile,
-      })
+      .post("api/post", formData)
       .then((res) => {
         console.log({ res });
         setPosts([res.data, ...posts]);
@@ -158,7 +160,7 @@ const Test = (props) => {
           : postsData.data
       );
       setLastPage(postsData.last_page);
-      console.log(postsData);
+      console.log(postsData.data);
     } else {
       const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
       setPosts([...posts, ...postsData.data]);
@@ -320,11 +322,12 @@ const Test = (props) => {
             <div className="col-1">
             <input
               accept="image/*"
+              multiple
               className={classes.input}
               id="icon-button-file"
               type="file"
-              name="postFiles"
-              onChange={handleFileInput}
+              name="postFiles[]"
+              onChange={(e) => setNewPostData({ ...newPostData, postFiles: e.target.files })}
             />
             <label htmlFor="icon-button-file">
            

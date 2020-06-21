@@ -26,7 +26,7 @@ const Event = () => {
           return (
             <li className={styles.events_event} key={event.id}>
               <Link to={`/event/${event.id}`} >
-                {event.title.length > 26 ? `${event.title.substring(0, 26)} ...` : event.title}
+                {event.name?.length > 26 ? `${event.name.substring(0, 26)} ...` : event.name}
               </Link>
             </li>
           )

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext} from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -15,7 +15,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
-const InviteUsers = (props) => {
+import { UserContext } from "../context/userContext";
+
+const InviteFollowers = (props) => {
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
     const [open, setOpen] = React.useState(false);
     const [followers, setFollowers] = React.useState([]);
     const classes = useStyles();
@@ -48,12 +53,12 @@ const InviteUsers = (props) => {
     getEvent();
   };
   const getFollowers = async () => {
-      const userFollowers = await axiosInstance.get(`api/persons-i-follow`);
+      const userFollowers = await axiosInstance.get(`api/persons-i-follow/${currentUser.id}`);
       setFollowers(userFollowers);
   }
   React.useEffect(() => {
     getFollowers();
-  }, []);
+  }, [JSON.stringify(currentUser)]);
 
   return (
     <Fragment>
@@ -113,7 +118,7 @@ const InviteUsers = (props) => {
     </Fragment>
   );
 }
-export default InviteUsers;
+export default InviteFollowers;
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
