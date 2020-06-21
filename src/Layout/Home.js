@@ -2,6 +2,7 @@ import React from "react";
 import MyNav from "./MyNav";
 import Chat from "../Chat/Chat";
 import "../styles/home.css";
+import EventNavBar from "../Event/EventNavbar"
 import {
   Grid,
   Paper,
@@ -15,7 +16,7 @@ import Trends from "../Trends/Trends";
 const styles = createStyles((theme) => ({
   root: {
     flexGrow: 1,
-    paddingTop: 30,
+    // paddingTop: 30,
   },
   paper: {
     padding: theme.spacing(2),
@@ -43,17 +44,19 @@ const Home = (Component) => {
     return (
       <>
         <div className={classes.root}>
+          < EventNavBar />
           <Container>
+     
             <Grid container>
-              <Grid md={2} className={classes.sticky}>
+              <Grid  xs={12} md={2} justify="center" className={classes.sticky}>
                 <div style={{ height: "100%" }}>
                   <MyNav />
                 </div>
               </Grid>
-              <Grid md={6} className="inner-grid">
+              <Grid xs={12} md={6} className="inner-grid">
                 <Component {...props} />
               </Grid>
-              <Grid md={3} className={classes.sticky}>
+              <Grid xs={12} md={3} className={classes.sticky}>
                 <Chat />
                 <Trends />
               </Grid>

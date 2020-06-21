@@ -239,7 +239,7 @@ const User = (props) => {
     bringFollowers(id);
     following(id);
     mainUserFollowers(currentUser.id);
-  }, id);
+  }, [id]);
   const submitEditingPost = (postData) => {
     console.log(postData);
     return axiosInstance
