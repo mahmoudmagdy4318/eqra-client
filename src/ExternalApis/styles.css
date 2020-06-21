@@ -1,0 +1,11 @@
+.StripeCheckout {
+  background: blue !important;
+}
+.myStripe{
+  background: blue;
+}
+
+.StripeCheckout span {
+  /* background-color: blue; */
+  background-image: none !important;
+}

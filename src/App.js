@@ -38,13 +38,15 @@ import {
   faUserPlus,
   faCamera,
   faCalendarWeek,
-  faLock
+  faLock,
+  faBookOpen
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
 import TrendsPosts from "./Trends/TrendsPosts";
 import ForgotPassword from "./Layout/ForgotPassword";
 import ResetPassword from "./Layout/ResetPassword";
+import BookGalery from "./BookGalery";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -65,7 +67,8 @@ library.add(
   faUserPlus,
   faCamera,
   faCalendarWeek,
-  faLock
+  faLock,
+  faBookOpen
 );
 
 const App = () => {
@@ -93,9 +96,9 @@ const App = () => {
               exact
               path="/reset-password/:token"
               render={(routeprops) => (
-                <ResetPassword  token={routeprops.match.params.token} />
+                <ResetPassword token={routeprops.match.params.token} />
               )}
-            
+
             />
             <Route key="logout" exact path="/logout" component={Logout} />
             <Route key="home" exact path="/" render={() => <Test />} />
@@ -134,9 +137,9 @@ const App = () => {
             <Route
               key="profile"
               exact
-              path="/profile/:id"
+              path="/profile/:role/:id"
               render={(routeprops) => (
-                <Profile id={routeprops.match.params.id} />
+                <Profile role={routeprops.match.params.role} id={routeprops.match.params.id} />
               )}
             />
             <Route
@@ -151,6 +154,13 @@ const App = () => {
               path="/search"
               render={() => <TrendsPosts />}
             />
+            <Route
+              key="bookGalery"
+              exact
+              path="/bookGalery"
+              component={BookGalery}
+            />
+
             <Route path="*" render={() => "404 Not Found"} />
           </Switch>
         </BrowserRouter>
