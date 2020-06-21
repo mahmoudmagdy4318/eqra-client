@@ -5,14 +5,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f2f2f2 !important;
+   /*background-color: #f2f2f2 !important;
+  background-image: url("./assets/books.jpg") !important;
+  background-repeat: repeat !important;
+  background-position:center top !important;
+  background-attachment: fixed !important;
+  background-size: cover  !important; */
   /* height: 2000px; */
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
+} */
 
 .chatbox {
   position: fixed;
