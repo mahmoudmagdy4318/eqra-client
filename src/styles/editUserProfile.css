@@ -7,7 +7,7 @@ body {
  */
 /*** General styles ***/
 .panel {
-  box-shadow: none;
+  /* box-shadow: none; */
 }
 .panel-heading {
   border-bottom: 0;
@@ -69,7 +69,7 @@ img {
   /* max-width: 100%;
    */
   /* max-width: 120px; */
-    height: auto;
+  height: auto;
   border: 5px solid #fff;
   border-radius: 5px;
 }
@@ -89,6 +89,6 @@ img {
   color: #999;
   cursor: pointer;
 }
-.button-sumbit:hover{
+.button-sumbit:hover {
   cursor: pointer;
 }

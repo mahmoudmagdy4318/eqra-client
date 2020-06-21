@@ -157,7 +157,7 @@ const EditUserProfile = () => {
 
   }
   return (
-    <div class="container bootstrap snippets">
+    <div class="container bootstrap snippets mt-2">
       <div class="row">
         <div class="col-sm-12">
           <form
@@ -207,13 +207,13 @@ const EditUserProfile = () => {
                     />
                   </label>
                 </div>
-              </div>
-            </div>
-            <div class="panel panel-default mb-0">
+              {/* </div>
+            </div> */}
+            {/* <div class="panel panel-default mb-0"> */}
               <div class="panel-heading">
                 <h4 class="panel-title">Information</h4>
               </div>
-              <div class="panel-body pb-0">
+              {/* <div class="panel-body pb-0"> */}
                 <TextField
                   id="outlined-full-width"
                   error={firstNameVal.error}
@@ -272,10 +272,10 @@ const EditUserProfile = () => {
                   variant="outlined"
                 />
                 <div class="form-group">
-                  <div class="col-sm-10 col-sm-offset-2">
+                  <div class="col-sm-3">
                     <button
                       type="submit"
-                      class="btn btn-primary button-sumbit ml-md-2 mt-md-2"
+                      class="btn btn-primary button-sumbit  mt-md-2"
                     >
                       Submit
                     </button>

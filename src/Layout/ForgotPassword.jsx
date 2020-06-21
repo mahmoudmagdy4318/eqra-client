@@ -15,6 +15,7 @@ import {
 } from "@material-ui/core";
 import axiosInstance from "../API/axiosInstance";
 import Alert from "@material-ui/lab/Alert";
+import Snack from "../utils/Snackbar";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -158,20 +159,18 @@ const ForgotPassword = () => {
           </div>
         </div>
       </div>
-      <Snackbar
+      <Snack
         open={successOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnack}
-      >
-        <Alert onClose={handleCloseSnack} severity="success">
-          {successMsg}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={errOpen} autoHideDuration={6000} onClose={handleErrClose}>
-        <Alert onClose={handleErrClose} severity="error">
-          {errMsg}
-        </Alert>
-      </Snackbar>
+        setOpen={setSuceesOpen}
+        severity="success"
+        messege={successMsg}
+      />
+      <Snack
+        open={errOpen}
+        setOpen={setErrOpen}
+        severity="error"
+        messege={errMsg}
+      />
     </div>
   );
 };

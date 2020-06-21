@@ -195,6 +195,7 @@ const ResetPassword = (props) => {
           </div>
           <Snack
             open={invlidToken}
+            setOpen={setInvalidToken}
             severity={severity}
           messege={invlidTokenMsg}
             />

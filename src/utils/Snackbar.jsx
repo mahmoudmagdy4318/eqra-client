@@ -18,22 +18,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Snack = (props) => {
     const classes = useStyles();
-    let {open,severity,messege}=props
-    const [openSnack,updateOpenSnack]=useState(open);
-    useEffect(
-        () =>{
-            updateOpenSnack(open)
-        }
-    )
+    let { open, severity, messege, setOpen}=props
     const handleErrClose = (event, reason) => {
         if (reason === "clickaway") {
             return;
         }
-        updateOpenSnack(false)
+        setOpen(false)
     };
     
   return(
-    <Snackbar open={openSnack} autoHideDuration={1000} onClose={handleErrClose}>
+    <Snackbar open={open} autoHideDuration={6000} onClose={handleErrClose}>
           <Alert onClose={handleErrClose} severity={severity}>
               {messege}
       </Alert>
