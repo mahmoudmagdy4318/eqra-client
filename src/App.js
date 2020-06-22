@@ -113,7 +113,7 @@ const App = () => {
               component={CreateEvent}
             />
             <Route
-              key="createEvent"
+              key="searchPage"
               exact
               path="/search"
               component={SearchPage}
