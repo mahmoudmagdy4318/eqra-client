@@ -11,6 +11,7 @@ import Home from "../Layout/Home";
 import SearchPageResult from "./SearchPageResult";
 import SearchService from "../services/SearchService";
 import Axios from "axios";
+import Alert from '@material-ui/lab/Alert';
 
 const SearchPage = (props) => {
   const classes = useStyles();
@@ -31,7 +32,6 @@ const SearchPage = (props) => {
         );
         setSearch({ loading: false, results: searchResult.data.users });
         SearchService.setResultMsgIfMsgEmpty(searchResult.data.users, setErrorMessage);
-        console.log(searchResult.data.users)
       } catch (err) {
         if (Axios.isCancel(err) || err) {
           setSearch({ loading: false });
@@ -67,8 +67,9 @@ const SearchPage = (props) => {
         >
           Search
         </Button>
+        <Alert className={classes.alertMargin} severity="info" variant="filled" icon={false}>{errorMessage}</Alert>
       </div>
-      <SearchPageResult/>
+      <SearchPageResult searchResult={search.results}/>
     </div>
   );
 };

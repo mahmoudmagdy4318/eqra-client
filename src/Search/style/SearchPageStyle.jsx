@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "20px",
       marginBottom:"30px",
     },
+    alertMargin:{
+      marginTop:"20px"
+    }
   }));
 
 export default useStyles;
