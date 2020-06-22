@@ -11,7 +11,14 @@ import {
   Typography,
   withStyles,
   createStyles,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  withWidth,
+  Hidden,
 } from "@material-ui/core";
+import PropTypes from 'prop-types';
 import Trends from "../Trends/Trends";
 const styles = createStyles((theme) => ({
   root: {
@@ -40,19 +47,29 @@ const styles = createStyles((theme) => ({
 
 const Home = (Component) => {
   const Home = (props) => {
-    const { classes } = props;
+    const { classes ,width} = props;
+    const [spacing, setSpacing] = React.useState(2);
+    Home.propTypes = {
+      width: PropTypes.oneOf(['lg', 'md', 'sm', 'xl', 'xs']).isRequired,
+    };
+    const handleChange = (event) => {
+      setSpacing(Number(event.target.value));
+    };
     return (
       <>
         <div className={classes.root}>
+
           < EventNavBar />
           <Container>
      
-            <Grid container>
-              <Grid  xs={12} md={2} justify="center" className={classes.sticky}>
+            <Grid container >
+              <Hidden smDown>
+              <Grid   md={2} justify="center" className={classes.sticky}>
                 <div style={{ height: "100%" }}>
                   <MyNav />
                 </div>
               </Grid>
+              </Hidden>
               <Grid xs={12} md={6} className="inner-grid">
                 <Component {...props} />
               </Grid>
@@ -61,12 +78,14 @@ const Home = (Component) => {
                 <Trends />
               </Grid>
             </Grid>
-          </Container>
+          </Container>                                                                                                                                                      
         </div>
+   
       </>
     );
   };
   return withStyles(styles)(Home);
 };
+
 
 export default Home;
