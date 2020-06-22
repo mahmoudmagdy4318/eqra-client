@@ -9,7 +9,6 @@ import useStyles from "./style/SearchStyle";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from 'react-router-dom';
 
-
 const SearchMessage = (props) => {
     const classes = useStyles();
     const errorMessage = props.errorMessage;

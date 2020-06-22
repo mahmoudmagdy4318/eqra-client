@@ -19,6 +19,7 @@ import {
 import Select from "@material-ui/core/Select";
 import Checkbox from "@material-ui/core/Checkbox";
 import { identity } from "lodash";
+import FollowComponent from "./FollowComponent";
 
 // import "..
 const limit = 80;
@@ -78,7 +79,6 @@ const User = (props) => {
   const [myfollowers, updateFollowers] = useState(0);
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
-  const [followText, updateFollowText] = useState("");
 
   const history = useHistory();
   useEffect(() => {
@@ -196,50 +196,8 @@ const User = (props) => {
   const editProfile = () => {
     history.push(`/editprofile`);
   };
-  const bringFollowers = async (userId) => {
-    try {
-      const followers = await axiosInstance.get(`api/my-followers/${userId}`);
-      // console.log(followers);
-      updateFollowers(followers.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const following = async (userId) => {
-    try {
-      const following = await axiosInstance.get(
-        `api/persons-i-follow/${userId}`
-      );
-      updateFollowing(following.length);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const mainUserFollowers = async (userId) => {
-    try {
-      console.log(userId);
-      const followers = await axiosInstance.get(
-        `api/persons-i-follow/${userId}`
-      );
-      console.log(followers);
-      const guestExist = followers.some((ele) => ele.followed_id == id);
-      if (guestExist == true) {
-        console.log(guestExist);
-        updateFollowText("following");
-      } else {
-        console.log(guestExist);
-        updateFollowText("follow");
-      }
-      // debugger
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    bringFollowers(id);
-    following(id);
-    mainUserFollowers(currentUser.id);
-  }, [id]);
+  
+  
   const submitEditingPost = (postData) => {
     console.log(postData);
     return axiosInstance
@@ -253,44 +211,7 @@ const User = (props) => {
     console.log(newComment);
     return axiosInstance.post("api/comment", newComment);
   };
-  const enterBtn = (e) => {
-    if (followText == "following") {
-      updateFollowText("unfollow");
-    }
-  };
-  const leaveBtn = (e) => {
-    if (followText == "unfollow") {
-      updateFollowText("following");
-    }
-  };
-  const clickBtn = (e) => {
-    if (followText == "unfollow") {
-      unfollow();
-    }
-    if (followText == "follow") {
-      sendFollow();
-    }
-    bringFollowers(id);
-    following(id);
-  };
-  const unfollow = async () => {
-    try {
-      const sendUnfollow = axiosInstance.delete(`api/unfollow/${id}`);
-      console.log(sendUnfollow);
-      updateFollowText("follow");
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  const sendFollow = async () => {
-    try {
-      const sendUnfollow = axiosInstance.post(`api/follow/${id}`);
-      console.log(sendUnfollow);
-      updateFollowText("following");
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -324,30 +245,7 @@ const User = (props) => {
                 <span>Edit profile</span>
               </button>
             )}
-            {id != currentUser.id && (
-              <button
-                class="btn btn-rounded btn-info"
-                onMouseOver={(e) => {
-                  enterBtn(e);
-                }}
-                onMouseLeave={(e) => {
-                  leaveBtn(e);
-                }}
-                onClick={(e) => {
-                  clickBtn(e);
-                }}
-              >
-                {followText == "follow" && (
-                  <FontAwesomeIcon
-                    item
-                    icon="plus"
-                    size="1x"
-                    className="mt-3 mx-1"
-                  />
-                )}
-                <span>{followText}</span>
-              </button>
-            )}
+            <FollowComponent updateFollowers={updateFollowers} id={id} updateFollowing={updateFollowing} />
             <button class="btn btn-rounded btn-info">
               <FontAwesomeIcon
                 item
