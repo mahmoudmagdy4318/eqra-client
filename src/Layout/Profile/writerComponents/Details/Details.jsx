@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Details.module.css';
 
 
-const Details = ({ name, email, image, followers, following }) => {
+const Details = ({ name, email, image, followers, following ,isVisitor}) => {
   return (
     <section className={styles.details}>
       <div className={styles.information}>
