@@ -17,6 +17,7 @@ const SearchMessage = (props) => {
     return(
         <Fragment>
             {errorMessage && errorMessage === "Search For Your Friends" ? (
+              <Link className="disable-link" to="/search">
               <ListItem
                 alignItems="flex-start"
                 key={errorMessage}
@@ -31,6 +32,7 @@ const SearchMessage = (props) => {
                   primary={errorMessage}
                 />
               </ListItem>
+              </Link>
             ) : errorMessage ? (
               <ListItem
                 alignItems="flex-start"

@@ -38,10 +38,7 @@ const Search = (props) => {
         cancel.token
       );
       setSearch({ loading: false, results: searchResult.data.users });
-      const emptyResultMsg = !searchResult.data.users.length
-        ? "Sorry There is Not User Match this Search Option"
-        : "";
-      setErrorMessage(emptyResultMsg);
+      setResultMsgIfMsgEmpty(searchResult.data.users);
     } catch (err) {
       if (Axios.isCancel(err) || err) {
         setSearch({ loading: false });
@@ -59,6 +56,12 @@ const Search = (props) => {
       fetchSearchResults(query);
     }
   };
+  const setResultMsgIfMsgEmpty = (searchResult) => {
+    const emptyResultMsg = !searchResult.length
+        ? "Sorry There is Not User Match this Search Option"
+        : "";
+      setErrorMessage(emptyResultMsg);
+  }
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
