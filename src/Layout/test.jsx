@@ -127,7 +127,7 @@ const Test = (props) => {
       return acc;
     }, []);
     const formData = new FormData();
-    for (let i = 0; i < newPostData.postFiles.length; i++) {
+    for (let i = 0; i < newPostData.postFiles?.length; i++) {
       formData.append(`postFiles[${i}]`, newPostData.postFiles[i])
     }
     formData.append('genres', cats);

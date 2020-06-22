@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
         },
       },
       searchList:{
-          width:"237px",
+          width:"300px",
           marginLeft: "-5px",
           marginTop:"4px"
       },
@@ -56,6 +56,9 @@ const useStyles = makeStyles((theme) => ({
       listRoot: {
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+      },
+      seeMore:{
+        marginTop:"13px"
       }
   }));
 

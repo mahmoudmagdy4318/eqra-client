@@ -23,7 +23,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 // Component
-import Search from '../Search/Search';
+import Search from '../Search/SearchBar';
 
 const EventNavBar = (props) => {
   const {

@@ -47,6 +47,7 @@ import TrendsPosts from "./Trends/TrendsPosts";
 import ForgotPassword from "./Layout/ForgotPassword";
 import ResetPassword from "./Layout/ResetPassword";
 import BookGalery from "./BookGalery";
+import SearchPage from "./Search/SearchPage";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(
@@ -113,6 +114,12 @@ const App = () => {
               exact
               path="/newEvent"
               component={CreateEvent}
+            />
+            <Route
+              key="searchPage"
+              exact
+              path="/search"
+              component={SearchPage}
             />
             <Route
               key="createEvent"

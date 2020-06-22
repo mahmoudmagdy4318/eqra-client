@@ -87,7 +87,6 @@ const Post = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log(postData)
     if (!postData.created_at) return;
     const interval = setInterval(() => {
       getDateDifference(postData.created_at);
