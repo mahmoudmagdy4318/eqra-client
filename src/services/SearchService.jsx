@@ -2,12 +2,12 @@ const { default: Axios } = require("axios");
 
 export default {
     searchForUser: async(query, token) => {
-        return await Axios.get(`api/search/${query}`, {
+        return await Axios.get(`/api/search/${query}`, {
             cancelToken: token,
         })
     },
     MassiveSearch: async(query, token) => {
-        return await Axios.get(`api/massive/search/${query}`, {
+        return await Axios.get(`/api/massive/search/${query}`, {
             cancelToken: token
         });
     },

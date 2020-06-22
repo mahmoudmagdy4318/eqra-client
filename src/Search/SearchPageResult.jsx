@@ -39,7 +39,7 @@ const SearchPageResult = (props) => {
                {user.email}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+            <CardActions disableSpacing className={classes.cardBtn}>
                 <Button
                   variant="contained"
                   color="primary"

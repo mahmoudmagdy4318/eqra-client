@@ -5,13 +5,13 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
-import useStyles from './style/SearchPageStyle';
+import useStyles from "./style/SearchPageStyle";
 // Component & Service
 import Home from "../Layout/Home";
 import SearchPageResult from "./SearchPageResult";
 import SearchService from "../services/SearchService";
 import Axios from "axios";
-import Alert from '@material-ui/lab/Alert';
+import Alert from "@material-ui/lab/Alert";
 
 const SearchPage = (props) => {
   const classes = useStyles();
@@ -22,41 +22,44 @@ const SearchPage = (props) => {
   });
   const [errorMessage, setErrorMessage] = useState("Search For Your Friends");
   var cancel = "";
-  const fetchAllPossibleResult = async(searchQuery) => {
+  const fetchAllPossibleResult = async (searchQuery) => {
     try {
-        if (cancel) cancel.cancel();
-        cancel = Axios.CancelToken.source();
-        const searchResult = await SearchService.MassiveSearch(
+      if (cancel) cancel.cancel();
+      cancel = Axios.CancelToken.source();
+      const searchResult = await SearchService.MassiveSearch(
         searchQuery,
         cancel.token
-        );
-        setSearch({ loading: false, results: searchResult.data.users });
-        SearchService.setResultMsgIfMsgEmpty(searchResult.data.users, setErrorMessage);
-      } catch (err) {
-        if (Axios.isCancel(err) || err) {
-          setSearch({ loading: false });
-          setErrorMessage("Failed to fetch results.Please check network");
-        }
+      );
+      setSearch({ loading: false, results: searchResult.data.users });
+      SearchService.setResultMsgIfMsgEmpty(
+        searchResult.data.users,
+        setErrorMessage
+      );
+    } catch (err) {
+      if (Axios.isCancel(err) || err) {
+        setSearch({ loading: false });
+        setErrorMessage("Failed to fetch results.Please check network");
       }
-  }
-  const SearchBtnClick = e => {
-      const query = search.query;
+    }
+  };
+  const SearchBtnClick = (e) => {
+    const query = search.query;
     if (!query) {
-        setErrorMessage("Search For Your Friends");
-        setSearch({ query: "", results: [] });
-      } else {
-        setSearch({ query, loading: true });
-        fetchAllPossibleResult(query);
-      }
-  }
+      setErrorMessage("Search For Your Friends");
+      setSearch({ query: "", results: [] });
+    } else {
+      setSearch({ query, loading: true });
+      fetchAllPossibleResult(query);
+    }
+  };
   return (
     <div className={classes.root}>
       <div className={classes.middleItems}>
         <FormControl className={clsx(classes.margin, classes.textField)}>
-          <InputLabel htmlFor="standard-adornment-password" >
+          <InputLabel htmlFor="standard-adornment-password">
             Search....
           </InputLabel>
-          <Input onChange={e => setSearch({query: e.target.value})} />
+          <Input onChange={(e) => setSearch({ query: e.target.value })} />
         </FormControl>
         <Button
           className={classes.marginBtn}
@@ -67,9 +70,20 @@ const SearchPage = (props) => {
         >
           Search
         </Button>
-        <Alert className={classes.alertMargin} severity="info" variant="filled" icon={false}>{errorMessage}</Alert>
+        {errorMessage ? (
+          <Alert
+            className={classes.alertMargin}
+            severity="info"
+            variant="filled"
+            icon={false}
+          >
+            {errorMessage}
+          </Alert>
+        ) : (
+          ""
+        )}
       </div>
-      <SearchPageResult searchResult={search.results}/>
+      <SearchPageResult searchResult={search.results} />
     </div>
   );
 };
