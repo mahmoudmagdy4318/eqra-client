@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './Details.module.css';
 
 
-const Details = ({ name, email, image, followers, following }) => {
+const Details = ({ name, email, image, followers, following ,isVisitor}) => {
   return (
     <section className={styles.details}>
       <div className={styles.information}>
@@ -14,7 +14,7 @@ const Details = ({ name, email, image, followers, following }) => {
       </div>
 
       <div className={followers}>
-        <p className={styles.sidedata}> <span> {followers} </span> followers </p>
+        <p className={styles.sidedata}> followers <span> {followers} </span> </p>
         <p className={styles.sidedata}> following <span> {following} </span> </p>
       </div>
     </section>

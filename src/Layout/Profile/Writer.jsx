@@ -12,8 +12,9 @@ import Post from "./writerComponents/Posts/Post";
 import Book from "./writerComponents/books/Book";
 import { UserContext } from "../../context/userContext";
 import axiosInstance from "../../API/axiosInstance";
+import EventNavBar from "../../Event/EventNavbar";
 
-const Writer = () => {
+const Writer = ({ id: visitorId }) => {
   const { data: { user: currentUser }, } = useContext(UserContext);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
@@ -24,16 +25,19 @@ const Writer = () => {
       .then((data) => {
         setFeaturedPostsList([...data.data]);
       })
-      .catch(err=>console.log(err))
+      .catch(err => console.log(err))
     setNewFeaturedPosts(false)
 
-    axiosInstance.get('api/followersCount').then(data=>setFollowersFollowing(data))
-  }, [newFeaturedPosts,currentUser.id])
+    axiosInstance.get('api/followersCount').then(data => setFollowersFollowing(data))
+  }, [newFeaturedPosts, currentUser.id])
   return (
+    <>
+    <EventNavBar />
+    <br/>
     <Container>
-      <Link to="/" style={{ display: "block", padding: 10 }}>
+      {/* <Link to="/" style={{ display: "block", padding: 10 }}>
         <ArrowBackIcon /> back to home ?
-      </Link>
+      </Link> */}
 
       <Details
         name={currentUser.full_name}
@@ -43,12 +47,15 @@ const Writer = () => {
         }
         followers={followersFollowing.followers}
         following={followersFollowing.following}
+        isVisitor={visitorId === currentUser.id ? false : true}
       />
 
       <section className={styles.grid}>
         <div>
           <Featured featuredPosts={featuredPostsList} />
-          <Event />
+          <Event
+            isVisitor={visitorId === currentUser.id ? false : true}
+          />
         </div>
         <div className={styles.second}>
           <Post
@@ -64,6 +71,7 @@ const Writer = () => {
         </div>
       </section>
     </Container>
+    </>
   );
 };
 

@@ -220,7 +220,6 @@ const Book = () => {
         {books.length === 0 ? 'no books found' : books.slice(0).reverse().map((book) => {
           return (
             <Card className={styles.item} variant="outlined" key={book.id}>
-              {/* <Tooltip title={book.description} placement="left-start"> */}
               <HtmlTooltip
                 placement="left-start"
                 title={
