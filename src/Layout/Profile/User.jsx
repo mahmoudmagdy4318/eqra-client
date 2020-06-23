@@ -280,55 +280,7 @@ const User = (props) => {
                 name="body_content"
                 onChange={handleInput}
               ></textarea>
-              {/* <div className="row ml-md-2 mb-2 mt-md-1 align-items-center actions">
-                <div className="col-1">
-                  <input
-                    accept="image/*"
-                    className={classes.input}
-                    id="icon-button-file"
-                    type="file"
-                    name="postFiles"
-                    onChange={handleFileInput}
-                  />
-                  <label htmlFor="icon-button-file">
-
-                    <FontAwesomeIcon
-                      icon="image"
-                      size="2x"
-                      style={{ color: "#EE4956" }}
-                      className=" image mt-md-4"
-                    />
-
-                  </label>
-                </div>
-                <div className="col-8">
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-mutiple-checkbox-label">
-                      Select a category or more
-              </InputLabel>
-                    <Select
-                      labelId="demo-mutiple-checkbox-label"
-                      id="demo-mutiple-checkbox"
-                      multiple
-                      value={checkedCategories}
-                      onChange={handleChange}
-                      input={<Input />}
-                      renderValue={(selected) => selected.join(", ")}
-                      MenuProps={MenuProps}
-                    >
-                      {categoryMenu}
-                    </Select>
-                  </FormControl>
-                </div>
-                <div className="col-2">
-                  <button
-                    className="mr-md-4  px-4 py-2 post mt-md-3"
-                    onClick={submitPost}
-                  >
-                    Post
-            </button>
-                </div>
-              </div> */}
+         
               <div class="actions">
                 <div className="col-1">
                   <input
@@ -344,7 +296,7 @@ const User = (props) => {
                       icon="image"
                       size="2x"
                       style={{ color: "#EE4956" }}
-                      className=" image mt-md-4"
+                        className=" image mt-md-4"
                     />
                   </label>
                 </div>
