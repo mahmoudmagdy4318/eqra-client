@@ -13,6 +13,10 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.configure();
+
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -86,14 +90,10 @@ const Book = () => {
 
   const removeBook = id => async (e) => {
     let data = await axiosInstance.delete(`/api/book/${id}`);
-    setBooks(books.filter(b=>b.id !== id));
+    setBooks(books.filter(b => b.id !== id));
   }
 
-  const submitNewBook = (e) => {
-    e.preventDefault();
-    if (newBook.coverImage.type.split('/')[0] !== "image")
-      return alert('wrong file type')
-
+  const submitNewBook = () => {
     const formData = new FormData();
     formData.append("price", newBook.price);
     formData.append("title", newBook.title);
@@ -104,8 +104,22 @@ const Book = () => {
     axiosInstance.post('/api/book', formData)
       .then(data => {
         setOpen(false); setBooks([...books, data.newBook])
+        toast("Book Added successfully", { type: "success" });
+
       })
       .catch(err => console.log(err))
+  }
+
+  const validateNewBook = (e) => {
+    e.preventDefault();
+    return !newBook.title ?
+      toast.error("Title is Required", { autoClose: 2000 }) :
+      !newBook.price ?
+        toast.error("Price is Required", { autoClose: 2000 }) :
+        newBook.description.length <= 50 ?
+          toast.error("description length must be > 50", { autoClose: 2000 }) :
+          newBook.coverImage?.type.split('/')[0] !== "image" ?
+            toast.error('wrong file type', { autoClose: 2000 }) : submitNewBook();
   }
   return (
     <>
@@ -131,14 +145,13 @@ const Book = () => {
               <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <div className={classes.Modalpaper}>
-                  <form className={classes.form} validate="true" onSubmit={submitNewBook}>
+                  <form className={classes.form} onSubmit={validateNewBook}>
                     <Grid container spacing={2}>
                       <Grid item xs={12} md={6}>
                         <TextField
                           autoComplete="fname"
                           name="title"
                           variant="outlined"
-                          required
                           fullWidth
                           value={newBook.title}
                           onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
@@ -158,7 +171,6 @@ const Book = () => {
                             startAdornment={<InputAdornment position="start">$</InputAdornment>}
                             labelWidth={60}
                             type='number'
-                            required
                           />
 
                         </FormControl>
@@ -166,7 +178,6 @@ const Book = () => {
                       <Grid item xs={12}>
                         <TextField
                           variant="outlined"
-                          required
                           fullWidth
                           multiline
                           id="description"
@@ -179,6 +190,7 @@ const Book = () => {
 
                       <Grid item xs={12}>
                         <Button
+                          type="button"
                           variant="outlined"
                           component="label"
                           style={{ marginRight: 7 }}
@@ -188,7 +200,6 @@ const Book = () => {
                             name="coverImage"
                             accept="image/*"
                             onChange={uploadBookCover}
-                            required
                             type="file"
                             style={{ display: "none" }}
                           />
