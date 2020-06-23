@@ -6,12 +6,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Button from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import useStyles from "./style/SearchPageStyle";
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Alert from "@material-ui/lab/Alert";
+import Axios from "axios";
 // Component & Service
 import Home from "../Layout/Home";
 import SearchPageResult from "./SearchPageResult";
 import SearchService from "../services/SearchService";
-import Axios from "axios";
-import Alert from "@material-ui/lab/Alert";
 
 const SearchPage = (props) => {
   const classes = useStyles();
@@ -59,7 +60,7 @@ const SearchPage = (props) => {
           <InputLabel htmlFor="standard-adornment-password">
             Search....
           </InputLabel>
-          <Input onChange={(e) => setSearch({ query: e.target.value })} />
+          <Input onChange={(e) => setSearch({...search, query: e.target.value })} />
         </FormControl>
         <Button
           className={classes.marginBtn}
@@ -82,6 +83,9 @@ const SearchPage = (props) => {
         ) : (
           ""
         )}
+        {search.loading ? <div className={classes.loadingSpinner}>
+        <CircularProgress/>
+        </div>: ""}
       </div>
       <SearchPageResult searchResult={search.results} />
     </div>
