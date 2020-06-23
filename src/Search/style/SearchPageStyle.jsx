@@ -25,6 +25,10 @@ const useStyles = makeStyles((theme) => ({
     },
     alertMargin:{
       marginTop:"20px"
+    },
+    loadingSpinner:{
+      textAlign:"center",
+      justifyContent:"center"
     }
   }));
 
