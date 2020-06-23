@@ -68,15 +68,24 @@
 }
 
 .item .delete {
-  position: absolute;
+  /* position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: 0; */
   border: unset;
   background: red;
   color: white;
-  border-top-left-radius: 5px;
+  border-radius: 5px;
 }
 
 .item .delete:hover {
   cursor: pointer;
+}
+
+.item .title{
+  margin-bottom: 35px;
+}
+
+.cardAction{
+  position: absolute;
+  bottom: 0;
 }

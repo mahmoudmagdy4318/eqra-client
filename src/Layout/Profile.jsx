@@ -4,7 +4,6 @@ import Writer from "./Profile/Writer";
 
 const Profile = ({role,id}) => {
   // const { id } = props;
-  console.log("role,id",role,id);
 
   return role == "user" ? <User id={id}/> : <Writer id={id}/>;
 };

@@ -11,7 +11,9 @@ import CustomizedDialogs from '../../../../utils/Edit';
 import axiosInstance from '../../../../API/axiosInstance';
 import { Link } from 'react-router-dom';
 
-const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, setCurrentUserLikes, setPostList, postList }) => {
+const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, setCurrentUserLikes, setPostList, postList, isVisitor }) => {
+  console.log("current likes", currentUserLikes);
+
   let [postData, setPostData] = useState({});
   let [inputField, setInputField] = useState(false)
   let [anchorEl, setAnchorEl] = React.useState(null);
@@ -19,7 +21,6 @@ const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, 
   let [commentBody, setCommentBody] = useState("")
 
   const EditingPost = (postData) => {
-    console.log(postData);
     return axiosInstance
       .patch(`/api/post/${postData.id}`, postData)
       .then((res) => {
@@ -67,7 +68,6 @@ const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, 
 
   const newComment = (e, id) => {
     e.preventDefault();
-    console.log(commentBody);
     setCommentBody("");
     setInputField(false);
     axiosInstance.post("api/comment", { content: commentBody, postId: id }).then(() => { setInputField(false) });
@@ -77,19 +77,21 @@ const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, 
   return (
     <>
       <Card id={`post-${post.id}`} className={`${styles.root} ${post.new ? styles.new_added : ""}`} variant="outlined" key={post.id}>
-        <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post)}>
-          <ExpandMoreIcon />
-        </Button>
-        <Menu
-          id={`post-${post.id}`}
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={deletePost(post.id)}>Delete</MenuItem>
-          <MenuItem onClick={() => { setEditPopUp(true); }}>Edit</MenuItem>
-        </Menu>
+        {!isVisitor ? <>
+          <Button className={styles.options} aria-controls="simple-menu" aria-haspopup="true" onClick={(e) => handleClick(e, post)}>
+            <ExpandMoreIcon />
+          </Button>
+          <Menu
+            id={`post-${post.id}`}
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={deletePost(post.id)}>Delete</MenuItem>
+            <MenuItem onClick={() => { setEditPopUp(true); }}>Edit</MenuItem>
+          </Menu>
+        </> : ''}
         <CardContent className={styles.posts_showPosts_body} >
           <div className={styles.posts_showPosts_body_title} >
             <img src={image} alt="" />

@@ -25,7 +25,6 @@ const EditUserProfile = () => {
   const {
     data: { user: currentUser },
   } = useContext(UserContext);
-  console.log(currentUser);
   const [profileData, updateProfileData] = useState({});
   const [firstName, updateFirstName] = useState(profileData.first_name);
   const [lastName, updateLasttName] = useState(profileData.last_name);
@@ -59,7 +58,6 @@ const EditUserProfile = () => {
     updateOriginalFile("");
   }, [profileData]);
   const onChange = (e) => {
-    console.log(e.target.files);
     let files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
     createImage(files[0]);
@@ -87,13 +85,11 @@ const EditUserProfile = () => {
 
     try {
       const data = await axiosInstance.post(`api/auth/users/edit`, formData);
-      console.log(data);
       setOpen(true);
       setSuccessMessage(data.message);
     } catch (formErr) {
       // console.error(formErr.response.data.errors);
       const { errors } = formErr.response.data;
-      console.log(errors);
       handelErrors(errors);
     }
   };

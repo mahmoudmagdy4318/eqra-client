@@ -15,8 +15,9 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-toast.configure();
+import Payment from "../../../../ExternalApis/Payment";
 
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -59,13 +60,13 @@ const HtmlTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const Book = () => {
+const Book = ({ thisUser, isVisitor }) => {
   let [newBook, setNewBook] = useState({ title: '', description: '', price: 0, coverImage: null })
 
   let [books, setBooks] = useState([])
 
   const getBooks = async () => {
-    let booksData = await axiosInstance.get('api/user/books');
+    let booksData = await axiosInstance.get(`api/user/${thisUser}/books`);
     setBooks(booksData.userBooks);
   }
 
@@ -124,9 +125,10 @@ const Book = () => {
   return (
     <>
       <div className={styles.newBook}>
-        <button type="button" onClick={handleOpen}>
-          Add New Book
-        </button>
+        {!isVisitor ?
+          <button type="button" onClick={handleOpen}>
+            Add New Book
+        </button> : ''}
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -228,7 +230,7 @@ const Book = () => {
         </Modal>
       </div>
       <div className={styles.grid}>
-        {books.length === 0 ? 'no books found' : books.slice(0).reverse().map((book) => {
+        {!books.length ? 'no books found' : books.slice(0).reverse().map((book) => {
           return (
             <Card className={styles.item} variant="outlined" key={book.id}>
               <HtmlTooltip
@@ -241,15 +243,17 @@ const Book = () => {
               >
                 <CardContent>
                   <img src={book.coverImagePath} alt="" />
-                  <Typography variant="body2" component="p">
+                  <Typography variant="body2" component="h3" className={styles.title}>
                     {book.title}
                   </Typography>
                   <p className={styles.price}>${book.price}</p>
                 </CardContent>
               </HtmlTooltip>
-              <CardActions>
-                <Link size="small" to={`/book/${book.id}`}> Get a Copy!</Link>
-                <DeleteForeverIcon className={styles.delete} onClick={removeBook(book.id)} />
+              <CardActions className={styles.cardAction}>
+                {isVisitor ?
+                  <Payment product={book} /> :
+                  <DeleteForeverIcon className={styles.delete} onClick={removeBook(book.id)} />
+                }
               </CardActions>
             </Card>
           )

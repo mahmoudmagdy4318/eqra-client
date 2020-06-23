@@ -8,7 +8,6 @@ const Event = () => {
   useEffect(() => {
     axiosInstance.get(`api/user/event`)
       .then((data) => {
-        // console.log("server response Events : ", data);
         setEvents([...data.data]);
       })
       .catch(err => console.log(err))
@@ -18,7 +17,7 @@ const Event = () => {
     <>
       <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <h3>Upcoming Events</h3>
-        <Link to="/newEvent" className={styles.newEvent}> New Event ?</Link>
+        {/* <Link to="/newEvent" className={styles.newEvent}> New Event ?</Link> */}
       </div>
 
       <ul className={styles.events}>

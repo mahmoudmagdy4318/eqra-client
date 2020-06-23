@@ -7,7 +7,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import axiosInstance from '../../../../API/axiosInstance';
 import SinglePost from './SinglePost';
 
-const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
+const Post = ({ name, image, setNewFeaturedPosts, visitorId, isVisitor,profileOwner }) => {
   let [featured, setFeatured] = useState(false);
   let [postBody, setPostBody] = useState('');
   let [postList, setPostList] = useState([]);
@@ -35,59 +35,59 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
   };
 
   useEffect(() => {
-    axiosInstance.get(`api/userposts/${userid}?page=${currPage}`)
+    axiosInstance.get(`api/userposts/${profileOwner}?page=${currPage}`)
       .then((data) => {
         setPostList([...data.data]);
         setLastPage(data.meta.last_page);
       })
       .catch(err => console.log(err));
-  }, [currPage, userid, currentUserLikes]);
+  }, [currPage, visitorId, currentUserLikes,profileOwner]);
 
   useEffect(() => {
     axiosInstance.get(
-      `api/posts/${userid}/likes`
+      `api/posts/${visitorId}/likes`
     ).then(res =>
       setCurrentUserLikes([].concat.apply([], ...res))
     )
-  }, [userid])
+  }, [visitorId])
 
   const deletedPost = (id) => {
     setPostList(postList.filter(p => p.id !== id));
   }
-
   return (
     <section className={styles.posts}>
-      <div className={styles.posts_postForm}>
-        <TextField
-          id="filled-textarea"
-          label="What is on your mind ?"
-          placeholder="Placeholder"
-          multiline
-          variant="standard"
-          className={styles.posts_postForm_postBody}
-          onChange={(e) => { setPostBody(e.target.value); }}
-          value={postBody}
-        />
-
-        <div className={styles.posts_postForm_action}>
-          <FormControlLabel
-            className={styles.posts_postForm_action_label}
-            control={
-              <Checkbox
-                checked={featured}
-                onChange={() => setFeatured(!featured)}
-                name="checkedB"
-                color="primary"
-              />
-            }
-            label="Featured Post ?"
+      {!isVisitor ?
+        <div className={styles.posts_postForm}>
+          <TextField
+            id="filled-textarea"
+            label="What is on your mind ?"
+            placeholder="Placeholder"
+            multiline
+            variant="standard"
+            className={styles.posts_postForm_postBody}
+            onChange={(e) => { setPostBody(e.target.value); }}
+            value={postBody}
           />
 
-          <Button variant="contained" color="primary" onClick={newPost}>
-            Post
+          <div className={styles.posts_postForm_action}>
+            <FormControlLabel
+              className={styles.posts_postForm_action_label}
+              control={
+                <Checkbox
+                  checked={featured}
+                  onChange={() => setFeatured(!featured)}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="Featured Post ?"
+            />
+
+            <Button variant="contained" color="primary" onClick={newPost}>
+              Post
           </Button>
-        </div>
-      </div>
+          </div>
+        </div> : ''}
       <br />
       <div className={styles.posts_showPosts}>
         <InfiniteScroll
@@ -104,11 +104,13 @@ const Post = ({ name, image, setNewFeaturedPosts, userid }) => {
           {postList.map((post) => {
             return (
               <SinglePost
+                isVisitor={isVisitor}
                 key={post.id}
                 post={post}
                 currentUserLikes={currentUserLikes}
                 deletedPost={deletedPost}
-                userid={userid}
+                visitorId={visitorId}
+                userid={visitorId}
                 image={image}
                 name={name}
                 setCurrentUserLikes={setCurrentUserLikes}
