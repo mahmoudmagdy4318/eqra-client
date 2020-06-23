@@ -8,10 +8,11 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import useStyles from "./style/SearchPageResultStyle";
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Button from "@material-ui/core/Button";
-import PersonIcon from '@material-ui/icons/Person';
-
+import PersonIcon from "@material-ui/icons/Person";
+import { Link } from "react-router-dom";
+// Component
+import FollowComponent from "./FollowComponent";
 const SearchPageResult = (props) => {
   const classes = useStyles();
   const searchResult = props.searchResult;
@@ -36,27 +37,22 @@ const SearchPageResult = (props) => {
             />
             <CardContent>
               <Typography variant="body2" color="textSecondary" component="p">
-               {user.email}
+                {user.email}
               </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardBtn}>
+            {/* Follow Button Component */}
+              <FollowComponent userId={user.id} />
+              <Link to={`/profile/user/${user.id}`}>
                 <Button
                   variant="contained"
                   color="primary"
                   size="small"
-                  startIcon={<PersonAddIcon fontSize={"small"} />}
-                >
-                  Follow
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  startIcon={<PersonIcon fontSize={"small"}  />}
+                  startIcon={<PersonIcon fontSize={"small"} />}
                 >
                   View Profile
                 </Button>
-              
+              </Link>
             </CardActions>
           </Card>
         );
