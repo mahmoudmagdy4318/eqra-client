@@ -160,7 +160,7 @@ const EventNavBar = (props) => {
                   <Typography variant="inherit">Home </Typography>
                 </MenuItem>
               </Link>
-              <Link className="disable-link " to={`/profile/${currentUser.id}`}>
+              <Link className="disable-link " to={`/profile/${localStorage.getItem('role')}/${currentUser.id}`}>
                 <MenuItem>
                   <ListItemIcon>
                     <PersonIcon fontSize="medium" color={"primary"} />

@@ -18,59 +18,71 @@ const Writer = ({ id: visitorId }) => {
   const { data: { user: currentUser }, } = useContext(UserContext);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
-  const [followersFollowing, setFollowersFollowing] = useState([])
+  let [followersFollowing, setFollowersFollowing] = useState({ followers: 0, following: 0 });
+  let [profileOwner, setProfileOwner] = useState({});
 
   useEffect(() => {
-    axiosInstance.get(`/api/userFeaturedPosts/${currentUser.id}`)
+    axiosInstance.get(`/api/auth/getuser/${visitorId}`)
+      .then(data => setProfileOwner(data.user))
+      .catch(err => console.log(err));
+
+    axiosInstance.get(`/api/userFeaturedPosts/${visitorId}`)
       .then((data) => {
         setFeaturedPostsList([...data.data]);
       })
       .catch(err => console.log(err))
     setNewFeaturedPosts(false)
 
-    axiosInstance.get('api/followersCount').then(data => setFollowersFollowing(data))
-  }, [newFeaturedPosts, currentUser.id])
+    axiosInstance.get(`api/my-followers/${visitorId}`)
+      .then(data => setFollowersFollowing({ ...followersFollowing, followers: data.length }))
+    axiosInstance.get(`api/persons-i-follow/${visitorId}`)
+      .then(data => setFollowersFollowing({ ...followersFollowing, following: data.length }))
+  }, [newFeaturedPosts, visitorId])
+  
   return (
     <>
-    <EventNavBar />
-    <br/>
-    <Container>
-      {/* <Link to="/" style={{ display: "block", padding: 10 }}>
+      <EventNavBar />
+      <br />
+      <Container>
+        {/* <Link to="/" style={{ display: "block", padding: 10 }}>
         <ArrowBackIcon /> back to home ?
       </Link> */}
 
-      <Details
-        name={currentUser.full_name}
-        email={currentUser.email}
-        image={currentUser.pictur ? currentUser.pictur
-          : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-        }
-        followers={followersFollowing.followers}
-        following={followersFollowing.following}
-        isVisitor={visitorId === currentUser.id ? false : true}
-      />
+        <Details
+          name={profileOwner.full_name}
+          email={profileOwner.email}
+          image={profileOwner.pictur ? profileOwner.pictur
+            : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+          }
+          followers={followersFollowing.followers}
+          following={followersFollowing.following}
+          isVisitor={visitorId == currentUser.id ? false : true}
+        />
 
-      <section className={styles.grid}>
-        <div>
-          <Featured featuredPosts={featuredPostsList} />
-          <Event
-            isVisitor={visitorId === currentUser.id ? false : true}
-          />
-        </div>
-        <div className={styles.second}>
-          <Post
-            userid={currentUser.id}
-            setNewFeaturedPosts={setNewFeaturedPosts}
-            name={currentUser.full_name}
-            image={currentUser.pictur ? currentUser.pictur
-              : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
-            } />
-        </div>
-        <div>
-          <Book />
-        </div>
-      </section>
-    </Container>
+        <section className={styles.grid}>
+          <div>
+            <Featured featuredPosts={featuredPostsList} />
+            <Event />
+          </div>
+          <div className={styles.second}>
+            <Post
+              isVisitor={visitorId == currentUser.id ? false : true}
+              profileOwner={profileOwner.id}
+              visitorId={currentUser.id}
+              setNewFeaturedPosts={setNewFeaturedPosts}
+              name={profileOwner.full_name}
+              image={profileOwner.pictur ? profileOwner.pictur
+                : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
+              } />
+          </div>
+          <div>
+            <Book 
+            thisUser={visitorId}
+            isVisitor={visitorId == currentUser.id ? false : true} 
+            />
+          </div>
+        </section>
+      </Container>
     </>
   );
 };

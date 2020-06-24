@@ -125,7 +125,7 @@ const Search = (props) => {
                     {search.results?.map((user) => {
                       const labelId = `checkbox-list-secondary-label-${user.id}`;
                       return (
-                        <Link className="disable-link" to={`/profile/${user.id}`}>
+                        <Link className="disable-link" to={`/profile/user/${user.id}`}>
                         <ListItem key={user.id} button onClick={handleClose}>
                           <ListItemAvatar>
                             <Avatar
