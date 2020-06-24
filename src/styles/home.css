@@ -179,5 +179,6 @@
 .optionalMedia-img {
   border-radius: 5px;
   max-width: 506px;
-  max-height: 506px;
+  /* max-height: 506px; */
+  height: auto;
 }

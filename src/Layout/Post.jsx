@@ -16,16 +16,47 @@ import {
   Typography,
   withStyles,
   createStyles,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
 } from "@material-ui/core";
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& > *": {
-      margin: theme.spacing(1),
-      width: "100%",
+
+// const useStyles = makeStyles((theme) => ({
+  // root: {
+  //   "& > *": {
+  //     margin: theme.spacing(1),
+  //     width: "100%",
+  //   },
+  // },
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      "& > *": {
+        margin: theme.spacing(1),
+        width: "100%",
+      },
+      display: 'flex',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+      overflow: 'hidden',
+      backgroundColor: theme.palette.background.paper,
     },
-  },
-}));
+    gridList: {
+      flexWrap: 'nowrap',
+      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+      transform: 'translateZ(0)',
+    },
+    title: {
+      color: theme.palette.primary.light,
+    },
+    titleBar: {
+      background:
+        'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+    },
+  }));
+// }));
 
 const Post = (props) => {
   const {
@@ -108,7 +139,7 @@ const Post = (props) => {
     <>
       <div class="tweetEntry-tweetHolder mb-3">
         <div class="tweetEntry">
-          <div class="tweetEntry-content">
+          <div class="tweetEntry-content mb-5">
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline main-content">
               <Link
                 class="tweetEntry-account-group"
@@ -176,17 +207,32 @@ const Post = (props) => {
             </Typography>
           </div>
 
-          {
+          {/* {
                 postData.files?.map((file) => {
                   return(
                     <img
-                  class="optionalMedia-img"
+                  class="optionalMedia-img "
                   src={file.filename}
                   alt="postImage"
                 />
                   )
                 })
-              }
+              } */}
+          <GridList className={classes.gridList} cols={2.5}>
+            {postData.files?.map((tile) => (
+              <GridListTile key={tile.filename}>
+                <img src={tile.filename} alt="post image" />
+                <GridListTileBar
+                
+                  classes={{
+                    root: classes.titleBar,
+                    title: classes.title,
+                  }}
+                
+                />
+              </GridListTile>
+            ))}
+          </GridList>
 
           <div
             class="tweetEntry-action-list"

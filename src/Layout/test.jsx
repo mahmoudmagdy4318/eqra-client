@@ -174,7 +174,7 @@ const Test = (props) => {
 
   useEffect(() => {
     getPosts();
-  }, [, currPage, props]);
+  }, [currPage, props]);
 
   useEffect(() => {
     if (!props.writer) getCategories();
@@ -289,7 +289,7 @@ const Test = (props) => {
             />
             <label htmlFor="icon-button-file">
            
-           
+
                 <FontAwesomeIcon
                   icon="image"
                   size="2x"

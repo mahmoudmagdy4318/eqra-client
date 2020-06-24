@@ -98,12 +98,29 @@ const User = (props) => {
       console.error(error);
     }
   };
+  useEffect(() => {
+    if (!props.writer) getCategories();
+  }, []);
 
   const handleInput = (e) => {
     setNewPostData({ ...newPostData, [e.target.name]: e.target.value });
   };
+  const getCategories = async () => {
+    const catData = await axiosInstance.get(`api/genre`);
+    setCategories(catData);
+  };
   const handleChange = (event) => {
-    setPersonName(event.target.value);
+    // setPersonName(event.target.value);
+    setCheckedCategories(event.target.value);
+    const obj = {};
+    checkedCategories.forEach((element) => {
+      obj[element] = element;
+    });
+    const cats = categories.reduce((acc, curr) => {
+      if (obj[curr.name]) acc.push(curr.id);
+      return acc;
+    }, []);
+    setNewPostData({ ...newPostData, genres: cats });
   };
   const handleFileInput = (e) => {
     createImage(e.target.files[0]);
@@ -136,16 +153,17 @@ const User = (props) => {
       if (obj[curr.name]) acc.push(curr.id);
       return acc;
     }, []);
-
+    const formData = new FormData();
+    for (let i = 0; i < newPostData.postFiles?.length; i++) {
+      formData.append(`postFiles[${i}]`, newPostData.postFiles[i]);
+    }
+    formData.append("genres", cats);
+    formData.append("body_content", newPostData.body_content);
+    formData.append("genres", cats);
     axiosInstance
-      .post("api/post", {
-        ...newPostData,
-        genres: cats,
-        postFiles: newPostFile,
-      })
+      .post("api/post", formData)
       .then((res) => {
-        // console.log({ res });
-
+        console.log({ res });
         setPosts([res.data, ...posts]);
       })
       .catch((err) => console.log({ err }));
@@ -163,7 +181,6 @@ const User = (props) => {
     }
   };
   useEffect(() => {
-    
     getPosts(id);
   }, [currPage]);
 
@@ -292,6 +309,7 @@ const User = (props) => {
       console.error(error);
     }
   };
+
   return (
     <div class="">
       <div class="col-lg-12 p-0">
@@ -311,7 +329,6 @@ const User = (props) => {
                 alt=""
                 width="130"
                 height="130"
-              
               />
             )}
             <h3 class="h3">{myUser.full_name}</h3>
@@ -383,7 +400,7 @@ const User = (props) => {
             <h3 class="panel-title">Activity Feed</h3>
           </div>
           <div class="panel-content panel-activity">
-            <form action="#" class="panel-activity__status mb-2">
+            {id == currentUser.id &&  ( <form action="#" class="panel-activity__status mb-2">
               <textarea
                 name="user_activity"
                 placeholder="Share what you've been up to..."
@@ -391,7 +408,7 @@ const User = (props) => {
                 name="body_content"
                 onChange={handleInput}
               ></textarea>
-      
+
               <div class="actions">
                 <div className="col-1">
                   <input
@@ -401,8 +418,12 @@ const User = (props) => {
                     id="icon-button-file"
                     type="file"
                     name="postFiles[]"
-                    onChange={(e) => setNewPostData({ ...newPostData, postFiles: e.target.files })}
-
+                    onChange={(e) =>
+                      setNewPostData({
+                        ...newPostData,
+                        postFiles: e.target.files,
+                      })
+                    }
                   />
                   <label htmlFor="icon-button-file">
                     <FontAwesomeIcon
@@ -440,9 +461,8 @@ const User = (props) => {
                     Post
                   </button>
                 </div>
-           
               </div>
-            </form>
+            </form>)}
             <InfiniteScroll
               dataLength={posts.length} //This field to render the next data
               next={() => setCurrPage(currPage + 1)}
