@@ -16,6 +16,7 @@ import auth from "../services/authService";
 import http from "../services/httpService";
 import axiosInstance from "../API/axiosInstance";
 import { UserContext } from "../context/userContext";
+import GoogleLogin from "react-google-login";
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
@@ -78,6 +79,10 @@ export default function Login(props) {
         setError(true);
       }
   };
+  // const responseGoogle = (response) => {
+  //   console.log(response);
+  // };
+ 
   const classes = useStyles();
 
   if (auth.getJwt()) {
@@ -145,6 +150,14 @@ export default function Login(props) {
           >
             Sign In
           </Button>
+          {/* <GoogleLogin
+            clientId="864380377506-acriqsfthqgh7su0tb9jspi4qr1cls02.apps.googleusercontent.com"
+            onSuccess={responseGoogle}
+            onFailure={responseGoogle}
+            buttonText="Login"
+            
+          /> */}
+
           <Grid container>
             <Grid item xs>
               <Link href="/forgot-password" variant="body2">

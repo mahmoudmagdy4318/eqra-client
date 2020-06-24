@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
       },
       seeMore:{
         marginTop:"13px"
-      }
+      },
   }));
 
 export default useStyles;

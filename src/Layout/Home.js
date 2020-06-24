@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
 import Trends from "../Trends/Trends";
 const styles = createStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
     // paddingTop: 30,
   },
   paper: {
@@ -35,7 +35,7 @@ const styles = createStyles((theme) => ({
   sticky: {
     alignSelf: "flex-start",
     position: "sticky",
-    top: 30,
+    top: 0,
     height: "100vh",
     backgroundColor: "#fff",
     borderLeft: "1px solid #e1e8ed",
@@ -58,13 +58,12 @@ const Home = (Component) => {
     return (
       <>
         <div className={classes.root}>
-
           < EventNavBar />
           <Container>
      
             <Grid container >
               <Hidden smDown>
-              <Grid   md={2} justify="center" className={classes.sticky}>
+              <Grid  item md={2} justify="center" className={classes.sticky}>
                 <div style={{ height: "100%" }}>
                   <MyNav />
                 </div>

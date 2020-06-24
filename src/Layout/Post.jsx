@@ -112,14 +112,29 @@ const Post = (props) => {
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline main-content">
               <Link
                 class="tweetEntry-account-group"
-                to={`/profile/${_.get(postData, "user.id")}`}
+                to={`/profile/${postData.user.role}/${_.get(postData, "user.id")}`}
               >
-                <img
-                  class="tweetEntry-avatar"
-                  src="http://placekitten.com/200/200"
-                  alt="img"
-                />
-
+              
+                {postData.user.pictur == null && (
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                    alt=""
+                    width="60"
+                    height="60"
+                    className="tweetEntry-avatar"
+                    
+                  />
+                )}
+                {postData.user.pictur != null && (
+                  <img
+                    src={`http://localhost:8000${postData.user.pictur}`}
+                    width="60"
+                    height="60"
+                    alt=""
+                    className="tweetEntry-avatar"
+                    
+                  />
+                )}
                 <strong class="tweetEntry-fullname">
                   {_.get(postData, "user.full_name")}
                 </strong>

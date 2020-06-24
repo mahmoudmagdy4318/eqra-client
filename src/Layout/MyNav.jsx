@@ -39,7 +39,7 @@ const MyNav = () => {
 
         <Link
           className="menu-item m-md-3 pb-2"
-          to={`/profile/${profileData.id}`}
+          to={`/profile/${profileData.role}/${profileData.id}`}
         >
           <FontAwesomeIcon
             item
@@ -60,6 +60,15 @@ const MyNav = () => {
           <span className="mt-2 pt-1 ml-2">Events</span>
         </Link>
 
+        <Link className="menu-item m-md-3 pb-2" to="/bookGalery">
+          <FontAwesomeIcon
+            item
+            icon="book-open"
+            size="1x"
+            className="mt-3 mx-1"
+          />
+          <span className="mt-2 pt-1 ml-2">Book Galery</span>
+        </Link>
         <Link className="menu-item m-md-3 pb-2" to="/logout">
           <FontAwesomeIcon
             item

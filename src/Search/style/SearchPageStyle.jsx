@@ -23,6 +23,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: "20px",
       marginBottom:"30px",
     },
+    alertMargin:{
+      marginTop:"20px"
+    },
+    loadingSpinner:{
+      textAlign:"center",
+      justifyContent:"center"
+    }
   }));
 
 export default useStyles;
