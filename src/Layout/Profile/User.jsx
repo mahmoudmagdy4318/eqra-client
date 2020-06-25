@@ -180,6 +180,19 @@ const User = (props) => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    setCurrPage(1);
+    axiosInstance.get(
+      `api/userposts/${id}?page=${1}`
+    ).then(postsData => {
+      setPosts(postsData.data)
+      setLastPage(postsData.meta.last_page);
+    }).catch(
+      (error) => { console.log(error); })
+  }
+    , [id]);
+
   useEffect(() => {
     getPosts(id);
   }, [currPage]);
@@ -400,7 +413,7 @@ const User = (props) => {
             <h3 class="panel-title">Activity Feed</h3>
           </div>
           <div class="panel-content panel-activity">
-            {id == currentUser.id &&  ( <form action="#" class="panel-activity__status mb-2">
+            {id == currentUser.id && (<form action="#" class="panel-activity__status mb-2">
               <textarea
                 name="user_activity"
                 placeholder="Share what you've been up to..."

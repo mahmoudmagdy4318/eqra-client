@@ -20,7 +20,7 @@ const Provider = (props) => {
 
   useEffect(() => {
     setAuthData();
-    getMyFollowers();
+    // getMyFollowers();
 
   }, []);
 
