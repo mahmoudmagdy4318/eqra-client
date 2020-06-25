@@ -32,3 +32,32 @@
 .details p.sidedata {
   margin-bottom: 2px;
 }
+
+
+button.EditUser {
+  border: 1px solid #047afc;
+  transition: all .3s;
+  border-radius: 3px;
+  padding: 3px 7px;
+}
+
+button.EditUser:hover {
+  color: #f2f2f2;
+  background-color: #047afc;
+}
+
+div.modalContainer{
+  background: white;
+  padding: 10px 50px;
+  overflow: hidden;
+}
+
+form.formStyle{
+  width: 100%;
+  margin-top: 15px;
+}
+
+img.EditUserImage{
+  width: 65%;
+  border-radius: 50%;
+}
