@@ -197,7 +197,7 @@ const EditWriterData = ({image}) => {
                   <div className="panel-body text-center col-md-4">
                     {fileData === null && (
                       <img
-                        clases={`img-circle profile-avatar ${styles.EditUserImage}`}
+                        className={`img-circle profile-avatar ${styles.EditUserImage}`}
                         src={image}
                         alt="User avatar"
                       />

@@ -61,7 +61,7 @@ const HtmlTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 const Book = ({ thisUser, isVisitor }) => {
-  let [newBook, setNewBook] = useState({ title: '', description: '', price: 0, coverImage: null })
+  let [newBook, setNewBook] = useState({ title: '', description: '', price: 0, coverImage: null, bookPdf: null })
 
   let [books, setBooks] = useState([])
 
@@ -89,6 +89,10 @@ const Book = ({ thisUser, isVisitor }) => {
     setNewBook({ ...newBook, coverImage: e.target.files[0] })
   }
 
+  const uploadBookPdf = (e) => {
+    console.log(e.target.files[0]);
+    setNewBook({ ...newBook, bookPdf: e.target.files[0] })
+  }
   const removeBook = id => async (e) => {
     let data = await axiosInstance.delete(`/api/book/${id}`);
     setBooks(books.filter(b => b.id !== id));
@@ -100,6 +104,7 @@ const Book = ({ thisUser, isVisitor }) => {
     formData.append("title", newBook.title);
     formData.append("description", newBook.description);
     formData.append("coverImage", newBook.coverImage);
+    formData.append("bookPdf", newBook.bookPdf);
     formData.append("enctype", "multipart/form-data");
 
     axiosInstance.post('/api/book', formData)
@@ -120,7 +125,9 @@ const Book = ({ thisUser, isVisitor }) => {
         newBook.description.length <= 50 ?
           toast.error("description length must be > 50", { autoClose: 2000 }) :
           newBook.coverImage?.type.split('/')[0] !== "image" ?
-            toast.error('wrong file type', { autoClose: 2000 }) : submitNewBook();
+            toast.error('Please upload valid image', { autoClose: 2000 }) :
+            newBook.bookPdf?.type !== "application/pdf" ?
+              toast.error('Please upload valid PDF', { autoClose: 2000 }) : submitNewBook();
   }
   return (
     <>
@@ -207,6 +214,28 @@ const Book = ({ thisUser, isVisitor }) => {
                           />
                         </Button>
                         {newBook.coverImage !== null && newBook.coverImage.type.split('/')[0] === "image" ?
+                          <CheckCircleOutlineIcon style={{ color: '#4caf50' }} /> :
+                          <ErrorOutlineIcon style={{ color: '#f44336' }} />
+                        }
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <Button
+                          type="button"
+                          variant="outlined"
+                          component="label"
+                          style={{ marginRight: 7 }}
+                        >
+                          Upload Book Pdf
+                        <input
+                            name="coverImage"
+                            accept="application/pdf"
+                            onChange={uploadBookPdf}
+                            type="file"
+                            style={{ display: "none" }}
+                          />
+                        </Button>
+                        {newBook.bookPdf !== null && newBook.bookPdf.type === "application/pdf" ?
                           <CheckCircleOutlineIcon style={{ color: '#4caf50' }} /> :
                           <ErrorOutlineIcon style={{ color: '#f44336' }} />
                         }

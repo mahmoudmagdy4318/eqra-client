@@ -12,8 +12,6 @@ import axiosInstance from '../../../../API/axiosInstance';
 import { Link } from 'react-router-dom';
 
 const SinglePost = ({ post, deletedPost, currentUserLikes, userid, image, name, setCurrentUserLikes, setPostList, postList, isVisitor }) => {
-  console.log("current likes", currentUserLikes);
-
   let [postData, setPostData] = useState({});
   let [inputField, setInputField] = useState(false)
   let [anchorEl, setAnchorEl] = React.useState(null);
