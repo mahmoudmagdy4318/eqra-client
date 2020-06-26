@@ -15,10 +15,10 @@ import {
     Divider,
 } from "@material-ui/core";
 import useStyles from "./styles/FollowNotificationStyle";
-
 // Component
 import FollowersService from "../services/FollowersService";
 import Snack from '../utils/Snackbar';
+import { Link } from "react-router-dom";
 const FollowNotification = (props) => {
     const {
         data: { user: currentUser },
@@ -34,7 +34,6 @@ const FollowNotification = (props) => {
 
     const getMyFollowers = async () => {
         const result = await FollowersService.getFollowersData();
-        console.log(result);
         setFollowers(result.myFollowers);
         setunseenFollowNotifications(result.seen);
     };
@@ -56,17 +55,19 @@ const FollowNotification = (props) => {
     const classes = useStyles();
     useEffect(() => {
         if (!currentUser.id) return;
-        console.log("one", currentUser);
         const channel = pusher.subscribe("followed." + currentUser.id);
         channel.bind("followed", function (data) {
+          getMyFollowers()
             setSuceesOpen(true);
-            console.log("5555555555", JSON.stringify(data.message))
             setSuccessMsg(JSON.stringify(data.message))
         });
     }, [JSON.stringify(currentUser)]);
     // Right Drop Downmenu Functionality
-    const handleClick = (event) => {
+    const handleClick = async (event) => {
         setAnchorEl2(event.currentTarget);
+        setunseenFollowNotifications(0);
+        await FollowersService.setUserFollowersAsSeen();
+        await getMyFollowers();
     };
     const handleClose = () => {
         setAnchorEl2(null);
@@ -95,7 +96,7 @@ const FollowNotification = (props) => {
                 </Badge>
             </IconButton>
             <Popover
-                className="dropDown"
+                className={classes.NotificationDropDown}
                 id={id}
                 open={open}
                 anchorEl={anchorEl2}
@@ -110,9 +111,10 @@ const FollowNotification = (props) => {
                 }}
             >
                 <List className={classes.root}>
-                    {followers.map((follower) => {
+                    {followers.map((follower, index) => {
                         return (
                             <Fragment>
+                            <Link className="disable-link" to={`/profile/user/${follower.followed_id}`}>
                                 <ListItem alignItems="flex-start">
                                     <ListItemAvatar>
                                         {follower.pictur ? (
@@ -146,7 +148,8 @@ const FollowNotification = (props) => {
                                         }
                                     />
                                 </ListItem>
-                                <Divider variant="inset" component="li" />
+                                </Link>
+                                {index !== followers.length -1 ? <Divider variant="inset" component="li" /> : ""}
                             </Fragment>
                         );
                     })}
