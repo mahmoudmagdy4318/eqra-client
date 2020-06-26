@@ -54,6 +54,15 @@ const MyNav = () => {
           />
           <span className="mt-2 pt-1 ml-2">Book Galery</span>
         </Link>
+        <Link className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/category' ? 'active' : ''}`} to="/category">
+          <FontAwesomeIcon
+            item
+            icon="bookmark"
+            size="1x"
+            className="mt-3 mx-1"
+          />
+          <span className="mt-2 pt-1 ml-2">Categories</span>
+        </Link>
         <Link className={`menu-item m-md-3 pb-2`} to="/logout">
           <FontAwesomeIcon
             item

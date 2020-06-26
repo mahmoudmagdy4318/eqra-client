@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 import SaveIcon from '@material-ui/icons/Save';
 // Axios
 import axiosInstance from "../API/axiosInstance";
+import Home from '../Layout/Home';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     },
     headerTitle:{
         margin:"10px",
-        marginTop:"60px",
         marginBottom:"20px",
     },
     paragraphStyle:{
@@ -42,8 +42,6 @@ const useStyles = makeStyles((theme) => ({
     },
     listItemStyle:{
         marginTop:"15px",
-        width:"70%",
-        marginLeft:"90px"
     },
     DropList:{
         width: '100%',
@@ -135,7 +133,7 @@ const UserCategory = () => {
                 </ul>
             </div>
         </Grid>
-        <Grid  className="borderStyle" item xs={12} sm={4}>
+        <Grid  className="borderStyle" item xs={12} sm={6}>
         <p className={classes.paragraphStyle}>Click On Each Category to Add It...</p>
         <List className={classes.DropList} subheader={<li />}>
             {listCategories}
@@ -157,4 +155,4 @@ const UserCategory = () => {
     </div>
   );
 }
-export default UserCategory;
+export default Home(UserCategory);
