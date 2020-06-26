@@ -230,7 +230,7 @@ const User = (props) => {
   const bringFollowers = async (userId) => {
     try {
       const followers = await axiosInstance.get(`api/my-followers/${userId}`);
-      // console.log(followers);
+      console.log(followers);
       updateFollowers(followers.length);
     } catch (error) {
       console.log(error);
@@ -316,7 +316,7 @@ const User = (props) => {
   const sendFollow = async () => {
     try {
       const sendUnfollow = axiosInstance.post(`api/follow/${id}`);
-      console.log(sendUnfollow);
+      console.log(sendUnfollow)
       updateFollowText("following");
     } catch (error) {
       console.error(error);

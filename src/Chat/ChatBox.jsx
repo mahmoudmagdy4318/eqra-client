@@ -16,7 +16,7 @@ const ChatBox = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [reciever, setReciever] = useState({});
   const [messages, setMessages] = useState([]);
-  Pusher.logToConsole = true;
+  // Pusher.logToConsole = true;
 
   const pusher = new Pusher("0e0882c25b1299c47bdb", {
     cluster: "mt1",

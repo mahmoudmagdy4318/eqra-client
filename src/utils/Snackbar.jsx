@@ -27,7 +27,7 @@ const Snack = (props) => {
     };
     
   return(
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleErrClose}>
+    <Snackbar anchorOrigin={{horizontal:"right", vertical:"bottom"}} open={open} autoHideDuration={6000} onClose={handleErrClose}>
           <Alert onClose={handleErrClose} severity={severity}>
               {messege}
       </Alert>

@@ -48,6 +48,7 @@ import ForgotPassword from "./Layout/ForgotPassword";
 import ResetPassword from "./Layout/ResetPassword";
 import BookGalery from "./BookGalery";
 import SearchPage from "./Search/SearchPage";
+import FollowNotification from "./Notifications/FollowNotification";
 // import ProtectedRoute from "./ProtectedRoute";
 
 library.add(

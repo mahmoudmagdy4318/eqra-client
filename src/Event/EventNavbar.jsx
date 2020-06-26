@@ -18,13 +18,14 @@ import Popover from "@material-ui/core/Popover";
 import MenuList from "@material-ui/core/MenuList";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeIcon from "@material-ui/icons/Home";
-import MessageIcon from "@material-ui/icons/Message";
-import PersonIcon from "@material-ui/icons/Person";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MessageIcon from "@material-ui/icons/Message";
+import PersonIcon from "@material-ui/icons/Person";
 // Component
 import Search from '../Search/SearchBar';
+import FollowNotification from "../Notifications/FollowNotification";
 
 const EventNavBar = (props) => {
   const {
@@ -201,11 +202,8 @@ const EventNavBar = (props) => {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            {/* Follow Component */}
+            <FollowNotification/>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton

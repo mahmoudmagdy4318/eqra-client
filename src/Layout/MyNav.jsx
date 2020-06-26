@@ -23,7 +23,7 @@ const MyNav = () => {
           <span className="mt-2 pt-1 ml-2"> Home </span>
         </Link>
         <Link
-          className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/profile' ? 'active' : ''}`}
+          className={`menu-item m-md-3 pb-2 ${window.location.pathname.includes('/profile') ? 'active' : ''}`}
           to={`/profile/${profileData.role}/${profileData.id}`}
         >
           <FontAwesomeIcon

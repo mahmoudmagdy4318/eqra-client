@@ -11,8 +11,6 @@ import useStyles from "./style/SearchPageResultStyle";
 import Button from "@material-ui/core/Button";
 import PersonIcon from "@material-ui/icons/Person";
 import { Link } from "react-router-dom";
-// Component
-import FollowComponent from "./FollowComponent";
 const SearchPageResult = (props) => {
   const classes = useStyles();
   const searchResult = props.searchResult;
@@ -41,8 +39,6 @@ const SearchPageResult = (props) => {
               </Typography>
             </CardContent>
             <CardActions disableSpacing className={classes.cardBtn}>
-            {/* Follow Button Component */}
-              <FollowComponent userId={user.id} />
               <Link to={`/profile/user/${user.id}`}>
                 <Button
                   variant="contained"
@@ -61,3 +57,4 @@ const SearchPageResult = (props) => {
   );
 };
 export default SearchPageResult;
+
