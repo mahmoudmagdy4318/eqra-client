@@ -7,7 +7,6 @@ import {
   Grid,
   Paper,
   makeStyles,
-  Container,
   Typography,
   withStyles,
   createStyles,
@@ -38,10 +37,10 @@ const styles = createStyles((theme) => ({
     top: 0,
     height: "100vh",
     backgroundColor: "#fff",
-    borderLeft: "1px solid #e1e8ed",
-    borderRight: "1px solid #e1e8ed",
-    borderTop: "1px solid #e1e8ed",
-    borderRadius: "5px",
+    // borderLeft: "1px solid #e1e8ed",
+    // borderRight: "1px solid #e1e8ed",
+    // borderTop: "1px solid #e1e8ed",
+    // borderRadius: "5px",
   },
 }));
 
@@ -59,8 +58,6 @@ const Home = (Component) => {
       <>
         <div className={classes.root}>
           < EventNavBar />
-          <Container>
-     
             <Grid container >
               <Hidden smDown>
               <Grid  item md={2} justify="center" className={classes.sticky}>
@@ -77,7 +74,6 @@ const Home = (Component) => {
                 <Trends />
               </Grid>
             </Grid>
-          </Container>                                                                                                                                                      
         </div>
    
       </>

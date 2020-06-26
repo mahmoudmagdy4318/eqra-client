@@ -1,9 +1,11 @@
+p{
+  overflow-wrap: break-word;
+}
 .grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px 30px;
-  max-height: 430px;
   overflow-y: auto;
 }
 
@@ -38,13 +40,6 @@
   width: 0px;
 }
 
-.item p.tooltipText {
-  font-weight: bold;
-  font-size: 16px;
-  font-family: serif;
-  transform: translateZ(0);
-  will-change: unset;
-}
 
 .item .content {
   margin-bottom: 35px;

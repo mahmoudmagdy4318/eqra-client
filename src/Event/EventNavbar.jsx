@@ -20,8 +20,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeIcon from "@material-ui/icons/Home";
 import MessageIcon from "@material-ui/icons/Message";
 import PersonIcon from "@material-ui/icons/Person";
-import { Button, Container } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 // Component
 import Search from '../Search/SearchBar';
 
@@ -64,23 +65,6 @@ const EventNavBar = (props) => {
   const id = open ? "simple-popover" : undefined;
   // ========== End Right DropDown Menu ============
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/logout" className="disable-link">
-          Logout
-        </Link>
-      </MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -126,122 +110,117 @@ const EventNavBar = (props) => {
   return (
     <div className={classes.grow}>
       <AppBar position="static" >
-        <Container>
-          <Toolbar style={{padding:0}}>
-            {/* Right Dropdown Menu Button & Menu*/}
-            <IconButton
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleClick}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl2}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <MenuList>
-                <Link to="/" className="disable-link ">
-                  <MenuItem>
-                    <ListItemIcon>
-                      <HomeIcon fontSize="medium" color={"primary"} />
-                    </ListItemIcon>
-                    <Typography variant="inherit">Home </Typography>
-                  </MenuItem>
-                </Link>
-                <Link className="disable-link " to={`/profile/${localStorage.getItem('role')}/${currentUser.id}`}>
-                  <MenuItem>
-                    <ListItemIcon>
-                      <PersonIcon fontSize="medium" color={"primary"} />
-                    </ListItemIcon>
-                    <Typography variant="inherit"> Profile</Typography>
-                  </MenuItem>
-                </Link>
+        <Toolbar>
+          {/* Right Dropdown Menu Button & Menu*/}
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleClick}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl2}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "center",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <MenuList>
+              <Link to="/" className="disable-link ">
                 <MenuItem>
                   <ListItemIcon>
-                    <NotificationsIcon fontSize="medium" color={"primary"} />
+                    <HomeIcon fontSize="medium" color={"primary"} />
                   </ListItemIcon>
-                  <Typography variant="inherit">Notifications</Typography>
+                  <Typography variant="inherit">Home </Typography>
                 </MenuItem>
+              </Link>
+              <Link className="disable-link " to={`/profile/${localStorage.getItem('role')}/${currentUser.id}`}>
                 <MenuItem>
                   <ListItemIcon>
-                    <MessageIcon fontSize="medium" color={"primary"} />
+                    <PersonIcon fontSize="medium" color={"primary"} />
                   </ListItemIcon>
-                  <Typography variant="inherit">Messages</Typography>
+                  <Typography variant="inherit"> Profile</Typography>
                 </MenuItem>
-              </MenuList>
-            </Popover>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Eqraa Online
+              </Link>
+              <MenuItem>
+                <ListItemIcon>
+                  <NotificationsIcon fontSize="medium" color={"primary"} />
+                </ListItemIcon>
+                <Typography variant="inherit">Notifications</Typography>
+              </MenuItem>
+              <MenuItem>
+                <ListItemIcon>
+                  <MessageIcon fontSize="medium" color={"primary"} />
+                </ListItemIcon>
+                <Typography variant="inherit">Messages</Typography>
+              </MenuItem>
+              <Link to="/logout" className="disable-link">
+                <MenuItem onClick={handleMenuClose}>
+                  <ListItemIcon>
+                    <ExitToAppIcon fontSize="medium" color={"primary"}/>
+                  </ListItemIcon>
+                  <Typography>Logout</Typography>
+                </MenuItem>
+              </Link>
+            </MenuList>
+          </Popover>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Eqraa Online
           </Typography>
-            {/* Search Bar */}
-            <Search />
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              {currentUser.role === "writer" ? (
-                <Button
-                  href="/newEvent"
-                  variant="contained"
-                  color="primary"
-                  size="small"
-                  className={classes.button}
-                  startIcon={<EventNoteIcon />}
-                >
-                  Create Event
-                </Button>
-              ) : (
-                  ""
-                )}
+          {/* Search Bar */}
+          <Search />
+          <div className={classes.grow} />
+          <div className={classes.sectionDesktop}>
+            {currentUser.role === "writer" ? (
+              <Button
+                href="/newEvent"
+                variant="contained"
+                color="primary"
+                size="small"
+                className={classes.button}
+                startIcon={<EventNoteIcon />}
+              >
+                Create Event
+              </Button>
+            ) : (
+                ""
+              )}
 
-              <IconButton aria-label="show 4 new mails" color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton aria-label="show 17 new notifications" color="inherit">
-                <Badge badgeContent={17} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </Container>
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <MailIcon />
+              </Badge>
+            </IconButton>
+            <IconButton aria-label="show 17 new notifications" color="inherit">
+              <Badge badgeContent={17} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </div>
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
 
     </div>
   );
