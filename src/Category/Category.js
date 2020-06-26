@@ -1,6 +1,7 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import './Category.css';
+import './styles/Category.css';
+import useStyles from './styles/CategoryStyle';
+
 // Selected Category
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
@@ -16,45 +17,15 @@ import SaveIcon from '@material-ui/icons/Save';
 // Axios
 import axiosInstance from "../API/axiosInstance";
 import Home from '../Layout/Home';
+import Snack from '../utils/Snackbar';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        textAlign:"center",
-        justifyContent: 'center',
-        flexWrap: "wrap",
-        '& > *': {
-        margin: theme.spacing(0.5),
-        },
-    },
-    headerTitle:{
-        margin:"10px",
-        marginBottom:"20px",
-    },
-    paragraphStyle:{
-        fontSize:"22px",
-        marginTop:"20px"
-    },
-    listCategoryStyle:{
-        listStyle:"none",
-        marginTop:"20px",
-        width:"100%"
-    },
-    listItemStyle:{
-        marginTop:"15px",
-    },
-    DropList:{
-        width: '100%',
-    maxWidth: 460,
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 420,
-    }
-}));
+
 const UserCategory = () => {
     const [checked, setChecked] = React.useState([]);
     const [allCategories, setAllCategories] = React.useState([]);
     const classes = useStyles();
+    const [successOpen, setSuceesOpen] = React.useState(false);
+  const [successMsg, setSuccessMsg] = React.useState("");
     const handleToggle = (id, name) => () => {
         const currentIndex = checked.findIndex(x => x.id === id);
         const newChecked = [...checked];
@@ -75,6 +46,8 @@ const UserCategory = () => {
     const saveUserCategories = async() =>{
         const genres = checked.map(elem => elem.id);
         await axiosInstance.post("api/user/genre", {genres});
+        setSuceesOpen(true);
+        setSuccessMsg("Congrats! Your Categories Saved Successfully")
     }
     React.useEffect(() =>{
         getUserCategories();
@@ -121,6 +94,12 @@ const UserCategory = () => {
     });
   return (
     <div className={classes.root}>
+    <Snack
+        open={successOpen}
+        setOpen={setSuceesOpen}
+        severity="info"
+        messege={successMsg}
+      />
       <Grid container spacing={3}>
         <Grid item xs={12}>
             <h3 className={classes.headerTitle}>Hello, Please Select Your Category To Reach People Faster..</h3>
