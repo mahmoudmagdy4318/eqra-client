@@ -10,19 +10,18 @@ p{
 }
 
 .item {
-  flex-basis: 40%;
-  margin-bottom: 10px;
+  flex-basis: 300px;
+  margin-bottom: 30px;
   position: relative;
-  flex-basis: 260px;
 }
 
 .item>div {
   padding: 8px;
 }
 
-.item>div img {
+.item div img {
   width: 100%;
-  height: 150px;
+  height: 200px;
   border-radius: 0;
 }
 
