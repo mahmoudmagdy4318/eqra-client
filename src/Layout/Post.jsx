@@ -158,10 +158,7 @@ const Post = (props) => {
                 )}
                 {_.get(postData, "user.pictur") != null && (
                   <img
-                    src={`${_.get(
-                      postData,
-                      "user.pictur"
-                    )}`}
+                    src={`${_.get(postData, "user.pictur")}`}
                     width="60"
                     height="60"
                     alt=""
@@ -272,11 +269,11 @@ const Post = (props) => {
                 }}
               />
             )}
-
-            
           </div>
-          <div style={{float:"right", marginRight:"179px", marginTop:"-17px" }}>
-          <PostLikes
+          <div
+            style={{ float: "right", marginRight: "179px", marginTop: "-17px" }}
+          >
+            <PostLikes
               id={postData.id}
               type="post"
               noOfLikes={postData.likes}
@@ -295,7 +292,10 @@ const Post = (props) => {
                   className="mb-2"
                   value={newComment.content}
                   onChange={(e) =>
-                    setNewComment({ ...newComment, content: e.target.value })
+                    setNewComment({
+                      postId: postData.id,
+                      content: e.target.value,
+                    })
                   }
                 />
               </form>
