@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,6 +10,9 @@ import Paper from "@material-ui/core/Paper";
 import Badge from '@material-ui/core/Badge';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {getFollows} from './service/follows'
+import { UserContext } from '../context/userContext';
+import _ from 'lodash'
+import { Typography, Box } from '@material-ui/core';
 
 const log=console.log;
 
@@ -26,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     inline: {
       display: 'inline',
     },
+    
 }));
 
 const StyledBadge = withStyles((theme) => ({
@@ -60,12 +64,15 @@ const StyledBadge = withStyles((theme) => ({
 
 
 
-export default function FollowList({openChatBox}) {
+export default function FollowList({openChatBox,notifications}) {
     const classes = useStyles();
     const [follows, setFollows] = useState([]);
+    const [followers, setFollowers] = useState([])
+
     const getMyFollows=async()=>{
-      const follows=await getFollows();
-      setFollows(follows);
+      const { followingArray,followersArray}=await getFollows();
+      setFollows(followingArray);
+      setFollowers(followersArray);
     }
     
     useEffect(() => {
@@ -78,9 +85,9 @@ export default function FollowList({openChatBox}) {
         <CssBaseline />
         <Paper square className={classes.paper}>
           <List className={classes.list}>
-            {follows.map(({ followed_id, full_name, pictur}) => (
-              <React.Fragment key={followed_id} >
-                <ListItem button onClick={()=>openChatBox({ followed_id, full_name, pictur})}>
+            {follows.map(({ id,full_name,pictur},index) => (
+              <React.Fragment key={index} >
+                <ListItem button onClick={()=>openChatBox({ id, full_name, pictur})}>
                   <ListItemAvatar>
                     <StyledBadge
                         overlap="circle"
@@ -91,10 +98,47 @@ export default function FollowList({openChatBox}) {
                         variant="dot"
                     >
                         {pictur && <Avatar alt="Profile Picture" src={pictur}/>}
-                        <AccountCircleIcon/>
+                        {!pictur && <AccountCircleIcon/>}
+                        
+                        {notifications[`notification.${id}`]&&<Badge badgeContent={'M'} color="error"/>}
                     </StyledBadge>
                   </ListItemAvatar>
-                  <ListItemText secondary={full_name}/>
+                  <Typography component="div">
+                    {notifications[`notification.${id}`]&&<Box fontWeight={500} m={1}>
+                        {full_name}
+                    </Box>}
+                    {!notifications[`notification.${id}`]&&<Box fontWeight='fontWeightLight' m={1}>
+                        {full_name}
+                    </Box>}
+                  </Typography>
+                </ListItem>
+              </React.Fragment>
+            ))}
+            {followers.map((follower,index) => (
+              ! _.some(follows,follower) && <React.Fragment key={index} >
+                <ListItem button onClick={()=>openChatBox({ id:follower.id, full_name:follower.full_name, pictur:follower.pictur})}>
+                  <ListItemAvatar>
+                    <StyledBadge
+                        overlap="circle"
+                        anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                        }}
+                        variant="dot"
+                    >
+                        {follower.pictur && <Avatar alt="Profile Picture" src={follower.pictur}/>}
+                        {!follower.pictur && <AccountCircleIcon/>}
+                        {notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>}
+                    </StyledBadge>
+                  </ListItemAvatar>
+                  <Typography component="div">
+                    {notifications[`notification.${follower.id}`]&&<Box  fontWeight={500} m={1}>
+                        {follower.full_name}
+                    </Box>}
+                    {!notifications[`notification.${follower.id}`]&&<Box fontWeight="fontWeightLight" m={1}>
+                      Light
+                    </Box>}
+                  </Typography>
                 </ListItem>
               </React.Fragment>
             ))}

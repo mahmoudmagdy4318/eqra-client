@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Pusher from "pusher-js";
 import ChatList from "./ChatList";
@@ -15,8 +15,10 @@ const ChatBox = () => {
   const [open, setOpen] = useState(true);
   const [currentMessage, setCurrentMessage] = useState("");
   const [reciever, setReciever] = useState({});
-  const [messages, setMessages] = useState([]);
-  Pusher.logToConsole = true;
+  const [messages, setMessages] = useState({});
+  const [notifications, setNotifications] = useState({});
+  const messagesEndRef = useRef(null);
+  Pusher.logToConsole = false;
 
   const pusher = new Pusher("0e0882c25b1299c47bdb", {
     cluster: "mt1",
@@ -28,14 +30,34 @@ const ChatBox = () => {
       },
     },
   });
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+  }
+
+  
+
   useEffect(() => {
-    if (!currentUser.id) return;
-    console.log("one", currentUser);
+    scrollToBottom();
     const channel = pusher.subscribe("private-chat." + currentUser.id);
-    channel.bind("message-sent", function (data) {
-      console.log({ data });
+    channel.bind("message-sent",function ({message,user}) {
+      if(classes==="chatbox chatbox22 chatbox--closed"){
+        const data={...notifications}; 
+        data[`notification.${user.id}`]={id:user.id};
+        setNotifications(data);
+      }else{
+        const senderMessages = [
+          ...messages[`message.${user.id}`],
+          { reciever_id: currentUser.id,user_id:user.id ,message: message.message },
+        ];
+        const data={...messages}
+        data[`message.${user.id}`]=senderMessages;
+        setMessages(data);
+      }
+      return;
     });
-  }, [JSON.stringify(currentUser)]);
+    
+  }, [currentUser,notifications]);
 
   const handleChatBoxStatus = (e) => {
     e.stopPropagation();
@@ -46,18 +68,24 @@ const ChatBox = () => {
     setClasses(status);
   };
 
+
   const sendMyMessage = async () => {
-    const data = [
-      ...messages,
-      { user_id: reciever.followed_id, message: currentMessage },
+    const recieverMessages = [
+      ...messages[`message.${reciever.id}`],
+      { reciever_id: reciever.id,user_id:currentUser.id ,message: currentMessage },
     ];
+    const data={...messages}
+    data[`message.${reciever.id}`]=recieverMessages;
     setMessages(data);
-    sendMessage(reciever.followed_id, currentMessage);
+    scrollToBottom();
+    sendMessage(reciever.id, currentMessage);
   };
 
   const getMyMessages = async (reciever) => {
-    const messages = await getMessages(reciever.followed_id);
-    setMessages(messages);
+    const recieverMessages = await getMessages(reciever.id);
+    const data={...messages};
+    data[`message.${reciever.id}`]=recieverMessages;
+    setMessages(data);
   };
 
   const handleChange = (e) => {
@@ -69,12 +97,14 @@ const ChatBox = () => {
     setClasses("chatbox chatbox22 chatbox--closed");
   };
 
-  const openChatBox = (reciever) => {
-    console.log(reciever);
-    setMessages([]);
+  const openChatBox = async (reciever) => {
+    const data={...notifications};
+    data[`notification.${reciever.id}`]=null;
+    setNotifications(data);
+    await getMyMessages(reciever);
     setReciever(reciever);
-    getMyMessages(reciever);
     setClasses("chatbox chatbox22");
+    scrollToBottom();
   };
 
   return (
@@ -108,9 +138,9 @@ const ChatBox = () => {
           </button>
         </div>
         <div class="chatbox__body">
-          {messages.map(({ user_id, message, created_at }) => (
+          {messages[`message.${reciever.id}`] && messages[`message.${reciever.id}`].map(({ user_id, message, created_at }) => (
             <div>
-              {currentUser.id !== user_id && (
+              {currentUser.id === user_id && (
                 <div class="chatbox__body__message chatbox__body__message--left">
                   <div class="chatbox_timing">
                     <ul>
@@ -142,7 +172,7 @@ const ChatBox = () => {
                   </div>
                 </div>
               )}
-              {currentUser.id === user_id && (
+              {currentUser.id !== user_id && (
                 <div class="chatbox__body__message chatbox__body__message--right">
                   <div class="chatbox_timing">
                     <ul>
@@ -176,6 +206,7 @@ const ChatBox = () => {
               )}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <div class="panel-footer">
           <div class="input-group">
@@ -200,7 +231,7 @@ const ChatBox = () => {
           </div>
         </div>
       </div>
-      <ChatList openChatBox={openChatBox} />
+    <ChatList openChatBox={openChatBox} notifications={notifications}/>
     </React.Fragment>
   );
 };
