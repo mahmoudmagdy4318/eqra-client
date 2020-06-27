@@ -154,7 +154,7 @@ const FollowNotification = (props) => {
                                                         color="textPrimary"
                                                     >
                                                         {follower.full_name} Has
-                                                        Been Followed You
+                                                         Followed You
                                                     </Typography>
                                                     <br />
                                                     Since {follower.created_at}
