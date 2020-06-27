@@ -80,6 +80,9 @@ const User = (props) => {
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
   const [followText, updateFollowText] = useState("");
+  const {
+    actions: { getMyFollows}
+  } = useContext(UserContext);
 
   const history = useHistory();
   useEffect(() => {
@@ -305,8 +308,10 @@ const User = (props) => {
       sendFollow();
     }
     bringFollowers(id);
+    getMyFollows();
     following(id);
   };
+
   const unfollow = async () => {
     try {
       const sendUnfollow = axiosInstance.delete(`api/unfollow/${id}`);
@@ -316,6 +321,7 @@ const User = (props) => {
       console.error(error);
     }
   };
+
   const sendFollow = async () => {
     try {
       const sendUnfollow = axiosInstance.post(`api/follow/${id}`);

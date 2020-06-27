@@ -13,4 +13,12 @@ export async function sendMessage(reciever_id, message) {
   });
 }
 
+export async function getUnseenMessagesUsers() {
+  return await axiosInstance.get("/api/unseen");
+}
+
+export async function seenMessages(id) {
+  return await axiosInstance.post(`/api/seen/${id}`);
+}
+
 // axiosInstance.post("/api/chat",{message:"hello world"});

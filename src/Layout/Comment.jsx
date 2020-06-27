@@ -81,6 +81,7 @@ const Comment = (props) => {
         <img
           class="tweetEntry-avatar"
           src={require("../assets/avatar.jpg")}
+          // src={`${_.get(data, "user.pictur")}`}
           alt=""
           style={{
             width: "30px",
@@ -117,10 +118,9 @@ const Comment = (props) => {
         <></>
       )}
       <Grid container xs={12} justify={"flex-end"} style={{ color: "#b1bbc3" }}>
-      
-      <div style={{marginTop:"13px", marginRight:"9px"}}>
-      <PostLikes id={data.id} type="comment" noOfLikes={data.likes} />
-      </div>
+        <div style={{ marginTop: "13px", marginRight: "9px" }}>
+          <PostLikes id={data.id} type="comment" noOfLikes={data.likes} />
+        </div>
         {currentUserCommentLike ? (
           <FontAwesomeIcon
             item
@@ -171,7 +171,6 @@ const Comment = (props) => {
         ) : (
           <></>
         )}
-       
       </Grid>
       <AlertDialog
         toggle={togglePopUp}
