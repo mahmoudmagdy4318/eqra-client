@@ -35,11 +35,7 @@ const ChatBox = () => {
     messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
   }
 
-  
-
-  useEffect(() => {
-    scrollToBottom();
-    const channel = pusher.subscribe("private-chat." + currentUser.id);
+  const channel = pusher.subscribe("private-chat." + currentUser.id);
     channel.bind("message-sent",function ({message,user}) {
       if(classes==="chatbox chatbox22 chatbox--closed"){
         const data={...notifications}; 
@@ -55,7 +51,11 @@ const ChatBox = () => {
         setMessages(data);
       }
       return;
-    });
+  });
+
+  useEffect(() => {
+    scrollToBottom();
+    
     
   }, [notifications,messages]);
 
