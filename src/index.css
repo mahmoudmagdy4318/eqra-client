@@ -56,7 +56,8 @@ body {
 .chatbox__title {
   min-height: 50px;
   padding-right: 10px;
-  background-color: #1f2836cc;
+  padding-left:20px;
+  background-color: #4b5b75cc;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   cursor: pointer;

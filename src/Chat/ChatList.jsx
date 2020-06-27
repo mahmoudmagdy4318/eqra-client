@@ -89,19 +89,20 @@ export default function FollowList({openChatBox,notifications}) {
               <React.Fragment key={index} >
                 <ListItem button onClick={()=>openChatBox({ id, full_name, pictur})}>
                   <ListItemAvatar>
-                    <StyledBadge
-                        overlap="circle"
-                        anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                        }}
-                        variant="dot"
-                    >
-                        {pictur && <Avatar alt="Profile Picture" src={pictur}/>}
-                        {!pictur && <AccountCircleIcon/>}
-                        
-                        {notifications[`notification.${id}`]&&<Badge badgeContent={'M'} color="error"/>}
-                    </StyledBadge>
+                        {!pictur && <AccountCircleIcon>
+                        </AccountCircleIcon>}
+                        {notifications[`notification.${id}`]&& !pictur &&<Badge badgeContent={'M'} color="error"/>} 
+
+                        {pictur &&<Badge
+                          overlap="circle"
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          badgeContent={notifications[`notification.${id}`]&&<Badge badgeContent={'M'} color="error"/>}
+                        >
+                          <Avatar alt={full_name} src={pictur} />
+                        </Badge>}
                   </ListItemAvatar>
                   <Typography component="div">
                     {notifications[`notification.${id}`]&&<Box fontWeight={500} m={1}>
@@ -118,18 +119,19 @@ export default function FollowList({openChatBox,notifications}) {
               ! _.some(follows,follower) && <React.Fragment key={index} >
                 <ListItem button onClick={()=>openChatBox({ id:follower.id, full_name:follower.full_name, pictur:follower.pictur})}>
                   <ListItemAvatar>
-                    <StyledBadge
-                        overlap="circle"
-                        anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                        }}
-                        variant="dot"
-                    >
-                        {follower.pictur && <Avatar alt="Profile Picture" src={follower.pictur}/>}
-                        {!follower.pictur && <AccountCircleIcon/>}
-                        {notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>}
-                    </StyledBadge>
+                        {!follower.pictur && <AccountCircleIcon>
+                          {notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>}
+                        </AccountCircleIcon>}
+                        {follower.pictur &&<Badge
+                          overlap="circle"
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right',
+                          }}
+                          badgeContent={notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>}
+                        >
+                          <Avatar alt={follower.full_name} src={follower.pictur} />
+                        </Badge>}
                   </ListItemAvatar>
                   <Typography component="div">
                     {notifications[`notification.${follower.id}`]&&<Box  fontWeight={500} m={1}>

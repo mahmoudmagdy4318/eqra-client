@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Pusher from "pusher-js";
 import ChatList from "./ChatList";
-import axiosInstance from "../API/axiosInstance";
+import SendIcon from '@material-ui/icons/Send';
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { UserContext } from "../context/userContext";
 import { getMessages, sendMessage } from "./service/messages";
@@ -77,6 +77,7 @@ const ChatBox = () => {
     const data={...messages}
     data[`message.${reciever.id}`]=recieverMessages;
     setMessages(data);
+    setCurrentMessage('');
     scrollToBottom();
     sendMessage(reciever.id, currentMessage);
   };
@@ -107,6 +108,12 @@ const ChatBox = () => {
     scrollToBottom();
   };
 
+  const resetNotifications=()=>{
+    const data={...notifications};
+    data[`notification.${reciever.id}`]=null;
+    setNotifications(data);
+  }
+
   return (
     <React.Fragment>
       <div className={classes}>
@@ -114,7 +121,9 @@ const ChatBox = () => {
           {reciever.pictur && (
             <Avatar alt="Profile Picture" src={reciever.pictur} />
           )}
-          <AccountCircleIcon />
+          {!reciever.pictur && (
+            <AccountCircleIcon />  
+          )}
           <h5>{reciever.full_name}</h5>
           <button class="chatbox__title__close" onClick={closeChatBox}>
             <span>
@@ -215,18 +224,20 @@ const ChatBox = () => {
               id="btn-input"
               type="text"
               class="form-control input-sm chat_set_height"
-              placeholder="Type your message here..."
+              placeholder="Type Here..."
               tabIndex="0"
               value={currentMessage}
               onChange={handleChange}
+              onFocus={resetNotifications}
             />
             <span class="input-group-btn">
               <button
                 onClick={sendMyMessage}
-                class="btn bt_bg btn-sm"
+                class="btn btn-primary"
                 id="btn-chat"
+                disabled={!currentMessage}
               >
-                Send
+                <SendIcon/>
               </button>
             </span>
           </div>
