@@ -147,7 +147,7 @@ const Post = (props) => {
                   "user.id"
                 )}`}
               >
-                {_.get(postData, "user.pictur") == null && (
+                {_.get(postData, "user.pictur") === null && (
                   <img
                     src={"https://bootdey.com/img/Content/avatar/avatar6.png"}
                     alt=""
@@ -156,7 +156,7 @@ const Post = (props) => {
                     className="tweetEntry-avatar"
                   />
                 )}
-                {_.get(postData, "user.pictur") != null && (
+                {_.get(postData, "user.pictur") !== null && (
                   <img
                     src={`${_.get(postData, "user.pictur")}`}
                     width="60"
