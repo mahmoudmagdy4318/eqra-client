@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './Details.module.css';
+import EditWriterData from './EditWriterData';
 
 
 const Details = ({ name, email, image, followers, following ,isVisitor}) => {
@@ -12,6 +13,8 @@ const Details = ({ name, email, image, followers, following ,isVisitor}) => {
           <p className={styles.sidedata}> you can email me @ {email} </p>
         </div>
       </div>
+
+      <EditWriterData image={image}/>
 
       <div className={followers}>
         <p className={styles.sidedata}> followers <span> {followers} </span> </p>

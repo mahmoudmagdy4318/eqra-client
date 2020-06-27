@@ -1,9 +1,7 @@
-import React, { useEffect, Profiler } from "react";
-import { ToastContainer } from "react-toastify";
+import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./auth/Login";
 import SignUp from "./auth/SignUp";
-import PostLikes from "./Likes/Post_Likes";
 import Test from "./Layout/test";
 import SinglePost from "./Posts/SinglePost";
 import UserContext from "./context/userContext";
@@ -12,14 +10,10 @@ import UserCategory from "./Category/Category";
 import CreateEvent from "./Event/CreateEvent";
 import EventDetails from "./Event/EventDetails";
 import AllEvents from "./Event/AllEvents";
-import Home from "./Layout/Home";
-import ProtectedRoute from "./components/common/protecteRoute";
 import "react-toastify/dist/ReactToastify.css";
 import Logout from "./auth/Logout";
-import http from "./services/httpService";
 // import Profile from './Layout/Profile';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import auth from "./services/authService";
 import {
   faEnvelope,
   faKey,
@@ -39,7 +33,8 @@ import {
   faCamera,
   faCalendarWeek,
   faLock,
-  faBookOpen
+  faBookOpen,
+  faBookmark
 } from "@fortawesome/free-solid-svg-icons";
 import Profile from "./Layout/Profile";
 import EditUserProfile from "./Layout/Profile/EditUserProfile";
@@ -69,7 +64,8 @@ library.add(
   faCamera,
   faCalendarWeek,
   faLock,
-  faBookOpen
+  faBookOpen,
+  faBookmark
 );
 
 const App = () => {

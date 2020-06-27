@@ -277,7 +277,7 @@ const Test = (props) => {
           </div>
         
           <div className="row ml-md-2 mb-2 mt-md-1 align-items-center">
-            <div className="col-1">
+            <div className="col-2">
             <input
               accept="image/*"
               multiple
@@ -320,8 +320,9 @@ const Test = (props) => {
             </div>
             <div className="col-2">
             <button
-              className="mr-md-4  px-4 py-2 post mt-md-3"
+              className="px-4 py-2 post mt-md-3"
               onClick={submitPost}
+              style={{marginLeft: -15}}
             >
               Post
             </button>

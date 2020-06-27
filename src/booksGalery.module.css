@@ -1,26 +1,27 @@
+p{
+  overflow-wrap: break-word;
+}
 .grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 20px 30px;
-  max-height: 430px;
   overflow-y: auto;
 }
 
 .item {
-  flex-basis: 40%;
-  margin-bottom: 10px;
+  flex-basis: 300px;
+  margin-bottom: 30px;
   position: relative;
-  flex-basis: 260px;
 }
 
 .item>div {
   padding: 8px;
 }
 
-.item>div img {
+.item div img {
   width: 100%;
-  height: 150px;
+  height: 200px;
   border-radius: 0;
 }
 
@@ -38,13 +39,6 @@
   width: 0px;
 }
 
-.item p.tooltipText {
-  font-weight: bold;
-  font-size: 16px;
-  font-family: serif;
-  transform: translateZ(0);
-  will-change: unset;
-}
 
 .item .content {
   margin-bottom: 35px;

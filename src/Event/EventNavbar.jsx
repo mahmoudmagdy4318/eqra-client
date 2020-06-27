@@ -18,12 +18,14 @@ import Popover from "@material-ui/core/Popover";
 import MenuList from "@material-ui/core/MenuList";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import HomeIcon from "@material-ui/icons/Home";
-import MessageIcon from "@material-ui/icons/Message";
-import PersonIcon from "@material-ui/icons/Person";
 import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import MessageIcon from "@material-ui/icons/Message";
+import PersonIcon from "@material-ui/icons/Person";
 // Component
 import Search from '../Search/SearchBar';
+import FollowNotification from "../Notifications/FollowNotification";
 
 const EventNavBar = (props) => {
   const {
@@ -64,23 +66,6 @@ const EventNavBar = (props) => {
   const id = open ? "simple-popover" : undefined;
   // ========== End Right DropDown Menu ============
   const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: "top", horizontal: "right" }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>
-        <Link to="/logout" className="disable-link">
-          Logout
-        </Link>
-      </MenuItem>
-    </Menu>
-  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -125,7 +110,7 @@ const EventNavBar = (props) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="static" >
         <Toolbar>
           {/* Right Dropdown Menu Button & Menu*/}
           <IconButton
@@ -180,13 +165,21 @@ const EventNavBar = (props) => {
                 </ListItemIcon>
                 <Typography variant="inherit">Messages</Typography>
               </MenuItem>
+              <Link to="/logout" className="disable-link">
+                <MenuItem onClick={handleMenuClose}>
+                  <ListItemIcon>
+                    <ExitToAppIcon fontSize="medium" color={"primary"}/>
+                  </ListItemIcon>
+                  <Typography>Logout</Typography>
+                </MenuItem>
+              </Link>
             </MenuList>
           </Popover>
           <Typography className={classes.title} variant="h6" noWrap>
             Eqraa Online
           </Typography>
           {/* Search Bar */}
-          <Search/>
+          <Search />
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {currentUser.role === "writer" ? (
@@ -201,29 +194,16 @@ const EventNavBar = (props) => {
                 Create Event
               </Button>
             ) : (
-              ""
-            )}
+                ""
+              )}
 
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {/* Follow Component */}
+            <FollowNotification/>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -239,7 +219,7 @@ const EventNavBar = (props) => {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+
     </div>
   );
 };

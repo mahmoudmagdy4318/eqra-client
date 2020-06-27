@@ -10,15 +10,15 @@
   justify-content: flex-start;
 }
 .post-con img{
-    max-width: 60px;
+    max-width: 70px;
     height: auto;
 }
 .con {
   display: block;
   width: 100%;
   min-height: 174px;
-  background-color: #fafafa;
-   border: 1px solid #8899a6;
+  background-color: white;
+   border: 1px solid #c3c3c3;
   border-radius: 5px;
 }
 .avatar {
@@ -71,14 +71,15 @@
 }
 
 .inner-grid {
-  border-left: 1px solid #e1e8ed;
+  /* border-left: 1px solid #e1e8ed;
   border-right: 1px solid #e1e8ed;
-  border-top: 1px solid #e1e8ed;
+  border-top: 1px solid #e1e8ed; */
   margin: auto;
-  border-radius: 5px;
+  margin-top: 15px;
+  /* border-radius: 5px; */
   /* background-color: #f0f1f3; */
   /* background-color: #180B05; */
-  background-color:#FAFAFA;
+  background-color:#f3f3f8;
   min-height: 700px;
 }
 .line {
@@ -88,8 +89,8 @@
 
 /* This element would be replaced by where you want the templates. */
 .tweetEntry-tweetHolder {
-  border-left: 1px solid #e1e8ed;
-  border-right: 1px solid #e1e8ed;
+  /* border-left: 1px solid #e1e8ed;
+  border-right: 1px solid #e1e8ed; */
   /* border-top: 1px solid #e1e8ed; */
   width: 588px;
   margin: auto;
@@ -119,7 +120,8 @@
 /************************/
 
 .tweetEntry {
-  border-bottom: 1px solid #e1e8ed;
+  background-color: white;
+  border-radius: 7px;
   cursor: pointer;
   min-height: 51px;
   padding: 9px 12px;

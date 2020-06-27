@@ -18,27 +18,12 @@ const MyNav = () => {
   return (
     <>
       <nav className="nav my-nav">
-        <Link className="menu-item m-md-3 pb-2" to="/">
+        <Link className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/' ? 'active' : ''}`} to="/">
           <FontAwesomeIcon item icon="home" size="1x" className="mt-3 mx-1" />
           <span className="mt-2 pt-1 ml-2"> Home </span>
         </Link>
-        {/* <Link className="menu-item m-md-3 pb-2" href="#">
-          <FontAwesomeIcon item icon="bell" size="1x" className="mt-3 mx-1" />
-          <span className="mt-2 pt-1 ml-2">Notifications</span>
-        </Link>
-
-        <Link className="menu-item m-md-3 pb-2" href="#">
-          <FontAwesomeIcon
-            item
-            icon="envelope"
-            size="1x"
-            className="mt-3 mx-1"
-          />
-          <span className="mt-2 pt-1 ml-2">Messeges</span>
-        </Link> */}
-
         <Link
-          className="menu-item m-md-3 pb-2"
+          className={`menu-item m-md-3 pb-2 ${window.location.pathname.includes('/profile') ? 'active' : ''}`}
           to={`/profile/${profileData.role}/${profileData.id}`}
         >
           <FontAwesomeIcon
@@ -50,7 +35,7 @@ const MyNav = () => {
           <span className="mt-2 pt-1 ml-2">Profile</span>
         </Link>
 
-        <Link className="menu-item m-md-3 pb-2" to="/events">
+        <Link className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/events' ? 'active' : ''}`} to="/events">
           <FontAwesomeIcon
             item
             icon="calendar-week"
@@ -60,7 +45,7 @@ const MyNav = () => {
           <span className="mt-2 pt-1 ml-2">Events</span>
         </Link>
 
-        <Link className="menu-item m-md-3 pb-2" to="/bookGalery">
+        <Link className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/bookGalery' ? 'active' : ''}`} to="/bookGalery">
           <FontAwesomeIcon
             item
             icon="book-open"
@@ -69,7 +54,16 @@ const MyNav = () => {
           />
           <span className="mt-2 pt-1 ml-2">Book Galery</span>
         </Link>
-        <Link className="menu-item m-md-3 pb-2" to="/logout">
+        <Link className={`menu-item m-md-3 pb-2 ${window.location.pathname === '/category' ? 'active' : ''}`} to="/category">
+          <FontAwesomeIcon
+            item
+            icon="bookmark"
+            size="1x"
+            className="mt-3 mx-1"
+          />
+          <span className="mt-2 pt-1 ml-2">Categories</span>
+        </Link>
+        <Link className={`menu-item m-md-3 pb-2`} to="/logout">
           <FontAwesomeIcon
             item
             icon="user-circle"

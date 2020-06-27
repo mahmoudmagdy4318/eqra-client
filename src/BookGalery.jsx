@@ -47,9 +47,6 @@ const BookGalery = () => {
                   <p className={styles.price}>${book.price}</p>
                 </CardContent>
                 <CardActions className={styles.action}>
-                  {/* <Button variant="contained" color="primary" startIcon={<ShoppingCartIcon/>}>
-                    Get a Copy!
-                  </Button> */}
                   <Payment product={book}/>
                 </CardActions>
               </Card>

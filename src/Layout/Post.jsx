@@ -244,7 +244,6 @@ const Post = (props) => {
               className="ml-5 mt-3"
               onClick={() => showComment(!show)}
             />
-            <FontAwesomeIcon icon="retweet" size="1x" className="ml-5 mt-3" />
             {currentUserLike ? (
               <FontAwesomeIcon
                 icon="heart"

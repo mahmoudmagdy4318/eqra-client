@@ -57,7 +57,7 @@ const ChatBox = () => {
       return;
     });
     
-  }, [currentUser,notifications]);
+  }, [notifications,messages]);
 
   const handleChatBoxStatus = (e) => {
     e.stopPropagation();
