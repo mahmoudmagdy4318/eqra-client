@@ -81,7 +81,7 @@ const User = (props) => {
   const [myUser, updateMyUser] = useState({});
   const [followText, updateFollowText] = useState("");
   const {
-    actions: { getMyFollows,openChatBox}
+    actions: { getMyFollows}
   } = useContext(UserContext);
 
   const history = useHistory();
