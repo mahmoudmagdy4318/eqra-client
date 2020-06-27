@@ -196,12 +196,6 @@ const EventNavBar = (props) => {
             ) : (
                 ""
               )}
-
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
             {/* Follow Component */}
             <FollowNotification/>
           </div>

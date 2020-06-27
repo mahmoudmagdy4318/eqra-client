@@ -91,12 +91,10 @@ export default function SignUp(props) {
       role: isWriter ? 'writer' : 'user',
       username: user.username,
     };
-    // console.log(newUser);
     const { data } = await register(newUser);
-    // console.log(data);
     auth.loginWithJwt("Bearer " + data.access_token, data.role);
     http.setJwt(data.access_token)
-    window.location = "/";
+    props.history.push("/category");
   };
 
   if (auth.getJwt()) return <Redirect to="/" />
