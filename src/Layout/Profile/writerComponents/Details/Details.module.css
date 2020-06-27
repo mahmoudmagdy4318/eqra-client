@@ -46,18 +46,32 @@ button.EditUser:hover {
   background-color: #047afc;
 }
 
-div.modalContainer{
+div.modalContainer {
   background: white;
   padding: 10px 50px;
   overflow: hidden;
 }
 
-form.formStyle{
+form.formStyle {
   width: 100%;
   margin-top: 15px;
 }
 
-img.EditUserImage{
+img.EditUserImage {
   width: 65%;
   border-radius: 50%;
+}
+
+button.button {
+  border: 1px solid #047afc;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+button.button:hover {
+  background: #047afc;
+}
+
+span.spanMargin{
+margin-left: 14px;
 }

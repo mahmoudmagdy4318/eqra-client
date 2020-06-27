@@ -18,7 +18,7 @@ const Writer = ({ id: visitorId }) => {
   const { data: { user: currentUser }, } = useContext(UserContext);
   let [featuredPostsList, setFeaturedPostsList] = useState([]);
   let [newFeaturedPosts, setNewFeaturedPosts] = useState(false);
-  let [followersFollowing, setFollowersFollowing] = useState({ followers: 0, following: 0 });
+  let [followersFollowing, setFollowersFollowing] = useState({ followers: null, following: null });
   let [profileOwner, setProfileOwner] = useState({});
 
   useEffect(() => {
@@ -33,12 +33,15 @@ const Writer = ({ id: visitorId }) => {
       .catch(err => console.log(err))
     setNewFeaturedPosts(false)
 
-    axiosInstance.get(`api/my-followers/${visitorId}`)
-      .then(data => setFollowersFollowing({ ...followersFollowing, followers: data.length }))
-    axiosInstance.get(`api/persons-i-follow/${visitorId}`)
-      .then(data => setFollowersFollowing({ ...followersFollowing, following: data.length }))
+    Promise.all([
+      axiosInstance.get(`api/persons-i-follow/${visitorId}`),
+      axiosInstance.get(`api/my-followers/${visitorId}`)
+    ]).then(data => { 
+      console.log(data) 
+      setFollowersFollowing({ followers: data[1] ,following: data[0] })
+    })
   }, [newFeaturedPosts, visitorId])
-  
+
   return (
     <>
       <EventNavBar />
@@ -56,6 +59,7 @@ const Writer = ({ id: visitorId }) => {
           }
           followers={followersFollowing.followers}
           following={followersFollowing.following}
+          visitorId={visitorId}
           isVisitor={visitorId == currentUser.id ? false : true}
         />
 
@@ -76,9 +80,9 @@ const Writer = ({ id: visitorId }) => {
               } />
           </div>
           <div>
-            <Book 
-            thisUser={visitorId}
-            isVisitor={visitorId == currentUser.id ? false : true} 
+            <Book
+              thisUser={visitorId}
+              isVisitor={visitorId == currentUser.id ? false : true}
             />
           </div>
         </section>
