@@ -149,7 +149,7 @@ const Post = (props) => {
               >
                 {_.get(postData, "user.pictur") == null && (
                   <img
-                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                    src={"https://bootdey.com/img/Content/avatar/avatar6.png"}
                     alt=""
                     width="60"
                     height="60"
@@ -158,7 +158,7 @@ const Post = (props) => {
                 )}
                 {_.get(postData, "user.pictur") != null && (
                   <img
-                    src={`http://localhost:8000${_.get(
+                    src={`${_.get(
                       postData,
                       "user.pictur"
                     )}`}
@@ -291,21 +291,16 @@ const Post = (props) => {
                   ml={5}
                   className="mb-2"
                   value={newComment.content}
-                  onChange={(e) => {
-                    debugger;
-                    setNewComment({
-                      postId: postData.id,
-                      content: e.target.value,
-                    });
-                  }}
+                  onChange={(e) =>
+                    setNewComment({ ...newComment, content: e.target.value })
+                  }
                 />
               </form>
               <div className="row">
                 <div class="col-md-2 offset-md-10 ">
                   <button
                     className="  mr-md-4  px-4 py-2 post"
-                    onClick={() => {
-                      debugger;
+                    onClick={() =>
                       onSubmitAddingComment(newComment)
                         .then((res) => {
                           setNewComment({ content: "", postId: postData.id });
@@ -313,8 +308,8 @@ const Post = (props) => {
                         })
                         .catch((err) => {
                           console.log(err);
-                        });
-                    }}
+                        })
+                    }
                   >
                     Add
                   </button>

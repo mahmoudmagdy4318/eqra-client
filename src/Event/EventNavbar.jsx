@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MessageIcon from "@material-ui/icons/Message";
 import PersonIcon from "@material-ui/icons/Person";
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
 // Component
 import Search from '../Search/SearchBar';
 import FollowNotification from "../Notifications/FollowNotification";
@@ -182,6 +183,18 @@ const EventNavBar = (props) => {
           <Search />
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <Link to="/searchUsers">
+          <Button
+          style={{textDecoration:"none"}}
+                variant="contained"
+                color="primary"
+                size="large"
+                className={classes.button}
+                startIcon={<PeopleAltIcon />}
+              >
+                Find Friends
+              </Button>
+              </Link>
             {currentUser.role === "writer" ? (
               <Button
                 href="/newEvent"
