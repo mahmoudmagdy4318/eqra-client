@@ -8,7 +8,9 @@ import { useHistory } from "react-router-dom";
 import './EventPosts.css';
 const EventPosts = (props) => {
   const eventId = props.eventId;
-  const currentUser = useContext(UserContext);
+  const {
+    data: { user: currentUser },
+  } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [currPage, setCurrPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
@@ -76,18 +78,26 @@ const EventPosts = (props) => {
     console.log(res);
     setPosts([...posts.map((p) => (p.id === postData.id ? postData : p))]);
   };
-  const handleLike = async (id) => {
-    try {
-      const like = await axiosInstance.post("api/post/like", {
-        post_id: id,
-        user_id: currentUser.id,
-      });
-      setPosts(
-        posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
-      );
-      console.log(like);
-    } catch (error) {
-      console.log(error);
+  const handleLike = (id) => (currentUserLike) => {
+    if (currentUserLike) {
+      return axiosInstance
+        .delete(`api/post/${id}/likes/${currentUser.id}`)
+        .then(() => {
+          setPosts(
+            posts.map((p) => (p.id === id ? { ...p, likes: p.likes - 1 } : p))
+          );
+        });
+    } else {
+      return axiosInstance
+        .post("api/post/like", {
+          post_id: id,
+          user_id: currentUser.id,
+        })
+        .then(() => {
+          setPosts(
+            posts.map((p) => (p.id === id ? { ...p, likes: p.likes + 1 } : p))
+          );
+        });
     }
   };
 
@@ -172,7 +182,7 @@ const EventPosts = (props) => {
               data={p}
               click={handlePostClick}
               handleDeletePost={handleDeletePost}
-              onLike={() => handleLike(p.id)}
+              onLike={handleLike(p.id)}
               submitEditingPost={submitEditingPost}
               onSubmitAddingComment={handleSubmitAddingComment}
             />

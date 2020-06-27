@@ -17,7 +17,7 @@ import {
 import useStyles from "./styles/FollowNotificationStyle";
 // Component
 import FollowersService from "../services/FollowersService";
-import Snack from '../utils/Snackbar';
+import Snack from "../utils/Snackbar";
 import { Link } from "react-router-dom";
 const FollowNotification = (props) => {
     const {
@@ -29,8 +29,8 @@ const FollowNotification = (props) => {
         unseenFollowNotifications,
         setunseenFollowNotifications,
     ] = React.useState(0);
-  const [successOpen, setSuceesOpen] = React.useState(false);
-  const [successMsg, setSuccessMsg] = React.useState("");
+    const [successOpen, setSuceesOpen] = React.useState(false);
+    const [successMsg, setSuccessMsg] = React.useState("");
 
     const getMyFollowers = async () => {
         const result = await FollowersService.getFollowersData();
@@ -57,9 +57,9 @@ const FollowNotification = (props) => {
         if (!currentUser.id) return;
         const channel = pusher.subscribe("followed." + currentUser.id);
         channel.bind("followed", function (data) {
-          getMyFollowers()
+            getMyFollowers();
             setSuceesOpen(true);
-            setSuccessMsg(JSON.stringify(data.message))
+            setSuccessMsg(JSON.stringify(data.message));
         });
     }, [JSON.stringify(currentUser)]);
     // Right Drop Downmenu Functionality
@@ -77,12 +77,12 @@ const FollowNotification = (props) => {
 
     return (
         <Fragment>
-        <Snack
-        open={successOpen}
-        setOpen={setSuceesOpen}
-        severity="success"
-        messege={successMsg}
-      />
+            <Snack
+                open={successOpen}
+                setOpen={setSuceesOpen}
+                severity="success"
+                messege={successMsg}
+            />
             <IconButton
                 onClick={handleClick}
                 aria-label="show 17 new notifications"
@@ -111,45 +111,63 @@ const FollowNotification = (props) => {
                 }}
             >
                 <List className={classes.root}>
+                    {followers.length === 0 ? (
+                        <ListItem alignItems="flex-start">
+                            <ListItemText
+                                primary="You Have no New Notifications Yet"
+                            />
+                        </ListItem>
+                    ) : (
+                        ""
+                    )}
                     {followers.map((follower, index) => {
                         return (
                             <Fragment>
-                            <Link className="disable-link" to={`/profile/user/${follower.followed_id}`}>
-                                <ListItem alignItems="flex-start">
-                                    <ListItemAvatar>
-                                        {follower.pictur ? (
-                                            <Avatar
-                                                alt="Remy Sharp"
-                                                src={follower.pictur}
-                                            />
-                                        ) : (
-                                            <Avatar
-                                                alt="Remy Sharp"
-                                                src="/static/images/avatar/1.jpg"
-                                            />
-                                        )}
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={follower.full_name}
-                                        secondary={
-                                            <React.Fragment>
-                                                <Typography
-                                                    component="span"
-                                                    variant="body2"
-                                                    className={classes.inline}
-                                                    color="textPrimary"
-                                                >
-                                                    {follower.full_name} Has
-                                                    Been Followed You
-                                                </Typography>
-                                                <br />
-                                                Since {follower.created_at}
-                                            </React.Fragment>
-                                        }
-                                    />
-                                </ListItem>
+                                <Link
+                                    className="disable-link"
+                                    to={`/profile/user/${follower.followed_id}`}
+                                >
+                                    <ListItem alignItems="flex-start">
+                                        <ListItemAvatar>
+                                            {follower.pictur ? (
+                                                <Avatar
+                                                    alt="Remy Sharp"
+                                                    src={follower.pictur}
+                                                />
+                                            ) : (
+                                                <Avatar
+                                                    alt="Remy Sharp"
+                                                    src="/static/images/avatar/1.jpg"
+                                                />
+                                            )}
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={follower.full_name}
+                                            secondary={
+                                                <React.Fragment>
+                                                    <Typography
+                                                        component="span"
+                                                        variant="body2"
+                                                        className={
+                                                            classes.inline
+                                                        }
+                                                        color="textPrimary"
+                                                    >
+                                                        {follower.full_name} Has
+                                                         Followed You
+                                                    </Typography>
+                                                    <br />
+                                                    Since {follower.created_at}
+                                                </React.Fragment>
+                                            }
+                                        />
+                                    </ListItem>
                                 </Link>
-                                {index !== followers.length -1 ? <Divider variant="inset" component="li" /> : ""}
+                                {index !== followers.length - 1 ? (
+                                    <Divider variant="inset" component="li" />
+                                ) : (
+                                    ""
+                                )}
                             </Fragment>
                         );
                     })}

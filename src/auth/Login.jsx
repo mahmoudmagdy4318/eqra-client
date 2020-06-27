@@ -150,13 +150,7 @@ export default function Login(props) {
           >
             Sign In
           </Button>
-          {/* <GoogleLogin
-            clientId="864380377506-acriqsfthqgh7su0tb9jspi4qr1cls02.apps.googleusercontent.com"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            buttonText="Login"
-            
-          /> */}
+       
 
           <Grid container>
             <Grid item xs>

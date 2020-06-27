@@ -21,41 +21,40 @@ import {
   GridListTileBar,
   IconButton,
 } from "@material-ui/core";
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-
+import StarBorderIcon from "@material-ui/icons/StarBorder";
 
 // const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   "& > *": {
-  //     margin: theme.spacing(1),
-  //     width: "100%",
-  //   },
-  // },
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      "& > *": {
-        margin: theme.spacing(1),
-        width: "100%",
-      },
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'space-around',
-      overflow: 'hidden',
-      backgroundColor: theme.palette.background.paper,
+// root: {
+//   "& > *": {
+//     margin: theme.spacing(1),
+//     width: "100%",
+//   },
+// },
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+      margin: theme.spacing(1),
+      width: "100%",
     },
-    gridList: {
-      flexWrap: 'nowrap',
-      // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
-      transform: 'translateZ(0)',
-    },
-    title: {
-      color: theme.palette.primary.light,
-    },
-    titleBar: {
-      background:
-        'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
-    },
-  }));
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    flexWrap: "nowrap",
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: "translateZ(0)",
+  },
+  title: {
+    color: theme.palette.primary.light,
+  },
+  titleBar: {
+    background:
+      "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
+  },
+}));
 // }));
 
 const Post = (props) => {
@@ -143,27 +142,27 @@ const Post = (props) => {
             <div className="d-md-flex flex-row justify-content-md-between align-items-md-baseline main-content">
               <Link
                 class="tweetEntry-account-group"
-                to={`/profile/${postData.user.role}/${_.get(postData, "user.id")}`}
+                to={`/profile/${_.get(postData, "user.role")}/${_.get(
+                  postData,
+                  "user.id"
+                )}`}
               >
-              
-                {postData.user.pictur == null && (
+                {_.get(postData, "user.pictur") == null && (
                   <img
-                    src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                    src={"https://bootdey.com/img/Content/avatar/avatar6.png"}
                     alt=""
                     width="60"
                     height="60"
                     className="tweetEntry-avatar"
-                    
                   />
                 )}
-                {postData.user.pictur != null && (
+                {_.get(postData, "user.pictur") != null && (
                   <img
-                    src={`http://localhost:8000${postData.user.pictur}`}
+                    src={`${_.get(postData, "user.pictur")}`}
                     width="60"
                     height="60"
                     alt=""
                     className="tweetEntry-avatar"
-                    
                   />
                 )}
                 <strong class="tweetEntry-fullname">
@@ -171,7 +170,7 @@ const Post = (props) => {
                 </strong>
 
                 <span class="tweetEntry-username">
-                  @<b >{_.get(postData, "user.username")}</b>
+                  @<b>{_.get(postData, "user.username")}</b>
                 </span>
               </Link>
               <span class="tweetEntry-timestamp">{timePassed}</span>
@@ -223,12 +222,10 @@ const Post = (props) => {
               <GridListTile key={tile.filename}>
                 <img src={tile.filename} alt="post image" />
                 <GridListTileBar
-                
                   classes={{
                     root: classes.titleBar,
                     title: classes.title,
                   }}
-                
                 />
               </GridListTile>
             ))}
@@ -272,7 +269,10 @@ const Post = (props) => {
                 }}
               />
             )}
-
+          </div>
+          <div
+            style={{ float: "right", marginRight: "179px", marginTop: "-17px" }}
+          >
             <PostLikes
               id={postData.id}
               type="post"
@@ -292,7 +292,10 @@ const Post = (props) => {
                   className="mb-2"
                   value={newComment.content}
                   onChange={(e) =>
-                    setNewComment({ ...newComment, content: e.target.value })
+                    setNewComment({
+                      postId: postData.id,
+                      content: e.target.value,
+                    })
                   }
                 />
               </form>
@@ -307,7 +310,7 @@ const Post = (props) => {
                           showComment(false);
                         })
                         .catch((err) => {
-                          console.log(err); 
+                          console.log(err);
                         })
                     }
                   >

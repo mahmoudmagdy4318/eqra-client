@@ -117,7 +117,10 @@ const Comment = (props) => {
         <></>
       )}
       <Grid container xs={12} justify={"flex-end"} style={{ color: "#b1bbc3" }}>
-        <PostLikes id={data.id} type="comment" noOfLikes={data.likes} />
+      
+      <div style={{marginTop:"13px", marginRight:"9px"}}>
+      <PostLikes id={data.id} type="comment" noOfLikes={data.likes} />
+      </div>
         {currentUserCommentLike ? (
           <FontAwesomeIcon
             item
@@ -168,6 +171,7 @@ const Comment = (props) => {
         ) : (
           <></>
         )}
+       
       </Grid>
       <AlertDialog
         toggle={togglePopUp}

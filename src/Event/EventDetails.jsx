@@ -17,7 +17,6 @@ const EventDetails = (props) => {
   const getEvent = async () => {
     const event = await axiosInstance.get(`api/event/${eventId}`);
     setEvent(event.data);
-    console.log(event.data)
   };
   useEffect(() => {
     getEvent();
