@@ -22,7 +22,6 @@ function SinglePost(props) {
 
   const getPostData = async () => {
     const data = await axiosInstance.get(`api/post/${id}`);
-    debugger;
     setPostData(data.data);
   };
   const getComments = async () => {
@@ -40,6 +39,11 @@ function SinglePost(props) {
     getComments();
   }, [currPage]);
 
+  const handleSubmitAddingComment = (newComment) => {
+    return axiosInstance.post("api/comment", newComment).then((comment) => {
+      setComments([{ ...comment, user: currentUser }, ...comments]);
+    });
+  };
   const handleDeleteComment = (id) => async () => {
     try {
       await axiosInstance.delete(`api/comment/${id}`);
@@ -131,6 +135,7 @@ function SinglePost(props) {
         handleDeletePost={handleDelete}
         onLike={handlePostLike(postData.id)}
         submitEditingPost={submitEditingPost}
+        onSubmitAddingComment={handleSubmitAddingComment}
       />
       <InfiniteScroll
         dataLength={comments.length} //This field to render the next data
