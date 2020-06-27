@@ -273,7 +273,10 @@ const Post = (props) => {
               />
             )}
 
-            <PostLikes
+            
+          </div>
+          <div style={{float:"right", marginRight:"179px", marginTop:"-17px" }}>
+          <PostLikes
               id={postData.id}
               type="post"
               noOfLikes={postData.likes}
