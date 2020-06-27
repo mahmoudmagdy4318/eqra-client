@@ -76,6 +76,7 @@ const User = (props) => {
   const [newPostData, setNewPostData] = useState({});
   const [newPostFile, setNewPostFile] = useState(null);
   const [myfollowers, updateFollowers] = useState(0);
+  // const [followersDisplayed, updateFollowersDispalyed] = useState([]);
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
   const [followText, updateFollowText] = useState("");
@@ -183,15 +184,16 @@ const User = (props) => {
 
   useEffect(() => {
     setCurrPage(1);
-    axiosInstance.get(
-      `api/userposts/${id}?page=${1}`
-    ).then(postsData => {
-      setPosts(postsData.data)
-      setLastPage(postsData.meta.last_page);
-    }).catch(
-      (error) => { console.log(error); })
-  }
-    , [id]);
+    axiosInstance
+      .get(`api/userposts/${id}?page=${1}`)
+      .then((postsData) => {
+        setPosts(postsData.data);
+        setLastPage(postsData.meta.last_page);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [id]);
 
   useEffect(() => {
     getPosts(id);
@@ -230,8 +232,9 @@ const User = (props) => {
   const bringFollowers = async (userId) => {
     try {
       const followers = await axiosInstance.get(`api/my-followers/${userId}`);
-      console.log(followers);
+      console.log(followers, followers);
       updateFollowers(followers.length);
+      // updateFollowersDispalyed(followers);
     } catch (error) {
       console.log(error);
     }
@@ -316,7 +319,7 @@ const User = (props) => {
   const sendFollow = async () => {
     try {
       const sendUnfollow = axiosInstance.post(`api/follow/${id}`);
-      console.log(sendUnfollow)
+      console.log(sendUnfollow);
       updateFollowText("following");
     } catch (error) {
       console.error(error);
@@ -387,15 +390,6 @@ const User = (props) => {
                 <span>{followText}</span>
               </button>
             )}
-            <button class="btn btn-rounded btn-info">
-              <FontAwesomeIcon
-                item
-                icon="comment"
-                size="1x"
-                className="mt-3 mx-1"
-              />
-              <span>Message</span>
-            </button>
           </div>
           <div class="profile-cover__info">
             <ul class="nav">
@@ -413,69 +407,71 @@ const User = (props) => {
             <h3 class="panel-title">Activity Feed</h3>
           </div>
           <div class="panel-content panel-activity">
-            {id == currentUser.id && (<form action="#" class="panel-activity__status mb-2">
-              <textarea
-                name="user_activity"
-                placeholder="Share what you've been up to..."
-                class="form-control"
-                name="body_content"
-                onChange={handleInput}
-              ></textarea>
+            {id == currentUser.id && (
+              <form action="#" class="panel-activity__status mb-2">
+                <textarea
+                  name="user_activity"
+                  placeholder="Share what you've been up to..."
+                  class="form-control"
+                  name="body_content"
+                  onChange={handleInput}
+                ></textarea>
 
-              <div class="actions">
-                <div className="col-1">
-                  <input
-                    accept="image/*"
-                    className={classes.input}
-                    multiple
-                    id="icon-button-file"
-                    type="file"
-                    name="postFiles[]"
-                    onChange={(e) =>
-                      setNewPostData({
-                        ...newPostData,
-                        postFiles: e.target.files,
-                      })
-                    }
-                  />
-                  <label htmlFor="icon-button-file">
-                    <FontAwesomeIcon
-                      icon="image"
-                      size="2x"
-                      style={{ color: "#EE4956" }}
-                      className=" image mt-md-4"
-                    />
-                  </label>
-                </div>
-                <div className="col-8">
-                  <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-mutiple-checkbox-label">
-                      Select a category or more
-                    </InputLabel>
-                    <Select
-                      labelId="demo-mutiple-checkbox-label"
-                      id="demo-mutiple-checkbox"
+                <div class="actions">
+                  <div className="col-1">
+                    <input
+                      accept="image/*"
+                      className={classes.input}
                       multiple
-                      value={checkedCategories}
-                      onChange={handleChange}
-                      input={<Input />}
-                      renderValue={(selected) => selected.join(", ")}
-                      MenuProps={MenuProps}
+                      id="icon-button-file"
+                      type="file"
+                      name="postFiles[]"
+                      onChange={(e) =>
+                        setNewPostData({
+                          ...newPostData,
+                          postFiles: e.target.files,
+                        })
+                      }
+                    />
+                    <label htmlFor="icon-button-file">
+                      <FontAwesomeIcon
+                        icon="image"
+                        size="2x"
+                        style={{ color: "#EE4956" }}
+                        className=" image mt-md-4"
+                      />
+                    </label>
+                  </div>
+                  <div className="col-8">
+                    <FormControl className={classes.formControl}>
+                      <InputLabel id="demo-mutiple-checkbox-label">
+                        Select a category or more
+                      </InputLabel>
+                      <Select
+                        labelId="demo-mutiple-checkbox-label"
+                        id="demo-mutiple-checkbox"
+                        multiple
+                        value={checkedCategories}
+                        onChange={handleChange}
+                        input={<Input />}
+                        renderValue={(selected) => selected.join(", ")}
+                        MenuProps={MenuProps}
+                      >
+                        {categoryMenu}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <div className="col-2">
+                    <button
+                      className="mr-md-4  px-4 py-2 post mt-md-3"
+                      onClick={submitPost}
                     >
-                      {categoryMenu}
-                    </Select>
-                  </FormControl>
+                      Post
+                    </button>
+                  </div>
                 </div>
-                <div className="col-2">
-                  <button
-                    className="mr-md-4  px-4 py-2 post mt-md-3"
-                    onClick={submitPost}
-                  >
-                    Post
-                  </button>
-                </div>
-              </div>
-            </form>)}
+              </form>
+            )}
             <InfiniteScroll
               dataLength={posts.length} //This field to render the next data
               next={() => setCurrPage(currPage + 1)}
