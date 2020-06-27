@@ -22,6 +22,7 @@ function SinglePost(props) {
 
   const getPostData = async () => {
     const data = await axiosInstance.get(`api/post/${id}`);
+    debugger;
     setPostData(data.data);
   };
   const getComments = async () => {
