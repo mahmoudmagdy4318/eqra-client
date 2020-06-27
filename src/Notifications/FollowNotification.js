@@ -41,8 +41,8 @@ const FollowNotification = (props) => {
         getMyFollowers();
     }, []);
     Pusher.logToConsole = true;
-    const pusher = new Pusher("0e0882c25b1299c47bdb", {
-        cluster: "mt1",
+    const pusher = new Pusher("72450be663ca31a2c7b3", {
+        cluster: "us2",
         authEndpoint: "/broadcasting/auth",
         auth: {
             headers: {
