@@ -69,6 +69,10 @@ body {
   align-items: center;
 }
 
+.chatbox__title:hover{
+  background-color: #334058cc;
+}
+
 .chatbox__title h5 {
   height: 50px;
   margin: 0 0 0 15px;

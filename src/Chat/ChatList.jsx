@@ -66,17 +66,13 @@ const StyledBadge = withStyles((theme) => ({
 
 export default function FollowList({openChatBox,notifications}) {
     const classes = useStyles();
-    const [follows, setFollows] = useState([]);
-    const [followers, setFollowers] = useState([])
-
-    const getMyFollows=async()=>{
-      const { followingArray,followersArray}=await getFollows();
-      setFollows(followingArray);
-      setFollowers(followersArray);
-    }
+    const {
+      data: { follows,followers },actions
+    } = useContext(UserContext);
     
     useEffect(() => {
-      getMyFollows();
+      actions.openChatBox=openChatBox;
+      
     }, []);
 
 
@@ -138,7 +134,7 @@ export default function FollowList({openChatBox,notifications}) {
                         {follower.full_name}
                     </Box>}
                     {!notifications[`notification.${follower.id}`]&&<Box fontWeight="fontWeightLight" m={1}>
-                      Light
+                      {follower.full_name}
                     </Box>}
                   </Typography>
                 </ListItem>

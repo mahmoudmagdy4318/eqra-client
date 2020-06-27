@@ -5,15 +5,17 @@ import ChatList from "./ChatList";
 import SendIcon from '@material-ui/icons/Send';
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { UserContext } from "../context/userContext";
-import { getMessages, sendMessage } from "./service/messages";
+import { getMessages, sendMessage,getUnseenMessagesUsers,seenMessages} from "./service/messages";
+import Provider from '../context/userContext'
 
 const ChatBox = () => {
   const {
-    data: { user: currentUser },
+    data: { user: currentUser }
   } = useContext(UserContext);
   const [classes, setClasses] = useState("chatbox chatbox22 chatbox--closed");
   const [open, setOpen] = useState(true);
   const [currentMessage, setCurrentMessage] = useState("");
+  const [unseenMessagesUsers, setUnseenMessagesUsers] = useState([]);
   const [reciever, setReciever] = useState({});
   const [messages, setMessages] = useState({});
   const [notifications, setNotifications] = useState({});
@@ -36,28 +38,16 @@ const ChatBox = () => {
   }
 
   const channel = pusher.subscribe("private-chat." + currentUser.id);
-    channel.bind("message-sent",function ({message,user}) {
-      if(classes==="chatbox chatbox22 chatbox--closed"){
-        const data={...notifications}; 
-        data[`notification.${user.id}`]={id:user.id};
-        setNotifications(data);
-      }else{
-        const senderMessages = [
-          ...messages[`message.${user.id}`],
-          { reciever_id: currentUser.id,user_id:user.id ,message: message.message },
-        ];
-        const data={...messages}
-        data[`message.${user.id}`]=senderMessages;
-        setMessages(data);
-      }
+    channel.bind("message-sent", async function ({message,user}) {
+      handleNotifications(user)
+      await getMyMessages({id:user.id,full_name:user.full_name,pictur:user.pictur});
       return;
   });
 
   useEffect(() => {
     scrollToBottom();
-    
-    
-  }, [notifications,messages]);
+    getUnseenMessages();
+  }, [messages]);
 
   const handleChatBoxStatus = (e) => {
     e.stopPropagation();
@@ -67,6 +57,20 @@ const ChatBox = () => {
       : "chatbox chatbox22";
     setClasses(status);
   };
+
+  const getUnseenMessages=async()=>{
+    const {data}=await getUnseenMessagesUsers();
+    data.map(id=>{
+      handleNotifications({id});
+    });
+  }
+
+
+  const handleNotifications=(user)=>{
+    const data={...notifications}; 
+    data[`notification.${user.id}`]={id:user.id};
+    setNotifications(data);
+  }
 
 
   const sendMyMessage = async () => {
@@ -91,7 +95,14 @@ const ChatBox = () => {
 
   const handleChange = (e) => {
     setCurrentMessage(e.target.value);
+    
   };
+
+  const handleKeyDown=(e)=>{
+    if (e.key === 'Enter') {
+      sendMyMessage();
+    }
+  }
 
   const closeChatBox = (e) => {
     e.stopPropagation();
@@ -102,30 +113,33 @@ const ChatBox = () => {
     const data={...notifications};
     data[`notification.${reciever.id}`]=null;
     setNotifications(data);
+    await seenMessages(reciever.id);
     await getMyMessages(reciever);
     setReciever(reciever);
     setClasses("chatbox chatbox22");
     scrollToBottom();
   };
 
-  const resetNotifications=()=>{
+
+  const resetNotifications=async()=>{
     const data={...notifications};
     data[`notification.${reciever.id}`]=null;
     setNotifications(data);
+    await seenMessages(reciever.id);
   }
 
   return (
     <React.Fragment>
       <div className={classes}>
-        <div class="chatbox__title" onClick={handleChatBoxStatus}>
+        <div className="chatbox__title" onClick={handleChatBoxStatus}>
           {reciever.pictur && (
-            <Avatar alt="Profile Picture" src={reciever.pictur} />
+            <Avatar alt={reciever.full_name} src={reciever.pictur} />
           )}
           {!reciever.pictur && (
             <AccountCircleIcon />  
           )}
           <h5>{reciever.full_name}</h5>
-          <button class="chatbox__title__close" onClick={closeChatBox}>
+          <button className="chatbox__title__close" onClick={closeChatBox}>
             <span>
               <svg viewBox="0 0 12 12" width="12px" height="12px">
                 <line
@@ -146,69 +160,69 @@ const ChatBox = () => {
             </span>
           </button>
         </div>
-        <div class="chatbox__body">
+        <div className="chatbox__body">
           {messages[`message.${reciever.id}`] && messages[`message.${reciever.id}`].map(({ user_id, message, created_at }) => (
             <div>
               {currentUser.id === user_id && (
-                <div class="chatbox__body__message chatbox__body__message--left">
-                  <div class="chatbox_timing">
+                <div className="chatbox__body__message chatbox__body__message--left">
+                  <div className="chatbox_timing">
                     <ul>
                       {created_at&&<li>
-                        <i class="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
+                        <i className="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
                       </li>}
                       {!created_at&&<li>
-                        <i class="fa fa-calendar"></i> {new Date().toLocaleString()}
+                        <i className="fa fa-calendar"></i> {new Date().toLocaleString()}
                       </li>}
   
                     </ul>
                   </div>
-                  <div class="clearfix"></div>
-                  <div class="ul_section_full">
-                    <ul class="ul_msg">
+                  <div className="clearfix"></div>
+                  <div className="ul_section_full">
+                    <ul className="ul_msg">
                       <li>
                         <strong>You</strong>
                       </li>
                       <li>{message}</li>
                     </ul>
-                    <div class="clearfix"></div>
-                    <ul class="ul_msg2">
+                    <div className="clearfix"></div>
+                    <ul className="ul_msg2">
                       <li>
-                        <i class="fa fa-pencil"></i>
+                        <i className="fa fa-pencil"></i>
                       </li>
                       <li>
-                        <i class="fa fa-trash chat-trash"></i>
+                        <i className="fa fa-trash chat-trash"></i>
                       </li>
                     </ul>
                   </div>
                 </div>
               )}
               {currentUser.id !== user_id && (
-                <div class="chatbox__body__message chatbox__body__message--right">
-                  <div class="chatbox_timing">
+                <div className="chatbox__body__message chatbox__body__message--right">
+                  <div className="chatbox_timing">
                     <ul>
                     {created_at&&<li>
-                        <i class="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
+                        <i className="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
                       </li>}
                       {!created_at&&<li>
-                        <i class="fa fa-calendar"></i> {new Date().toLocaleString()}
+                        <i className="fa fa-calendar"></i> {new Date().toLocaleString()}
                       </li>}
                     </ul>
                   </div>
-                  <div class="clearfix"></div>
-                  <div class="ul_section_full">
-                    <ul class="ul_msg">
+                  <div className="clearfix"></div>
+                  <div className="ul_section_full">
+                    <ul className="ul_msg">
                       <li>
                         <strong>{reciever.full_name}</strong>
                       </li>
                       <li>{message}</li>
                     </ul>
-                    <div class="clearfix"></div>
-                    <ul class="ul_msg2">
+                    <div className="clearfix"></div>
+                    <ul className="ul_msg2">
                       <li>
-                        <i class="fa fa-pencil"></i>
+                        <i className="fa fa-pencil"></i>
                       </li>
                       <li>
-                        <i class="fa fa-trash chat-trash"></i>
+                        <i className="fa fa-trash chat-trash"></i>
                       </li>
                     </ul>
                   </div>
@@ -218,24 +232,25 @@ const ChatBox = () => {
           ))}
           <div ref={messagesEndRef} />
         </div>
-        <div class="panel-footer">
-          <div class="input-group">
+        <div className="panel-footer">
+          <div className="input-group">
             <input
               id="btn-input"
               type="text"
-              class="form-control input-sm chat_set_height"
+              className="form-control input-sm chat_set_height"
               placeholder="Type Here..."
               tabIndex="0"
               value={currentMessage}
               onChange={handleChange}
               onFocus={resetNotifications}
+              onKeyDown={handleKeyDown}
             />
-            <span class="input-group-btn">
+            <span className="input-group-btn">
               <button
                 onClick={sendMyMessage}
-                class="btn btn-primary"
+                className="btn btn-primary"
                 id="btn-chat"
-                disabled={!currentMessage}
+                hidden={!currentMessage}
               >
                 <SendIcon/>
               </button>

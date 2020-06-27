@@ -79,6 +79,9 @@ const User = (props) => {
   const [myfollowing, updateFollowing] = useState(0);
   const [myUser, updateMyUser] = useState({});
   const [followText, updateFollowText] = useState("");
+  const {
+    actions: { getMyFollows,openChatBox}
+  } = useContext(UserContext);
 
   const history = useHistory();
   useEffect(() => {
@@ -302,8 +305,10 @@ const User = (props) => {
       sendFollow();
     }
     bringFollowers(id);
+    getMyFollows();
     following(id);
   };
+
   const unfollow = async () => {
     try {
       const sendUnfollow = axiosInstance.delete(`api/unfollow/${id}`);
@@ -313,6 +318,7 @@ const User = (props) => {
       console.error(error);
     }
   };
+
   const sendFollow = async () => {
     try {
       const sendUnfollow = axiosInstance.post(`api/follow/${id}`);
@@ -387,7 +393,7 @@ const User = (props) => {
                 <span>{followText}</span>
               </button>
             )}
-            <button class="btn btn-rounded btn-info">
+            <button class="btn btn-rounded btn-info" onClick={()=>openChatBox({id:myUser.id,full_name:myUser.full_name,pictur:myUser.pictur})}>
               <FontAwesomeIcon
                 item
                 icon="comment"
