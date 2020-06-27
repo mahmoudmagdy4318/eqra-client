@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import axiosInstance from "../API/axiosInstance";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import { Grid } from "@material-ui/core";
 
 const UserEvents = (props) => {
   const classes = useStyles();
@@ -44,6 +45,21 @@ const UserEvents = (props) => {
           scrollButtons="auto"
           aria-label="scrollable auto tabs example"
         >
+        {userEvents.length === 0 ?  
+            <Grid item xs={12} sm={12} md={12}>
+                <Card className={classes.card} >
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                    Hello,
+                    </Typography>
+                    <br/>
+                    <Typography>
+                    Welcome Please Join Events To Be Added To Your Gallery
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+          : ""}
           {userEvents.map((event, index) => {
             return <Tab label={event.name} {...a11yProps(index)} />;
           })}
