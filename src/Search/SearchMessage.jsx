@@ -55,7 +55,7 @@ const SearchMessage = (props) => {
                 onClick={(handleClose)}
                 className={classes.seeMore}
               >
-                <Link to="/search">
+                <Link to="/searchUsers">
                 <Button
                   variant="contained"
                   color="primary"

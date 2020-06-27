@@ -115,7 +115,7 @@ const App = () => {
             <Route
               key="searchPage"
               exact
-              path="/search"
+              path="/searchUsers"
               component={SearchPage}
             />
             <Route
