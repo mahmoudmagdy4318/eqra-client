@@ -144,12 +144,13 @@ const ChatBox = () => {
                 <div class="chatbox__body__message chatbox__body__message--left">
                   <div class="chatbox_timing">
                     <ul>
-                      <li>
-                        <i class="fa fa-calendar"></i> 22/11/2018
-                      </li>
-                      <li>
-                        <i class="fa fa-clock-o"></i> 7:00 PM
-                      </li>
+                      {created_at&&<li>
+                        <i class="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
+                      </li>}
+                      {!created_at&&<li>
+                        <i class="fa fa-calendar"></i> {new Date().toLocaleString()}
+                      </li>}
+  
                     </ul>
                   </div>
                   <div class="clearfix"></div>
@@ -176,12 +177,12 @@ const ChatBox = () => {
                 <div class="chatbox__body__message chatbox__body__message--right">
                   <div class="chatbox_timing">
                     <ul>
-                      <li>
-                        <i class="fa fa-calendar"></i> 22/11/2018
-                      </li>
-                      <li>
-                        <i class="fa fa-clock-o"></i> 7:00 PM
-                      </li>
+                    {created_at&&<li>
+                        <i class="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
+                      </li>}
+                      {!created_at&&<li>
+                        <i class="fa fa-calendar"></i> {new Date().toLocaleString()}
+                      </li>}
                     </ul>
                   </div>
                   <div class="clearfix"></div>
