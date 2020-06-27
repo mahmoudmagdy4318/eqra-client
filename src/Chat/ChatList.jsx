@@ -85,6 +85,11 @@ export default function FollowList({openChatBox,notifications}) {
         <CssBaseline />
         <Paper square className={classes.paper}>
           <List className={classes.list}>
+          <ListItem >
+                  <Typography component="div">
+                  <h3 style={{color:"tomato"}}>Friends List</h3>
+                  </Typography>
+                </ListItem>
             {follows.map(({ id,full_name,pictur},index) => (
               <React.Fragment key={index} >
                 <ListItem button onClick={()=>openChatBox({ id, full_name, pictur})}>

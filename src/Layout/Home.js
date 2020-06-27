@@ -70,8 +70,8 @@ const Home = (Component) => {
                 <Component {...props} />
               </Grid>
               <Grid xs={12} md={3} className={classes.sticky}>
+              <Trends />
                 <Chat />
-                <Trends />
               </Grid>
             </Grid>
         </div>
