@@ -137,7 +137,14 @@ export default function SimplePopover(props) {
                   >
                     <ListItemAvatar>
                       <Avatar>
-                        <img className={classes.image} src="/favicon.ico" />
+                        <img
+                          className={classes.image}
+                          src={
+                            l.pictur
+                              ? l.pictur
+                              : require("../assets/avatar.jpg")
+                          }
+                        />
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText primary={l.full_name} />
