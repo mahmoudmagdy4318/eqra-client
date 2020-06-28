@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import http from "../services/httpService";
 import FollowersService from "../services/FollowersService";
-import {getFollows} from '../Chat/service/follows'
-
+import { getFollows } from "../Chat/service/follows";
 
 export const UserContext = React.createContext();
 
@@ -11,11 +10,11 @@ const Provider = (props) => {
   const [follows, setFollows] = useState([]);
   const [followers, setFollowers] = useState([]);
 
-  const getMyFollows=async()=>{
-    const { followingArray,followersArray}=await getFollows();
+  const getMyFollows = async () => {
+    const { followingArray, followersArray } = await getFollows();
     setFollows(followingArray);
     setFollowers(followersArray);
-  }
+  };
 
   const setAuthData = () =>
     http
@@ -26,11 +25,18 @@ const Provider = (props) => {
 
   useEffect(() => {
     setAuthData();
-    getMyFollows();
   }, []);
+  useEffect(() => {
+    if (localStorage.getItem("Authorization")) getMyFollows();
+  }, [user]);
 
   return (
-    <UserContext.Provider value={{ data: { user,follows,followers }, actions: { setAuthData,getMyFollows} }}>
+    <UserContext.Provider
+      value={{
+        data: { user, follows, followers },
+        actions: { setAuthData, getMyFollows },
+      }}
+    >
       {props.children}
     </UserContext.Provider>
   );

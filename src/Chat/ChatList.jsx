@@ -145,7 +145,7 @@ export default function FollowList({openChatBox,notifications}) {
                         </Badge>}
                   </ListItemAvatar>
                   <Typography component="div">
-                    {notifications[`notification.${follower.id}`]&&<Box  fontWeight={500} m={1}>
+                    {notifications[`notification.${follower.id}`]&&<Box badgeContent={'M'} fontWeight={500} m={1}>
                         {follower.full_name}
                     </Box>}
                     {!notifications[`notification.${follower.id}`]&&<Box fontWeight="fontWeightLight" m={1}>
