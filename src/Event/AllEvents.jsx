@@ -11,10 +11,10 @@ import Container from '@material-ui/core/Container';
 import Moment from 'react-moment';
 import axiosInstance from '../API/axiosInstance';
 // Included Component
-import EventNavBar from './EventNavbar';
 import UserEvents from  './UserEvents';
 import './AllEvents.css';
 import { Link } from 'react-router-dom';
+import Home from '../Layout/Home';
 const AllEvents = (props) => {
     const classes = useStyles();
     const [events, setEvents] = React.useState([]);
@@ -29,8 +29,6 @@ const AllEvents = (props) => {
   return (
     <React.Fragment>
       <main>
-      {/* Header Component */}
-      <EventNavBar/>
         <div>
           <Container  class="eventsContainers container" maxWidth="lg">
           <Typography  component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
@@ -69,11 +67,10 @@ const AllEvents = (props) => {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                  <Button size="small" color="primary">
-                  <Link>Share</Link>
-                </Button>
-                <Button size="small" color="primary">
-                  <Link to={`/event/${event.id}`}>See More..</Link>
+                <Button variant="contained"
+                  color="secondary"
+                  size="small">
+                  <Link className="disable-link " to={`/event/${event.id}`}>See More..</Link>
                 </Button>
                   </CardActions>
                 </Card>
@@ -86,7 +83,7 @@ const AllEvents = (props) => {
   );
 }
 
-export default AllEvents;
+export default Home(AllEvents);
 
 const useStyles = makeStyles((theme) => ({
   icon: {

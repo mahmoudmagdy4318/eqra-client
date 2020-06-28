@@ -16,7 +16,7 @@ const SearchMessage = (props) => {
     return(
         <Fragment>
             {errorMessage && errorMessage === "Search For Your Friends" ? (
-              <Link className="disable-link" to="/search">
+              <Link className="disable-link" to="/searchUsers">
               <ListItem
                 alignItems="flex-start"
                 key={errorMessage}
@@ -55,7 +55,7 @@ const SearchMessage = (props) => {
                 onClick={(handleClose)}
                 className={classes.seeMore}
               >
-                <Link to="/search">
+                <Link to="/searchUsers">
                 <Button
                   variant="contained"
                   color="primary"

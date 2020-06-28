@@ -91,12 +91,18 @@ export default function SignUp(props) {
       role: isWriter ? 'writer' : 'user',
       username: user.username,
     };
-    // console.log(newUser);
-    const { data } = await register(newUser);
-    // console.log(data);
-    auth.loginWithJwt("Bearer " + data.access_token, data.role);
-    http.setJwt(data.access_token)
-    window.location = "/";
+    try{
+      const { data } = await register(newUser);
+      auth.loginWithJwt("Bearer " + data.access_token, data.role);
+      http.setJwt(data.access_token);
+      props.history.push("/category");
+    }catch(ex){
+      if(ex.response&&ex.response.status===400){
+        const data={...errors};
+        data.username=ex.response.data;
+        setErrors(data);
+      }
+    }
   };
 
   if (auth.getJwt()) return <Redirect to="/" />

@@ -71,12 +71,20 @@ function Trends() {
             onClick={() => handleClick(_.get(t, "writer.full_name"))}
           >
             <List component="nav" aria-label="main mailbox folders">
-              <ListItem button>
-                <ListItemText primary={_.get(t, "writer.full_name")} />
-                <small>{_.get(t, "posts.length")} posts</small>
-              </ListItem>
+              {_.get(t, "posts.length") > 0 && (
+                <>
+                  <ListItem button>
+                    <ListItemText primary={_.get(t, "writer.full_name")} />
+                    <small>
+                      {_.get(t, "posts.length") > 1
+                        ? `${_.get(t, "posts.length")} are talking about`
+                        : `${_.get(t, "posts.length")} is talking about`}
+                    </small>
+                  </ListItem>
+                  <Divider />
+                </>
+              )}
             </List>
-            <Divider />
           </div>
         ))}
       </div>

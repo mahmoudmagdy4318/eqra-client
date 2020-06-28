@@ -128,11 +128,11 @@ const Test = (props) => {
     }, []);
     const formData = new FormData();
     for (let i = 0; i < newPostData.postFiles?.length; i++) {
-      formData.append(`postFiles[${i}]`, newPostData.postFiles[i])
+      formData.append(`postFiles[${i}]`, newPostData.postFiles[i]);
     }
-    formData.append('genres', cats);
-    formData.append('body_content', newPostData.body_content);
-    formData.append('genres', cats);
+    formData.append("genres", cats);
+    formData.append("body_content", newPostData.body_content);
+    formData.append("genres", cats);
     axiosInstance
       .post("api/post", formData)
       .then((res) => {
@@ -148,7 +148,6 @@ const Test = (props) => {
   }
 
   const getPosts = async () => {
-    // debugger;
     if (props.writer) {
       console.log({ props });
       const postsData = await axiosInstance.get(
@@ -163,7 +162,8 @@ const Test = (props) => {
       console.log(postsData.data);
     } else {
       const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
-      setPosts([...posts, ...postsData.data]);
+      if (currPage === 1) setPosts(postsData.data);
+      else setPosts([...posts, ...postsData.data]);
       setLastPage(postsData.meta.last_page);
     }
   };
@@ -275,57 +275,56 @@ const Test = (props) => {
               onChange={handleInput}
             />
           </div>
-        
+
           <div className="row ml-md-2 mb-2 mt-md-1 align-items-center">
             <div className="col-2">
-            <input
-              accept="image/*"
-              multiple
-              className={classes.input}
-              id="icon-button-file"
-              type="file"
-              name="postFiles[]"
-              onChange={(e) => setNewPostData({ ...newPostData, postFiles: e.target.files })}
-            />
-            <label htmlFor="icon-button-file">
-           
-
+              <input
+                accept="image/*"
+                multiple
+                className={classes.input}
+                id="icon-button-file"
+                type="file"
+                name="postFiles[]"
+                onChange={(e) =>
+                  setNewPostData({ ...newPostData, postFiles: e.target.files })
+                }
+              />
+              <label htmlFor="icon-button-file">
                 <FontAwesomeIcon
                   icon="image"
                   size="2x"
                   style={{ color: "#EE4956" }}
                   className=" image mt-md-4"
                 />
-            
-            </label>
+              </label>
             </div>
             <div className="col-8">
-            <FormControl className={classes.formControl}>
-              <InputLabel id="demo-mutiple-checkbox-label">
-                Select a category or more
-              </InputLabel>
-              <Select
-                labelId="demo-mutiple-checkbox-label"
-                id="demo-mutiple-checkbox"
-                multiple
-                value={checkedCategories}
-                onChange={handleChange}
-                input={<Input />}
-                renderValue={(selected) => selected.join(", ")}
-                MenuProps={MenuProps}
-              >
-                {categoryMenu}
-              </Select>
-            </FormControl>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-mutiple-checkbox-label">
+                  Select a category or more
+                </InputLabel>
+                <Select
+                  labelId="demo-mutiple-checkbox-label"
+                  id="demo-mutiple-checkbox"
+                  multiple
+                  value={checkedCategories}
+                  onChange={handleChange}
+                  input={<Input />}
+                  renderValue={(selected) => selected.join(", ")}
+                  MenuProps={MenuProps}
+                >
+                  {categoryMenu}
+                </Select>
+              </FormControl>
             </div>
             <div className="col-2">
-            <button
-              className="px-4 py-2 post mt-md-3"
-              onClick={submitPost}
-              style={{marginLeft: -15}}
-            >
-              Post
-            </button>
+              <button
+                className="px-4 py-2 post mt-md-3"
+                onClick={submitPost}
+                style={{ marginLeft: -15 }}
+              >
+                Post
+              </button>
             </div>
           </div>
         </div>

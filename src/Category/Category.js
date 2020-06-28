@@ -47,7 +47,10 @@ const UserCategory = () => {
         const genres = checked.map(elem => elem.id);
         await axiosInstance.post("api/user/genre", {genres});
         setSuceesOpen(true);
-        setSuccessMsg("Congrats! Your Categories Saved Successfully")
+        setSuccessMsg("Congrats! Your Categories Saved Successfully You WIll Redirect to Home Now..")
+        setTimeout(() => {
+            window.location.href = "/";
+        }, 4000)
     }
     React.useEffect(() =>{
         getUserCategories();

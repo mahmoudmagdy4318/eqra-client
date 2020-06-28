@@ -80,7 +80,8 @@ const App = () => {
               key="signup"
               exact
               path="/register"
-              render={() => <SignUp />}
+              component={SignUp}
+              // render={() => <SignUp />}
             />
             <Route
               key="forgot"
@@ -114,7 +115,7 @@ const App = () => {
             <Route
               key="searchPage"
               exact
-              path="/search"
+              path="/searchUsers"
               component={SearchPage}
             />
             <Route
