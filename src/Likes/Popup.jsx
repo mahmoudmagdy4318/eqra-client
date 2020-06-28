@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Popover from "@material-ui/core/Popover";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import _ from "lodash";
 
 import {
   Paper,
@@ -77,8 +78,9 @@ export default function SimplePopover(props) {
 
   const id = open ? "simple-popover" : undefined;
   const history = useHistory();
-  const handleUserClick = (id) => {
-    history.push(`/user/${id}`);
+  const handleUserClick = (user) => {
+    debugger;
+    history.push(`/profile/${user.role}/${user.id}`);
   };
   return (
     <div>
@@ -130,7 +132,7 @@ export default function SimplePopover(props) {
               {props.content.map((l) => (
                 <Fragment key={l.full_name}>
                   <ListItem
-                    onClick={() => handleUserClick(l.id)}
+                    onClick={() => handleUserClick(l)}
                     className={classes.UserDiv}
                   >
                     <ListItemAvatar>
