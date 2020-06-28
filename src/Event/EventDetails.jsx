@@ -36,8 +36,8 @@ const EventDetails = (props) => {
               </p>
             <h3 class="h3">{event.name}</h3>
           </div>
-          <div class="profile-cover__action bg--img" data-overlay="0.3" style ={ { backgroundImage: "url("+event.cover_image+")" }}>
-            {/* User State Component (Pending, Interested, Going) */}
+          {event.cover_image ? 
+            <div class="profile-cover__action bg--img" data-overlay="0.3" style ={ { backgroundImage: "url("+event.cover_image+")" }}>
             <UserEventState
               getEvent={getEvent}
               user={currentUser}
@@ -45,6 +45,16 @@ const EventDetails = (props) => {
               eventName={event.name}
             />
           </div>
+            :
+            <div class="profile-cover__action bg--img" data-overlay="0.3" style ={ { backgroundImage: "url(https://source.unsplash.com/random)" }}>
+            <UserEventState
+              getEvent={getEvent}
+              user={currentUser}
+              eventId={eventId}
+              eventName={event.name}
+            />
+          </div>
+            }
           <div class="profile-cover__info">
             <ul class="nav">
               <li className="eventList">
