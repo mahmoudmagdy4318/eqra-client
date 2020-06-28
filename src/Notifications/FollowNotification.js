@@ -21,10 +21,13 @@ import Snack from "../utils/Snackbar";
 import { Link } from "react-router-dom";
 const FollowNotification = (props) => {
     const {
-        data: { user: currentUser },
+        data: { user: currentUser, followers },
+    } = useContext(UserContext);
+    const {
+        action: { getMyFollows: getMyFollowers },
     } = useContext(UserContext);
     const [anchorEl2, setAnchorEl2] = React.useState(null);
-    const [followers, setFollowers] = React.useState([]);
+    // const [followers, setFollowers] = React.useState([]);
     const [
         unseenFollowNotifications,
         setunseenFollowNotifications,
@@ -32,11 +35,11 @@ const FollowNotification = (props) => {
     const [successOpen, setSuceesOpen] = React.useState(false);
     const [successMsg, setSuccessMsg] = React.useState("");
 
-    const getMyFollowers = async () => {
-        const result = await FollowersService.getFollowersData();
-        setFollowers(result.myFollowers);
-        setunseenFollowNotifications(result.seen);
-    };
+    // const getMyFollowers = async () => {
+    //     const result = await FollowersService.getFollowersData();
+    //     setFollowers(result.myFollowers);
+    //     setunseenFollowNotifications(result.seen);
+    // };
     useEffect(() => {
         getMyFollowers();
     }, []);
