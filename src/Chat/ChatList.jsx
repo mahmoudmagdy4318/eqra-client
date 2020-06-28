@@ -87,10 +87,7 @@ export default function FollowList({openChatBox,notifications}) {
               <React.Fragment key={index} >
                 <ListItem button onClick={()=>openChatBox({ id, full_name, pictur})}>
                   <ListItemAvatar>
-                        {!pictur && <AccountCircleIcon>
-                        </AccountCircleIcon>}
-                        {notifications[`notification.${id}`]&& !pictur &&<Badge badgeContent={'M'} color="error"/>} 
-
+                  {!pictur &&<Badge overlap="circle" anchorOrigin={{ vertical: 'top', horizontal: 'right', }} badgeContent={notifications[`notification.${id}`]&&<Badge badgeContent={'M'} color="error"/>} > <Avatar alt={full_name} src={require("../assets/avatar.jpg")} /> </Badge>} 
                         {pictur &&<Badge
                           overlap="circle"
                           anchorOrigin={{
@@ -117,9 +114,7 @@ export default function FollowList({openChatBox,notifications}) {
               ! _.some(follows,follower) && <React.Fragment key={index} >
                 <ListItem button onClick={()=>openChatBox({ id:follower.id, full_name:follower.full_name, pictur:follower.pictur})}>
                   <ListItemAvatar>
-                        {!follower.pictur && <AccountCircleIcon>
-                          {notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>}
-                        </AccountCircleIcon>}
+                  {!follower.pictur &&<Badge overlap="circle" anchorOrigin={{ vertical: 'top', horizontal: 'right', }} badgeContent={notifications[`notification.${follower.id}`]&&<Badge badgeContent={'M'} color="error"/>} > <Avatar alt={follower.full_name} src={require("../assets/avatar.jpg")} /> </Badge>} 
                         {follower.pictur &&<Badge
                           overlap="circle"
                           anchorOrigin={{
@@ -132,7 +127,7 @@ export default function FollowList({openChatBox,notifications}) {
                         </Badge>}
                   </ListItemAvatar>
                   <Typography component="div">
-                    {notifications[`notification.${follower.id}`]&&<Box  fontWeight={500} m={1}>
+                    {notifications[`notification.${follower.id}`]&&<Box badgeContent={'M'} fontWeight={500} m={1}>
                         {follower.full_name}
                     </Box>}
                     {!notifications[`notification.${follower.id}`]&&<Box fontWeight="fontWeightLight" m={1}>

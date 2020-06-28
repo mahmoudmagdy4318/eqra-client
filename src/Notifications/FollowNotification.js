@@ -21,13 +21,13 @@ import Snack from "../utils/Snackbar";
 import { Link } from "react-router-dom";
 const FollowNotification = (props) => {
     const {
-        data: { user: currentUser, followers },
+        data: { user: currentUser },
     } = useContext(UserContext);
     const {
-        action: { getMyFollows: getMyFollowers },
+        actions: { getMyFollows},
     } = useContext(UserContext);
     const [anchorEl2, setAnchorEl2] = React.useState(null);
-    // const [followers, setFollowers] = React.useState([]);
+    const [followers, setFollowers] = React.useState([]);
     const [
         unseenFollowNotifications,
         setunseenFollowNotifications,
@@ -35,11 +35,12 @@ const FollowNotification = (props) => {
     const [successOpen, setSuceesOpen] = React.useState(false);
     const [successMsg, setSuccessMsg] = React.useState("");
 
-    // const getMyFollowers = async () => {
-    //     const result = await FollowersService.getFollowersData();
-    //     setFollowers(result.myFollowers);
-    //     setunseenFollowNotifications(result.seen);
-    // };
+    const getMyFollowers = async () => {
+        const result = await FollowersService.getFollowersData();
+        setFollowers(result.myFollowers);
+        setunseenFollowNotifications(result.seen);
+        await getMyFollows();
+    };
     useEffect(() => {
         getMyFollowers();
     }, []);
@@ -123,7 +124,7 @@ const FollowNotification = (props) => {
               <Fragment>
                 <Link
                   className="disable-link"
-                  to={`/profile/user/${follower.followed_id}`}
+                  to={`/profile/${follower.role}/${follower.follower_id}`}
                 >
                   <ListItem alignItems="flex-start">
                     <ListItemAvatar>
