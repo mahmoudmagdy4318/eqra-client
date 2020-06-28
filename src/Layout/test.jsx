@@ -162,7 +162,8 @@ const Test = (props) => {
       console.log(postsData.data);
     } else {
       const postsData = await axiosInstance.get(`api/post?page=${currPage}`);
-      setPosts([...posts, ...postsData.data]);
+      if (currPage === 1) setPosts(postsData.data);
+      else setPosts([...posts, ...postsData.data]);
       setLastPage(postsData.meta.last_page);
     }
   };

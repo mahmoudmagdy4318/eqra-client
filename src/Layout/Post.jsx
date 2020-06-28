@@ -271,7 +271,7 @@ const Post = (props) => {
             )}
           </div>
           <div
-            style={{ float: "right", marginRight: "179px", marginTop: "-17px" }}
+            style={{ float: "right", marginRight: "220px", marginTop: "-17px" }}
           >
             <PostLikes
               id={postData.id}

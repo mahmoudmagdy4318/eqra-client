@@ -2,15 +2,20 @@ import React, { useState, useContext, useEffect, useRef } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Pusher from "pusher-js";
 import ChatList from "./ChatList";
-import SendIcon from '@material-ui/icons/Send';
+import SendIcon from "@material-ui/icons/Send";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { UserContext } from "../context/userContext";
-import { getMessages, sendMessage,getUnseenMessagesUsers,seenMessages} from "./service/messages";
-import Provider from '../context/userContext'
+import {
+  getMessages,
+  sendMessage,
+  getUnseenMessagesUsers,
+  seenMessages,
+} from "./service/messages";
+import Provider from "../context/userContext";
 
 const ChatBox = () => {
   const {
-    data: { user: currentUser }
+    data: { user: currentUser },
   } = useContext(UserContext);
   const [classes, setClasses] = useState("chatbox chatbox22 chatbox--closed");
   const [open, setOpen] = useState(true);
@@ -22,8 +27,8 @@ const ChatBox = () => {
   const messagesEndRef = useRef(null);
   Pusher.logToConsole = false;
 
-  const pusher = new Pusher("0e0882c25b1299c47bdb", {
-    cluster: "mt1",
+  const pusher = new Pusher("72450be663ca31a2c7b3", {
+    cluster: "us2",
     authEndpoint: "/broadcasting/auth",
     auth: {
       headers: {
@@ -34,14 +39,18 @@ const ChatBox = () => {
   });
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   const channel = pusher.subscribe("private-chat." + currentUser.id);
-    channel.bind("message-sent", async function ({message,user}) {
-      handleNotifications(user)
-      await getMyMessages({id:user.id,full_name:user.full_name,pictur:user.pictur});
-      return;
+  channel.bind("message-sent", async function ({ message, user }) {
+    handleNotifications(user);
+    await getMyMessages({
+      id: user.id,
+      full_name: user.full_name,
+      pictur: user.pictur,
+    });
+    return;
   });
 
   useEffect(() => {
@@ -58,51 +67,52 @@ const ChatBox = () => {
     setClasses(status);
   };
 
-  const getUnseenMessages=async()=>{
-    const {data}=await getUnseenMessagesUsers();
-    data.map(id=>{
-      handleNotifications({id});
+  const getUnseenMessages = async () => {
+    const { data } = await getUnseenMessagesUsers();
+    data.map((id) => {
+      handleNotifications({ id });
     });
-  }
+  };
 
-
-  const handleNotifications=(user)=>{
-    const data={...notifications}; 
-    data[`notification.${user.id}`]={id:user.id};
+  const handleNotifications = (user) => {
+    const data = { ...notifications };
+    data[`notification.${user.id}`] = { id: user.id };
     setNotifications(data);
-  }
-
+  };
 
   const sendMyMessage = async () => {
     const recieverMessages = [
       ...messages[`message.${reciever.id}`],
-      { reciever_id: reciever.id,user_id:currentUser.id ,message: currentMessage },
+      {
+        reciever_id: reciever.id,
+        user_id: currentUser.id,
+        message: currentMessage,
+      },
     ];
-    const data={...messages}
-    data[`message.${reciever.id}`]=recieverMessages;
+    const data = { ...messages };
+    data[`message.${reciever.id}`] = recieverMessages;
     setMessages(data);
-    setCurrentMessage('');
+    setCurrentMessage("");
     scrollToBottom();
     sendMessage(reciever.id, currentMessage);
   };
 
   const getMyMessages = async (reciever) => {
     const recieverMessages = await getMessages(reciever.id);
-    const data={...messages};
-    data[`message.${reciever.id}`]=recieverMessages;
-    setMessages(data);
+    const data = {};
+    data[`message.${reciever.id}`] = recieverMessages;
+    setMessages({ ...data, ...messages });
   };
 
   const handleChange = (e) => {
     setCurrentMessage(e.target.value);
-    
   };
 
-  const handleKeyDown=(e)=>{
-    if (e.key === 'Enter') {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
       sendMyMessage();
     }
-  }
+  };
 
   const closeChatBox = (e) => {
     e.stopPropagation();
@@ -110,8 +120,8 @@ const ChatBox = () => {
   };
 
   const openChatBox = async (reciever) => {
-    const data={...notifications};
-    data[`notification.${reciever.id}`]=null;
+    const data = { ...notifications };
+    data[`notification.${reciever.id}`] = null;
     setNotifications(data);
     await seenMessages(reciever.id);
     await getMyMessages(reciever);
@@ -120,13 +130,12 @@ const ChatBox = () => {
     scrollToBottom();
   };
 
-
-  const resetNotifications=async()=>{
-    const data={...notifications};
-    data[`notification.${reciever.id}`]=null;
+  const resetNotifications = async () => {
+    const data = { ...notifications };
+    data[`notification.${reciever.id}`] = null;
     setNotifications(data);
     await seenMessages(reciever.id);
-  }
+  };
 
   return (
     <React.Fragment>
@@ -135,9 +144,7 @@ const ChatBox = () => {
           {reciever.pictur && (
             <Avatar alt={reciever.full_name} src={reciever.pictur} />
           )}
-          {!reciever.pictur && (
-            <AccountCircleIcon />  
-          )}
+          {!reciever.pictur && <AccountCircleIcon />}
           <h5>{reciever.full_name}</h5>
           <button className="chatbox__title__close" onClick={closeChatBox}>
             <span>
@@ -161,75 +168,89 @@ const ChatBox = () => {
           </button>
         </div>
         <div className="chatbox__body">
-          {messages[`message.${reciever.id}`] && messages[`message.${reciever.id}`].map(({ user_id, message, created_at }) => (
-            <div>
-              {currentUser.id === user_id && (
-                <div className="chatbox__body__message chatbox__body__message--left">
-                  <div className="chatbox_timing">
-                    <ul>
-                      {created_at&&<li>
-                        <i className="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
-                      </li>}
-                      {!created_at&&<li>
-                        <i className="fa fa-calendar"></i> {new Date().toLocaleString()}
-                      </li>}
-  
-                    </ul>
-                  </div>
-                  <div className="clearfix"></div>
-                  <div className="ul_section_full">
-                    <ul className="ul_msg">
-                      <li>
-                        <strong>You</strong>
-                      </li>
-                      <li>{message}</li>
-                    </ul>
-                    <div className="clearfix"></div>
-                    <ul className="ul_msg2">
-                      <li>
-                        <i className="fa fa-pencil"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-trash chat-trash"></i>
-                      </li>
-                    </ul>
-                  </div>
+          {messages[`message.${reciever.id}`] &&
+            messages[`message.${reciever.id}`].map(
+              ({ user_id, message, created_at }) => (
+                <div>
+                  {currentUser.id === user_id && (
+                    <div className="chatbox__body__message chatbox__body__message--left">
+                      <div className="chatbox_timing">
+                        <ul>
+                          {created_at && (
+                            <li>
+                              <i className="fa fa-calendar"></i>{" "}
+                              {new Date(created_at).toLocaleString()}
+                            </li>
+                          )}
+                          {!created_at && (
+                            <li>
+                              <i className="fa fa-calendar"></i>{" "}
+                              {new Date().toLocaleString()}
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                      <div className="clearfix"></div>
+                      <div className="ul_section_full">
+                        <ul className="ul_msg">
+                          <li>
+                            <strong>You</strong>
+                          </li>
+                          <li>{message}</li>
+                        </ul>
+                        <div className="clearfix"></div>
+                        <ul className="ul_msg2">
+                          <li>
+                            <i className="fa fa-pencil"></i>
+                          </li>
+                          <li>
+                            <i className="fa fa-trash chat-trash"></i>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                  {currentUser.id !== user_id && (
+                    <div className="chatbox__body__message chatbox__body__message--right">
+                      <div className="chatbox_timing">
+                        <ul>
+                          {created_at && (
+                            <li>
+                              <i className="fa fa-calendar"></i>{" "}
+                              {new Date(created_at).toLocaleString()}
+                            </li>
+                          )}
+                          {!created_at && (
+                            <li>
+                              <i className="fa fa-calendar"></i>{" "}
+                              {new Date().toLocaleString()}
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                      <div className="clearfix"></div>
+                      <div className="ul_section_full">
+                        <ul className="ul_msg">
+                          <li>
+                            <strong>{reciever.full_name}</strong>
+                          </li>
+                          <li>{message}</li>
+                        </ul>
+                        <div className="clearfix"></div>
+                        <ul className="ul_msg2">
+                          <li>
+                            <i className="fa fa-pencil"></i>
+                          </li>
+                          <li>
+                            <i className="fa fa-trash chat-trash"></i>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-              {currentUser.id !== user_id && (
-                <div className="chatbox__body__message chatbox__body__message--right">
-                  <div className="chatbox_timing">
-                    <ul>
-                    {created_at&&<li>
-                        <i className="fa fa-calendar"></i> {new Date(created_at).toLocaleString()}
-                      </li>}
-                      {!created_at&&<li>
-                        <i className="fa fa-calendar"></i> {new Date().toLocaleString()}
-                      </li>}
-                    </ul>
-                  </div>
-                  <div className="clearfix"></div>
-                  <div className="ul_section_full">
-                    <ul className="ul_msg">
-                      <li>
-                        <strong>{reciever.full_name}</strong>
-                      </li>
-                      <li>{message}</li>
-                    </ul>
-                    <div className="clearfix"></div>
-                    <ul className="ul_msg2">
-                      <li>
-                        <i className="fa fa-pencil"></i>
-                      </li>
-                      <li>
-                        <i className="fa fa-trash chat-trash"></i>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
+              )
+            )}
           <div ref={messagesEndRef} />
         </div>
         <div className="panel-footer">
@@ -252,13 +273,13 @@ const ChatBox = () => {
                 id="btn-chat"
                 hidden={!currentMessage}
               >
-                <SendIcon/>
+                <SendIcon />
               </button>
             </span>
           </div>
         </div>
       </div>
-    <ChatList openChatBox={openChatBox} notifications={notifications}/>
+      <ChatList openChatBox={openChatBox} notifications={notifications} />
     </React.Fragment>
   );
 };
