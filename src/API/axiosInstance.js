@@ -21,7 +21,6 @@ axiosInstance.interceptors.response.use(
     if (_.get(error, "response.status") === 401) {
       localStorage.removeItem("Authorization");
       window.location.href = "/login";
-
       return;
     }
     return Promise.reject(error);
